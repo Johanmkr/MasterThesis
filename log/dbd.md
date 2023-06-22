@@ -5,3 +5,9 @@ Getting familiar with gevolution, attempting to make simple test runs in order t
 
 ## Tuesday 20.06.23
 Work on skeleton ML pipeline. Work with output from gevolution, but primarily focus on the ML part today.  
+
+## Wednesday 21.06.23
+Worked on some elementary ML theory. Looked at the first successfull output from gevolution, visualised this. 
+
+## Thursday 22.06.23
+Look more specifically on the outputs of gevolution runs, how to tweak settings, 
