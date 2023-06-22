@@ -10,4 +10,7 @@ Work on skeleton ML pipeline. Work with output from gevolution, but primarily fo
 Worked on some elementary ML theory. Looked at the first successfull output from gevolution, visualised this. 
 
 ## Thursday 22.06.23
-Look more specifically on the outputs of gevolution runs, how to tweak settings, 
+Look more specifically on the outputs of gevolution runs, how to tweak settings.
+### Meeting with Paco and Julian
+* Generate dummy data with default values from gevolution. Slice it into different slabs and generate dataset. Create model based on this. 
+
