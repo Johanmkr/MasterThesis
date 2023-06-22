@@ -3,7 +3,14 @@
 ## To David:
 
 ## To Paco
-* The Pipeline itself, any specific architectures?
+* ML
+    * Skeleton pipeline of CNN (architecture) for the snapshots
+    * Other ML techniques for power spectra and light cones - SVM, XGB, RF etc.
+* Data
+    * Augmentation and recycling
+    * Create PyTorch dataset and dataloader objects
+    
+
 
 ## To Julian
 * Detecting relativistic effects:
