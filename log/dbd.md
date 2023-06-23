@@ -12,5 +12,10 @@ Worked on some elementary ML theory. Looked at the first successfull output from
 ## Thursday 22.06.23
 Look more specifically on the outputs of gevolution runs, how to tweak settings.
 ### Meeting with Paco and Julian
-* Generate dummy data with default values from gevolution. Slice it into different slabs and generate dataset. Create model based on this. 
+* Generate dummy data with default values from gevolution. Slice it into different slabs and generate dataset. Create model based on this.
+
+## Friday 23.06.23
+* Managed to run two simulations with and without GR for small cube 64x64 length 320 Mpc
+* Investigated data (see ptpg/testing_data.ipynb)
+* Almost done with creating a dataloader object, then a simple ML pipeline can follow in order to see whether this works. 
 
