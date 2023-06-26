@@ -23,4 +23,8 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 ## Monday 26.06.23
 * Continued to build dataset and dataloader objects of the dummy data from two small slices of gr and newtonian. 
 * How to best normalise the data? Zero centred and unit variance?
+* Have pipeline, generalising (further also)
+* Run the longer simulations, and look at architecture.
+* Need to understand more theory.
+
 
