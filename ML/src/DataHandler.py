@@ -1,5 +1,5 @@
-from MLutils import *
-
+from src.MLutils import *
+###TODO modify this to take a list of cubes as input
 class TestCubes(Dataset):
     def __init__(self, newtonCube, grCube, stride=1, transform=None, additionalInfo=False):
         self.newtonCube = newtonCube
@@ -49,7 +49,7 @@ class TestCubes(Dataset):
             sample["axis"] = axis
             sample["index"] = index
         if self.transform:
-            ### TODO Need to fix these issuse with transformation, normalisation for now
+            ###TODO Need to fix these issuse with transformation, normalisation for now
             # toBeNormalized = sample["image"]
             # Normalized = self.transform(toBeNormalized)
             # sample["image"] = Normalized

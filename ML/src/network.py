@@ -1,8 +1,8 @@
-from MLutils import *
+from src.MLutils import *
 
-class SKELETON(nn.Module):
+class Network(nn.Module):
     def __init__(self, inputSize:tuple):
-        super(SKELETON, self).__init__()
+        super(Network, self).__init__()
         self.inputSize = inputSize
         self.nrChannels = inputSize[0]
         self.width = inputSize[1]

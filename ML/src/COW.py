@@ -1,9 +1,10 @@
-from MLutils import *
-from skeleton import SKELETON
+from src.MLutils import *
+from src.network import Network
 
-class COW(SKELETON):
+class COW(Network):
     def __init__(self, inputSize:tuple=(1,64,64)):
         super(COW, self).__init__(inputSize)
+        # self.inputSize = inputSize
 
         ### LAYER 1 (Convolutional) ### (1, 64, 64) -> (64, 64, 64)
         self.layer1 = nn.Sequential(
@@ -49,7 +50,7 @@ class COW(SKELETON):
         return self.output(X)
     
     def printSummary(self, input:tuple=(1,64,64)):
-        summary(self, self.input_size)
+        summary(self, self.inputSize)
 
 
 if __name__=="__main__":
