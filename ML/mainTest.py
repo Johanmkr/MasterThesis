@@ -8,6 +8,6 @@ if __name__=="__main__":
     print(DataPath)
     TEST = Model(COW, DataPath)
     TEST.loadData()
+    TEST.model.printSummary()
     TEST.train()
     TEST.test()
-    TEST.model.printSummary()

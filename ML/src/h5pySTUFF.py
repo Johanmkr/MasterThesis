@@ -23,7 +23,7 @@ class h5Handler:
         h5File.close()
         return h5Dataset
 
-    def _Extracth5Data(self) -> list[np.ndarray]:
+    def _Extracth5Data(self) -> list:
         """Extracts the data from all .h5 files in the directory provided to the constructor
 
         Returns:
