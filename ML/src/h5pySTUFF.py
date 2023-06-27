@@ -1,4 +1,4 @@
-from src.MLutils import *
+from MLutils import *
 
 class h5Handler:
     def __init__(self, h5Path:str) -> None:
@@ -30,12 +30,25 @@ class h5Handler:
             list[np.ndarray]: Data from each file, as element in list
         """
         allFiles = os.listdir(self.h5Path)
+        initFile = [self.h5Path + name for name in allFiles if ".ini" in name][0]
+        config = configparser.ConfigParser()
+        config.read_string('[default]\n' + open(initFile).read())
+        self.configDict = {}
+        for option in config.options('default'):
+            value = config.get('default', option)
+            self.configDict[option] = value
         h5Files = [self.h5Path + name for name in allFiles if ".h5" in name]
-        h5Datasets = []
-        for filename in h5Files:
-            h5Datasets.append(self._Extracth5Specifics(filename))
+        h5Datasets = {}
+        for i, filename in enumerate(h5Files):
+            name = self.configDict["snapshot outputs"].split(",").strip()[i]
+            h5Datasets[name] = self._Extracth5Specifics(filename)
         return h5Datasets
     
     def __call__(self):
         return self._Extracth5Data()
     
+    
+if __name__=="__main__":
+    DataPath = os.path.abspath("").replace("Summer-Sandbox23/ML/src", "NbodySimulation/gevolution-1.2/output/test_intermediate/")
+    obj = h5Handler(DataPath)
+    data = obj()
