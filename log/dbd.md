@@ -19,3 +19,12 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 * Investigated data (see ptpg/testing_data.ipynb)
 * Almost done with creating a dataloader object, then a simple ML pipeline can follow in order to see whether this works. 
 
+
+## Monday 26.06.23
+* Continued to build dataset and dataloader objects of the dummy data from two small slices of gr and newtonian. 
+* How to best normalise the data? Zero centred and unit variance?
+* Have pipeline, generalising (further also)
+* Run the longer simulations, and look at architecture.
+* Need to understand more theory.
+
+
