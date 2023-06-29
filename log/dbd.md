@@ -34,5 +34,10 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 ## Wednesday 28.06.23
 * Started with generalising the data treatment, now with larger .h5 files. Need a pipeline to generate a dataloader from potentially more datacubes. 
 
+## Thursday 29.06.23
+* Finalised the SSH login remote on the UiO machines to better work from home. 
+* Worked on the data treatment from `.h5`-files to a pytorch Dataloader object.
+* Decide on some folder/project structure for the main
+
 
 
