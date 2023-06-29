@@ -27,4 +27,12 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 * Run the longer simulations, and look at architecture.
 * Need to understand more theory.
 
+## Tuesday 27.06.23 
+* Meetings with Julian and Daivd, getting clearity about what the project entails and possible end goals.
+* Linked CLASS with gevolutino, run with slightly larger cubes (128, 128, 128) box dith dims 5120 Mpc. 
+
+## Wednesday 28.06.23
+* Started with generalising the data treatment, now with larger .h5 files. Need a pipeline to generate a dataloader from potentially more datacubes. 
+
+
 
