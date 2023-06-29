@@ -20,3 +20,6 @@ generator1 = torch.Generator().manual_seed(42)
 
 # for visualisation loop:
 from matplotlib import colors
+
+# Misc
+from IPython import embed
