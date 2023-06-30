@@ -27,11 +27,13 @@ while IFS= read -r line; do
             echo "$line" >> "$temp_file"    # simply copy line
         else    #   write tree output
             echo "$start_subheading" >> "$temp_file" 
-            tree . | sed -e 's/^/   /' >> "$temp_file" 
+            # echo "" >> "$temp_file"
+            tree . | sed -e 's/^/    /' >> "$temp_file" 
             echo "Updated on $(date +%F)" >> "$temp_file"
             remove=true
         fi
     fi
+    
 done < "$file"
 
 mv "$temp_file" "$file"
