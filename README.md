@@ -21,7 +21,7 @@ The data files itself (output from *gevolution*) is (or will be for large simula
 Contains the source code the neural network and other machine learning software. Not yet optimised nor generalised in any way. A lot of hard coding present.
 
 ## [ptpg](/ptpg/)
-PyTorchPlayGround $\to$ basically just a folder of testing material. Format is mostly `.ipynb` for testing and visualisation. No longer in use. 
+PyTorchPlayGround $\to$ basically just a folder of testing material. Format is mostly `.ipynb` for testing and visualisation. No longer in use. Some dummy datasets and small *gevolution* datasets are also located here. Will perhaps be cleaned at some point.  
 
 ## Something
 
