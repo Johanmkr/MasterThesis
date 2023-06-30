@@ -1,15 +1,27 @@
 # Summer-Sandbox23
 > Exploration of the N-body simulations made by *gevolution* and how to best treat the data in order to feed it into a convolutional neural network binary classifier in order to distinguish relativistic and newtonian simulations.
 
-## Content
+# Content
 
-### Log
-This [folder](/log) contains the log of the work, among other relevant `.md` files.
+## [log](/log/)
+This [folder](/log) contains the log of the work, among other relevant `.md` files. 
+* [dbd.md](/log/dbd.md) contains short descriptions of the day-by-day work. 
+* [questions.md](/log/questions.md), self-explanatory.
+* [todo.md](/log/todo.md), self-explanatory.
 
-### ML
-This [folder](/ML) contains the Machine Learning part of project and is the main folder. For its subdivision see below. The idea is place the script used for execution in the [scripts](/ML/scripts/) folder and all the source code in the [src](/ML/src) folder. This directory also contains a [todo](/ML/todos.md) of the *###TODO*s found in the source codes. 
-#### [src/data](/ML/src/data/)
-The data files itself (output from *gevolution*) is (or will be for large simulations) stored at UiO and need to be accessed. The 
+## [ML](/ML/)
+This folder contains the Machine Learning part of project and is the main folder. For its subdivision see below. The idea is place the script used for execution in the [scripts](/ML/scripts/) folder and all the source code in the [src](/ML/src) folder. This directory also contains a [todo](/ML/todos.md) of the *###TODO*s found in the source codes. The requirements are found in [requirements.txt](/ML/requirements.txt).
+
+### [scripts](/ML/scripts/)
+Scripts able to perform the major executions of the project (not ready for a while, need to sort out data treatment first)
+### [src/data](/ML/src/data/)
+The data files itself (output from *gevolution*) is (or will be for large simulations) stored at UiO and need to be accessed. This file contains the data processing pipeline from the `.h5`-files provided by *gevolution* to a fully functioning dataset. More info [here](/ML/src/data/README.md).
+
+### [src/network](/ML/src/network/)
+Contains the source code the neural network and other machine learning software. Not yet optimised nor generalised in any way. A lot of hard coding present.
+
+## [ptpg](/ptpg/)
+PyTorchPlayGround $\to$ basically just a folder of testing material. Format is mostly `.ipynb` for testing and visualisation. No longer in use. 
 
 ## Something
 
