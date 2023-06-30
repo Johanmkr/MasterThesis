@@ -42,6 +42,7 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 ## Friday 30.06.23
 * Brushed up the main `README.md` file so that the repository is better documented. Still need to be refined and cleaned in a lot of places, but works well for now. 
 * Focusing on streamlining the data treatment process. Needs to be generalised for a folder with arbitrary many snapshots. The only requirements must be that gr and newtonian snapshots are kept in two separate folders. Should be able to handle snapshots taken at different redshifts and distinguish between snapshots when several redshifts are provided. 
+* Next: Update cube handler object to handle several h5 cubes. 
 
 
 
