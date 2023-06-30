@@ -1,8 +1,15 @@
-# Summer-Sanbox23
+# Summer-Sandbox23
 > Exploration of the N-body simulations made by *gevolution* and how to best treat the data in order to feed it into a convolutional neural network binary classifier in order to distinguish relativistic and newtonian simulations.
 
 ## Content
-sometext testing s
+
+### Log
+This [folder](/log) contains the log of the work, among other relevant `.md` files.
+
+### ML
+This [folder](/ML) contains the Machine Learning part of project and is the main folder. For its subdivision see below. The idea is place the script used for execution in the [scripts](/ML/scripts/) folder and all the source code in the [src](/ML/src) folder. This directory also contains a [todo](/ML/todos.md) of the *###TODO*s found in the source codes. 
+#### [src/data](/ML/src/data/)
+The data files itself (output from *gevolution*) is (or will be for large simulations) stored at UiO and need to be accessed. The 
 
 ## Something
 
