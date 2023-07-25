@@ -6,12 +6,14 @@ import h5py
 from IPython import embed
 
 class Cube:
-    def __init__(self, cubePath:str, redshift:str or int=None) -> None:
-        self.cubePath = cubePath
+    def __init__(self, cube_path:str, redshift:str or int=None, gr:bool=None) -> None:
+        self.cubePath = cube_path
         self.redshift = redshift if redshift is not None else "N/A"
-        self._readCube()
+        self.gr = gr if gr is not None else "gr" in self.cubePath
+
+        self._read_cube()
     
-    def _readCube(self) -> None:
+    def _read_cube(self) -> None:
         h5File = h5py.File(self.cubePath, "r")
         self.h5Data = h5File["data"]
         self.data = self.h5Data[()]
@@ -28,6 +30,7 @@ class Cube:
         RT += f"Path: {'/'.join(self.cubePath.split('/')[-4:])}\n"
         RT += f"Shape: {self.data.shape}\n"
         RT += f"Redshift: {self.redshift}\n"
+        RT += f"Gravity: {'gr' if self.gr else 'newton'}\n"
         RT += "----------------------------\n"
         return RT
     
