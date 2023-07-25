@@ -45,4 +45,7 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 * Next: Update cube handler object to handle several h5 cubes.
 
 
-
+## Tuesday 25.07.23
+* Wrote and brushed up the main cube, collection and dataset files, based on the tentative data pipeline.
+* Missing: Still some optimalisation to make it work with arbitrary number of cubes etc.
+* Missing indexing in the dataloader. Need a way to convert from single-dim-index to various multi-dim-indices. 
