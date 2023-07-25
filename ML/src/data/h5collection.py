@@ -41,10 +41,11 @@ class Collection:
             return self.cubes[idx[0]][idx[1:]]
         
     def __str__(self) -> str:
-        RT = "\n Collection information\n----------------------------\n"
+        RT = "\n----------------------------\nCollection configuration\n\n"
         for key, value in self.configDict.items():
             RT += f"{key}: {value}\n"
-        RT += "----------------------------\n"
+        RT += "\n\nCollection information\n\n"
+        RT += f"Path: {'/'.join(self.cubePath.split('/')[-3:])}\n"
         RT += f"Nr. of cubes: {self.nrRedshifts}\n"
         RT += "----------------------------\n"
         return RT
@@ -52,8 +53,8 @@ class Collection:
 if __name__=="__main__":
     output_path = os.path.abspath("").replace("Summer-Sandbox23/ML/src/data", "NbodySimulation/gevolution-1.2/output")
     run_type = "/intermediate"
-    gravity = "/gr/"
-    path = output_path + run_type + gravity
+    gravity = "/gr"
+    path = output_path + run_type + gravity + "/"
     obj = Collection(path)
     embed()
     
