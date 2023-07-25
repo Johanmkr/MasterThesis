@@ -2,7 +2,7 @@ import numpy as np
 import configparser
 import os
 
-class Handler:
+class CubeHandler:
     def __init__(self, h5Path:str) -> None:
         """Constructor
 
