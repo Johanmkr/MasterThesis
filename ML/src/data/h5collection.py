@@ -41,11 +41,12 @@ class Collection:
             return self.cubes[idx[0]][idx[1:]]
         
     def __str__(self) -> str:
-        RT = "\n----------------------------\nCollection configuration\n\n"
+        RT = "\nCollection configuration\n----------------------------\n"
         for key, value in self.configDict.items():
             RT += f"{key}: {value}\n"
-        RT += "\n\nCollection information\n\n"
-        RT += f"Path: {'/'.join(self.cubePath.split('/')[-3:])}\n"
+        RT += "----------------------------\n"
+        RT += "\n\nCollection information\n----------------------------\n"
+        RT += f"Path: {'/'.join(self.dirPath.split('/')[-4:])}\n"
         RT += f"Nr. of cubes: {self.nrRedshifts}\n"
         RT += "----------------------------\n"
         return RT
