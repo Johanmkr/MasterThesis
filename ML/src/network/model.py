@@ -1,8 +1,11 @@
-from src.MLutils import *
-from src.COW import COW
-from src.DataHandler import TestCubes
-from src.h5pySTUFF import h5Handler
+import numpy as np
+import torch
+from torch import nn
+from torch.utils.data import Dataset, DataLoader, random_split
+from data import h5dataset
+from network.COW import COW
 
+generator1 = torch.Generator().manual_seed(42)
 
 class Model:
     def __init__(self, Net, DataPath:str):
@@ -14,13 +17,7 @@ class Model:
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.001)
 
     def loadData(self):
-        ###TODO Extend to more cubes per subdir
-        h5newton = h5Handler(self.DataPath+"newton/")
-        h5gr = h5Handler(self.DataPath+"gr/")
-        self.newtonCube = h5newton()[0]
-        self.grCube = h5gr()[0]
-        ###TODO Fix the hard coding below
-        self.data = TestCubes(self.newtonCube, self.grCube, transform=False, additionalInfo=True)
+        self.data = h5dataset.DatasetOfCubes(self.DataPath, stride=2)
         [train, val, test] = random_split(self.data, [0.6, 0.25, 0.15], generator=generator1)
         batch_size = 32
         self.trainLoader = DataLoader(train, batch_size=batch_size)
@@ -32,7 +29,7 @@ class Model:
         nrEpochs = 5
         for epoch in range(nrEpochs):
             for dataObject in self.trainLoader:
-                inputs = dataObject["image"]
+                inputs = dataObject["slice"]
                 labels = dataObject["label"]
                 yPred = self.model(inputs)
                 loss = self.lossFn(yPred, labels)
@@ -43,7 +40,7 @@ class Model:
             count = 0
             tol = 1e-7
             for dataObject in self.valLoader:
-                inputs = dataObject["image"]
+                inputs = dataObject["slice"]
                 labels = dataObject["label"]
                 yPred = self.model(inputs)
                 correct += (torch.abs(torch.round(yPred)-labels)<tol).float().sum()
@@ -56,7 +53,7 @@ class Model:
         count = 0
         tol = 1e-7
         for dataObject in self.testLoader:
-            inputs = dataObject["image"]
+            inputs = dataObject["slice"]
             labels = dataObject["label"]
             yPred = self.model(inputs)
             correct += (torch.abs(torch.round(yPred) - labels)<tol).float().sum()
@@ -67,3 +64,4 @@ class Model:
 
 if __name__=="__main__":
     print("Model class only")
+

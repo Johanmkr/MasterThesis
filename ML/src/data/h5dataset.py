@@ -120,7 +120,7 @@ class DatasetOfCubes(Dataset):
     def _slice_cube_along_axis(self, cube:h5cube.Cube, axis:int, slice_idx:int) -> np.ndarray:
         local_slices = [slice(None)] * self.nrDims 
         local_slices[axis] = self.slices[slice_idx]
-        return cube[tuple(local_slices)].reshape(self.Ngrid,self.Ngrid,self.stride)
+        return cube[tuple(local_slices)].reshape(self.stride, self.Ngrid,self.Ngrid)
     
     def _normalise_array(self, arr:np.ndarray) -> np.ndarray:
         return (arr-arr.mean())/arr.std()
