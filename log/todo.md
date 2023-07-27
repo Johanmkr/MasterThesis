@@ -1,18 +1,25 @@
 # Things to do
 
 ## Project in general
-* [  ] 
+* [] 
+
+## Simulations
+All of the below have box size 5210 Mpc
+* [] Run and time simulation with resolution: 128
+* [] Run and time simulation with resolution: 256
+* [] Run and time simulation with resolution: 512
+
+## Summary statistics
+* [] Calculate bi-spectrum from one  of the simulations using Pylians. Information in documentation. What is the duration of sampling here. 
 
 ## Data preperation
-* [  ]  
-* [  ] How would relativistic effects be manifest?
-* [  ] Write function to convert from .h5 $\to$ PyTorch Dataset object, and concatenate files into an iterable Dataloader object. 
+* [] Fix normalisation. 
 
 ## ML pipeline
-* [  ] Skeleton code of some network model in order to start testing. 
-    * Normalise data, feed through skeleton pipeline. 
+* [x] Skeleton code of some network model in order to start testing. 
+ 
 
 ## Misc
-* [  ] Write script to find all ###TODS in python scripts and list them
-* [  ] Write parser to initialise pytorch network and model object from .ini file. 
+* [] Write script to find all ###TODS in python scripts and list them
+* [] Write parser to initialise pytorch network and model object from .ini file. 
 
