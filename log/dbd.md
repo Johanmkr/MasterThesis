@@ -48,4 +48,13 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 ## Tuesday 25.07.23
 * Wrote and brushed up the main cube, collection and dataset files, based on the tentative data pipeline.
 * Missing: Still some optimalisation to make it work with arbitrary number of cubes etc.
-* Missing indexing in the dataloader. Need a way to convert from single-dim-index to various multi-dim-indices. 
+* Missing indexing in the dataloader. Need a way to convert from single-dim-index to various multi-dim-indices.
+
+## Wednesday 26.07.23
+* Finished the tentative data pipeline. Things seems to work, neeed to write some documentation and tests.
+* Started looking at the networks, and how to best implement them for later use, i.e. when the shape of the test simulation cubes are changing. 
+* Architecture of network?
+
+## Thursday 27.07.23
+* Get network to work with new data pipeline.
+* Returning question of architecture, should read more perhaps?
