@@ -2,8 +2,9 @@ import numpy as np
 import torch
 from torch import nn
 from torch.utils.data import Dataset, DataLoader, random_split
-from data import h5dataset
-from network.COW import COW
+
+from data.h5dataset import DatasetOfCubes
+from .COW import COW
 
 generator1 = torch.Generator().manual_seed(42)
 
@@ -16,9 +17,9 @@ class Model:
         self.lossFn = nn.BCELoss()
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=0.001)
 
-    def loadData(self):
-        self.data = h5dataset.DatasetOfCubes(self.DataPath, stride=2)
-        [train, val, test] = random_split(self.data, [0.6, 0.25, 0.15], generator=generator1)
+    def loadData(self, stride=2):
+        self.data = DatasetOfCubes(self.DataPath, stride)
+        [train, val, test] = random_split(self.data, [0.50, 0.25, 0.25], generator=generator1)
         batch_size = 32
         self.trainLoader = DataLoader(train, batch_size=batch_size)
         self.valLoader = DataLoader(val, batch_size=batch_size)
@@ -28,6 +29,7 @@ class Model:
         ###TODO Fix the hard coding below
         nrEpochs = 5
         for epoch in range(nrEpochs):
+            print(f"Training epoch [{epoch+1}/{nrEpochs}] ...")
             for dataObject in self.trainLoader:
                 inputs = dataObject["slice"]
                 labels = dataObject["label"]

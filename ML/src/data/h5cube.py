@@ -3,7 +3,7 @@ import os
 import h5py
 
 # Used for testing only
-from IPython import embed
+# from IPython import embed
 
 class Cube:
     def __init__(self, cube_path:str, redshift:str or int=None, gr:bool=None) -> None:

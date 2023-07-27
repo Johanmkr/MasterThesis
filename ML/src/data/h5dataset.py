@@ -2,11 +2,11 @@ import numpy as np
 import os
 import torch
 from torch.utils.data import Dataset, DataLoader
-import h5cube 
-import h5collection
+from .h5cube import Cube
+from .h5collection import Collection
 
 # Used for testing only
-from IPython import embed
+# from IPython import embed
 
 class DatasetOfCubes(Dataset):
     def __init__(
@@ -41,8 +41,8 @@ class DatasetOfCubes(Dataset):
         for directory in self.directories:
             newton_path = directory + "/newton/"
             gr_path = directory + "/gr/"
-            self.collections.append(h5collection.Collection(newton_path))
-            self.collections.append(h5collection.Collection(gr_path))
+            self.collections.append(Collection(newton_path))
+            self.collections.append(Collection(gr_path))
 
             if self.verbose:
                 print(f"Initialised     {directory}")
@@ -105,6 +105,10 @@ class DatasetOfCubes(Dataset):
         else:
             datapoint["slice"] = torch.tensor(self._slice_cube_along_axis(cube, axis, slice_idx), dtype=torch.float32)
         datapoint["label"] = torch.tensor([cube.gr], dtype=torch.float32)
+
+        # To test network
+        # if cube.gr:
+        #     datapoint["slice"] = datapoint["slice"] * 5
         return datapoint
 
 
@@ -117,7 +121,7 @@ class DatasetOfCubes(Dataset):
         else:
             self.directories = directory_entries.sort()
 
-    def _slice_cube_along_axis(self, cube:h5cube.Cube, axis:int, slice_idx:int) -> np.ndarray:
+    def _slice_cube_along_axis(self, cube:Cube, axis:int, slice_idx:int) -> np.ndarray:
         local_slices = [slice(None)] * self.nrDims 
         local_slices[axis] = self.slices[slice_idx]
         return cube[tuple(local_slices)].reshape(self.stride, self.Ngrid,self.Ngrid)

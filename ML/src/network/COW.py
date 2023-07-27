@@ -2,12 +2,15 @@ import numpy as np
 import torch
 from torch import nn
 from torchsummary import summary
-from network import Network
+# from .network import Network
 
-class COW(Network):
+class COW(nn.Module):
     def __init__(self, inputSize:tuple=(2,128,128)):
-        super(COW, self).__init__(inputSize)
-        # self.inputSize = inputSize
+        super(COW, self).__init__()
+        self.inputSize = inputSize
+        self.depth = inputSize[0]
+        self.width = inputSize[1]
+        self.height = inputSize[2]
 
         ### LAYER 1 (Convolutional) ### (1, 64, 64) -> (64, 64, 64)
         self.layer1 = nn.Sequential(

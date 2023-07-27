@@ -1,7 +1,7 @@
 import numpy as np
 import os
 import h5py
-import h5cube
+from .h5cube import Cube
 
 # Used for testing only
 from IPython import embed
@@ -32,9 +32,9 @@ class Collection:
         self.h5Files.sort()
 
         for i in range(self.nrRedshifts):
-            self.cubes.append(h5cube.Cube(self.h5Files[i], redshift=int(self.redshifts[i]), gr=self.configDict["gravity theory"]=="GR"))
+            self.cubes.append(Cube(self.h5Files[i], redshift=int(self.redshifts[i]), gr=self.configDict["gravity theory"]=="GR"))
     
-    def __getitem__(self, idx:int or tuple/list) -> np.ndarray or h5cube.Cube:
+    def __getitem__(self, idx:int or tuple/list) -> np.ndarray or Cube:
         if isinstance(idx, int):
             return self.cubes[idx]
         else:
