@@ -30,6 +30,7 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
     ├── log
     │   ├── dbd.md
     │   ├── HowToMarkdown.md
+    │   ├── ideas.md
     │   ├── important.md
     │   ├── mlstuff.md
     │   ├── questions.md
@@ -40,23 +41,31 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
     │   ├── scripts
     │   │   └── mainTest.py
     │   ├── src
-    │   │   ├── COW.py
     │   │   ├── data
+    │   │   │   ├── cubehandler.py
     │   │   │   ├── DataHandler.py
-    │   │   │   ├── h5pySTUFF.py
+    │   │   │   ├── h5collection.py
+    │   │   │   ├── h5cube.py
+    │   │   │   ├── h5dataset.py
     │   │   │   ├── __init__.py
+    │   │   │   ├── __pycache__
+    │   │   │   │   ├── h5collection.cpython-38.pyc
+    │   │   │   │   └── h5cube.cpython-38.pyc
     │   │   │   └── README.md
-    │   │   ├── MLutils.py
-    │   │   ├── model.py
+    │   │   ├── __init__.py
     │   │   ├── network
-    │   │   ├── network.py
+    │   │   │   ├── COW.py
+    │   │   │   ├── __init__.py
+    │   │   │   ├── model.py
+    │   │   │   └── network.py
     │   │   └── __pycache__
-    │   │       ├── COW.cpython-310.pyc
-    │   │       ├── DataHandler.cpython-310.pyc
-    │   │       ├── h5pySTUFF.cpython-310.pyc
-    │   │       ├── MLutils.cpython-310.pyc
-    │   │       ├── model.cpython-310.pyc
-    │   │       └── network.cpython-310.pyc
+    │   │       ├── COW.cpython-38.pyc
+    │   │       ├── DataHandler.cpython-38.pyc
+    │   │       ├── h5pySTUFF.cpython-38.pyc
+    │   │       ├── MLutils.cpython-36.pyc
+    │   │       ├── MLutils.cpython-38.pyc
+    │   │       ├── model.cpython-38.pyc
+    │   │       └── network.cpython-38.pyc
     │   └── todos.md
     ├── ptpg
     │   ├── cnn.ipynb
@@ -86,8 +95,8 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
     ├── README.md
     └── readmeupdate.sh
     
-    11 directories, 47 files
-Updated on 2023-06-30
+    12 directories, 55 files
+Updated on 2023-07-27
 ## Subheading about something
 sometext testing
 
