@@ -32,7 +32,7 @@ class COW(nn.Module):
             nn.Linear(int(32*16*16), 256),                                  # (8192) -> (256)
             nn.ReLU(),                                                      # -
             nn.Dropout(0.25),                                               # -
-        ) 
+        )
 
         ### LAYER 4 (Fully connected) ###
         self.layer4 = nn.Sequential(
