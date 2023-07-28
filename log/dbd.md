@@ -58,3 +58,6 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 ## Thursday 27.07.23
 * Get network to work with new data pipeline.
 * Returning question of architecture, should read more perhaps?
+
+## Friday 28.07.23
+
