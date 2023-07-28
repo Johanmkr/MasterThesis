@@ -60,4 +60,6 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 * Returning question of architecture, should read more perhaps?
 
 ## Friday 28.07.23
+* Fixed issue with main ssh connection from personal computer to uio server. 
+* Set up and ran new simulations. Gevolution with Ngrid=(128, 256, 512) with boxsize = 5120 Mpc and tiling factor = Ngrid/4
 
