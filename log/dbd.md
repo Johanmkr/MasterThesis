@@ -63,3 +63,8 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 * Fixed issue with main ssh connection from personal computer to uio server. 
 * Set up and ran new simulations. Gevolution with Ngrid=(128, 256, 512) with boxsize = 5120 Mpc and tiling factor = Ngrid/4
 
+## Saturday 29.07.23cd
+* Working on an automated way of generating the data sets:
+    * Create .ini files with correct parameters, but varying seeds (both for gr and newton)
+    * Execute the simulations in correct order, making sure the output is put in the right directory. 
+

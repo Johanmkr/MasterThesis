@@ -1,16 +1,16 @@
 # Things to do
 
 ## Project in general
-* [] 
+* [] Move gevolution init files to the github repo, and save the outputs somewhere else. 
 
 ## Simulations
 All of the below have box size 5210 Mpc
-* [] Run and time simulation with resolution: 128
-* [] Run and time simulation with resolution: 256
-* [] Run and time simulation with resolution: 512
+* [x] Run and time simulation with resolution: 128
+* [x] Run and time simulation with resolution: 256
+* [x] Run and time simulation with resolution: 512
 
 ## Summary statistics
-* [] Calculate bi-spectrum from one  of the simulations using Pylians. Information in documentation. What is the duration of sampling here. 
+* [] Calculate bi-spectrum from one of the simulations using Pylians. Information in documentation. What is the duration of sampling here. 
 
 ## Data preperation
 * [] Fix normalisation. 
