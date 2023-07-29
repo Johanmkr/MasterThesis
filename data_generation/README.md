@@ -18,3 +18,9 @@ The data itself will be stored here: `/mn/stornext/d10/data/johanmkr/simulations
     * Function that takes a file (of seeds) and a seed as input and return 0 if seed is found in the file. 
 * [] Script that generates new seed, check if it already exists (new seed if yes), creates the folder for data storage and the folder for initialisation and then creates the two initiations scripts. 
 * Execution file. Should execute one simulation given a seed, or all simulations not yet executed. 
+
+
+## Simulations run
+
+| Seed | Date |
+|------|------|

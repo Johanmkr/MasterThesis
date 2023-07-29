@@ -42,9 +42,60 @@ generate_initialisation(){
     local grpath="$DataSTORAGEdir/seed${seed}/gr/"
     sed -i "s|^\(output path\s*=\s*\).*|\1$newtonpath|" seed${seed}newton.ini
     sed -i "s|^\(output path\s*=\s*\).*|\1$grpath|" seed${seed}gr.ini
-    
+
+    echo "$seed" >> ../log_ini.txt
     cd "$DataGENERATIONdir"
 }
 
+# Executes the simulation for a given seed
+# Args:
+#   seed:int
+execute_simulation(){
+    local seed="$1"
+    
+    # Check if simulation is already run
+    if grep -q "\<$seed\>" "$DataGENERATIONdir/simulations_run.txt"; then
+        echo "Simulation with seed: $seed is already run"
+        echo ""
+    else
+        # Check if initialised 
+        if ! grep -q "\<$seed\>" "$DataGENERATIONdir/initialisations/log_ini.txt"; then
+            echo "Seed ($seed) not yet initialised, initialising now..."
+            generate_initialisation "$seed"
+        fi 
 
-generate_initialisation 3
+        # Check if output directories exists
+        if [ ! -d "$DataSTORAGEdir/seed${seed}" ]; then
+            echo "Seed ($seed): Output directores do not exist. Creating them now..."
+            generate_storage_directories "$seed"
+        fi
+
+        cd "$SIMULATIONdir"
+
+        # Check if executable
+        if [ ! -x "gevolution" ]; then
+            make
+        fi 
+
+        local newton_ini="$DataGENERATIONdir/initialisations/seed${seed}/newton.ini"
+        local gr_ini="$DataGENERATIONdir/initialisations/seed${seed}/gr.ini"
+
+        # Testing
+        #echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+        #echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+
+        # Execution
+        mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini
+        mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini
+
+        cd "$DataSTORAGEdir"
+        echo "Successfully ran seed${seed} on $(date)" >> log.txt
+
+        cd "$DataGENERATIONdir"
+        formatted_date=$(date +"%d-%m-%Y")
+        echo "|$seed|$formatted_date|" >> README.md
+        echo "$seed" >> simulations_run.txt
+        echo ""
+    fi
+}
+
