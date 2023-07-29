@@ -27,6 +27,17 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
 
 ## Tree
     .
+    ├── data_generation
+    │   ├── func_lib.sh
+    │   ├── generate_seeds.sh
+    │   ├── initialisations
+    │   │   ├── log_ini.txt
+    │   │   └── tmp.ini
+    │   ├── README.md
+    │   ├── seeds.txt
+    │   ├── simulate.sh
+    │   ├── simulations_run.txt
+    │   └── test_seeds.txt
     ├── log
     │   ├── dbd.md
     │   ├── HowToMarkdown.md
@@ -38,8 +49,6 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
     ├── ML
     │   ├── findTODOS.sh
     │   ├── requirements.txt
-    │   ├── scripts
-    │   │   └── mainTest.py
     │   ├── src
     │   │   ├── data
     │   │   │   ├── cubehandler.py
@@ -50,14 +59,23 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
     │   │   │   ├── __init__.py
     │   │   │   ├── __pycache__
     │   │   │   │   ├── h5collection.cpython-38.pyc
-    │   │   │   │   └── h5cube.cpython-38.pyc
+    │   │   │   │   ├── h5cube.cpython-38.pyc
+    │   │   │   │   ├── h5dataset.cpython-38.pyc
+    │   │   │   │   └── __init__.cpython-38.pyc
     │   │   │   └── README.md
     │   │   ├── __init__.py
+    │   │   ├── mainTest.py
     │   │   ├── network
     │   │   │   ├── COW.py
     │   │   │   ├── __init__.py
     │   │   │   ├── model.py
-    │   │   │   └── network.py
+    │   │   │   ├── network.py
+    │   │   │   └── __pycache__
+    │   │   │       ├── COW.cpython-38.pyc
+    │   │   │       ├── __init__.cpython-38.pyc
+    │   │   │       ├── model.cpython-38.pyc
+    │   │   │       └── network.cpython-38.pyc
+    │   │   ├── powerspectra.py
     │   │   └── __pycache__
     │   │       ├── COW.cpython-38.pyc
     │   │       ├── DataHandler.cpython-38.pyc
@@ -95,8 +113,8 @@ PyTorchPlayGround $\to$ basically just a folder of testing material. Format is m
     ├── README.md
     └── readmeupdate.sh
     
-    12 directories, 55 files
-Updated on 2023-07-27
+    14 directories, 71 files
+Updated on 2023-07-29
 ## Subheading about something
 sometext testing
 
