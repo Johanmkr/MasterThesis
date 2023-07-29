@@ -77,23 +77,26 @@ execute_simulation(){
             make
         fi 
 
-        local newton_ini="$DataGENERATIONdir/initialisations/seed${seed}/newton.ini"
-        local gr_ini="$DataGENERATIONdir/initialisations/seed${seed}/gr.ini"
+        local newton_ini="$DataGENERATIONdir/initialisations/seed${seed}/seed${seed}newton.ini"
+        local gr_ini="$DataGENERATIONdir/initialisations/seed${seed}/seed${seed}gr.ini"
 
+        start_time=$(date +%s)
         # Testing
-        #echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
-        #echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
 
         # Execution
         mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini
         mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini
+        end_time=$(date +%s)
+        elapsed_time=$(echo "$end_time - $start_time" | bc)
 
         cd "$DataSTORAGEdir"
         echo "Successfully ran seed${seed} on $(date)" >> log.txt
 
         cd "$DataGENERATIONdir"
-        formatted_date=$(date +"%d-%m-%Y")
-        echo "|$seed|$formatted_date|" >> README.md
+        formatted_date=$(date +"%d-%m-%Y at %H:%M")
+        echo "|$seed|$formatted_date|$elapsed_time|" >> README.md
         echo "$seed" >> simulations_run.txt
         echo ""
     fi

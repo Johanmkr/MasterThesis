@@ -22,5 +22,5 @@ The data itself will be stored here: `/mn/stornext/d10/data/johanmkr/simulations
 
 ## Simulations run
 
-| Seed | Date |
-|------|------|
+| Seed | Date | Duration |
+|------|------|----------|
