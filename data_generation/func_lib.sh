@@ -102,6 +102,9 @@ execute_simulation(){
     fi
 }
 
+# Removes all data related to a given seed
+# Args:
+#   seed:int
 clean_up_from_seed(){
 	local seed="$1"
 	
