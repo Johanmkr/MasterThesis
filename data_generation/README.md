@@ -56,12 +56,19 @@ The file `func_lib.sh` contain som functions to ease the running of simulations,
     * `seedXXXXgr.ini`
 
     where both files are updated with the correct seed, gravity theory and the output path created for the specific seed by the above function. This function also fill in the current seed to the file `log_ini.txt` to keep track of the initialised seeds.
-* `execute_simulation` $\to$ checks if the simulation is already run by comparing the seed to the `simulations_run.txt` file. If not, check if initialised, if not initialises. Same for the storage directories. It then executes the simulation by performing the following commands
+* `execute_simulation` $\to$ checks if the simulation is already run by comparing the seed to the `simulations_run.txt` file. If not, check if initialised, if not initialises. Same for the storage directories. It then executes the simulation by performing the following commands (the executabel is automatically created):
 
         mpirun -np 16 ./gevolution -n 4 -m 4 -s NEWTON.ini
         mpirun -np 16 ./gevolution -n 4 -m 4 -s GR.ini
 
-    where `NEWTON.ini` and `GR.ini` are seed-specific initiation files. 
+    where `NEWTON.ini` and `GR.ini` are seed-specific initiation files. In addition it writes a log to the `log.txt` in the data storage directory and also place the seed used in the `simulations_run.txt` and updates the `README.md` file the seed used, date and time of simulation and its duration in seconds. 
+
+* `clean_up_from_seed` $\to$ deletes any trace of simulations run for a specific seed. It does the following for a given seed:
+    * Deletes the initialisation folder and its contents.
+    * Deletes the output folder and its contents.
+    * Remove information from `log.txt` in storage folder.
+    * Remove information from `README.md` file.
+    * Remove seed from `simulations_run.txt`
 
 ### Seeds
 There are files with seeds in them (4 digit numbers starting from 0001 and ascends). A seedfile can be generated with the bash script `generate_seeds.sh` in a following way:
@@ -75,9 +82,22 @@ Simulations are most easily run with a seed file in the following way:
 
     ./simulate.sh somefile.txt
 
-where `somefile.txt` contain seeds. The file 
+where `somefile.txt` contain seeds. Simulations are then performed for each seed in order. Simulation of a single seed can also be done directly with:
 
-### Cleaning up
+    execute_simulation X
+
+where `X` is the seed number. The functions must then be made available in the terminal by `source func_lib.sh`. 
+
+### Cleaning up 
+If a seed is simulated by accident or just testing, all information about a seed can be removed, both directories and log information. This can be done for a seed-file by:
+
+    ./clean_simulations.sh seedfile.txt
+
+or manually:
+
+    clean_up_from_seed X
+
+after sourcing the library. **NBNBNB** this also deletes the output data from a given simulation. 
 
 
 ## Simulations run
@@ -100,3 +120,4 @@ where `somefile.txt` contain seeds. The file
 |0014|30-07-2023 at 14:24|788|
 |0015|30-07-2023 at 14:37|793|
 |0016|30-07-2023 at 14:51|791|
+|0017|30-07-2023 at 15:04|798|
