@@ -68,3 +68,10 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
     * Create .ini files with correct parameters, but varying seeds (both for gr and newton)
     * Execute the simulations in correct order, making sure the output is put in the right directory. 
 * Managed to create some data generation pipeline. Testing this for seeds 1,2,3 in order. If successfull we need to check the initiation files and be sure they are correct, then run 1000 simulations. 
+
+
+## Sunday 30.07.23
+* Fixed an issue with the simulations stopping after one run, the loop exited. Wrote new loop and things seem to work. 
+* Added functionality to delete seed information from the data_generation folder.
+* Started a run of 200 simulations.
+* Fixed the automatic pushing to github, setting it to every 15 minutes. Can be changed manually. 
