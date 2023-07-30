@@ -82,12 +82,12 @@ execute_simulation(){
 
         start_time=$(date +%s)
         # Testing
-        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
-        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+        echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+        echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
 
         # Execution
-        mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini
-        mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini
+        #mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini
+        #mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini
         end_time=$(date +%s)
         elapsed_time=$(echo "$end_time - $start_time" | bc)
 
@@ -96,9 +96,37 @@ execute_simulation(){
 
         cd "$DataGENERATIONdir"
         formatted_date=$(date +"%d-%m-%Y at %H:%M")
-        echo "|$seed|$formatted_date|$elapsed_time|" >> README.md
-        echo "$seed" >> simulations_run.txt
+       	echo "|$seed|$formatted_date|$elapsed_time|" >> README.md
+       	echo "$seed" >> simulations_run.txt
         echo ""
     fi
 }
 
+clean_up_from_seed(){
+	local seed="$1"
+	
+	# Delete initialisation folders
+	cd "$DataGENERATIONdir/initialisations"
+	rm -r seed${seed}
+	grep -vi "$seed" "log_ini.txt" >> tmp.txt
+	mv tmp.txt log_ini.txt
+	
+	# Delete output folder
+	cd "$DataSTORAGEdir"
+	rm -r seed${seed}
+
+	# Remove from log.txt in data storage dir
+	grep -vi "seed${seed}" "log.txt" >> tmp.txt
+	mv tmp.txt log.txt
+
+	# Remove from readme file if present
+	cd "$DataGENERATIONdir"	
+	grep -vi "|$seed|" "README.md" >> tmp.md
+	mv tmp.md README.md
+	
+	# Remove from simulations_run.txt
+	grep -vi "$seed" "simulations_run.txt" >> tmp.txt
+	mv tmp.txt simulations_run.txt
+	
+	echo "Removed directories and information related to seed ($seed)"
+}

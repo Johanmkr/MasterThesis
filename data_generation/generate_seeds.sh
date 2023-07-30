@@ -2,6 +2,6 @@
 
 > seeds.txt
 
-for ((seed=1; seed<=1000; seed++)) do
+for ((seed=1; seed<=200; seed++)) do
 	echo "$seed" >> seeds.txt
 done

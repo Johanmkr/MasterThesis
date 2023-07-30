@@ -7,12 +7,6 @@ seeds="$1"
 source func_lib.sh
 
 while IFS= read -r seed; do 
-    execute_simulation $seed
-
-    # To be able to track progress from afar
-    git add README.md
-    git commit -m"Simulated seed $seed"
-    git pull
-    git push
+   execute_simulation $seed
 done < "$seeds"
     
