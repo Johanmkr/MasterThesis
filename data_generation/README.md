@@ -46,8 +46,38 @@ The data itself will be stored here: `/mn/stornext/d10/data/johanmkr/simulations
 
 ## Generate the data
 
+### Library of functions:
 
-## Cleaning up
+The file `func_lib.sh` contain som functions to ease the running of simulations, all of which must be provided with a seed as argument when executed:
+
+* `generate_storage_directories` $\to$ generates the directory structure where the data is to be stored. 
+* `generate_initialisation` $\to$ generates a subfolder `initialisations/seedXXXX`. Copies `tmp.ini` and creates two new files: 
+    * `seedXXXXnewton.ini`
+    * `seedXXXXgr.ini`
+
+    where both files are updated with the correct seed, gravity theory and the output path created for the specific seed by the above function. This function also fill in the current seed to the file `log_ini.txt` to keep track of the initialised seeds.
+* `execute_simulation` $\to$ checks if the simulation is already run by comparing the seed to the `simulations_run.txt` file. If not, check if initialised, if not initialises. Same for the storage directories. It then executes the simulation by performing the following commands
+
+        mpirun -np 16 ./gevolution -n 4 -m 4 -s NEWTON.ini
+        mpirun -np 16 ./gevolution -n 4 -m 4 -s GR.ini
+
+    where `NEWTON.ini` and `GR.ini` are seed-specific initiation files. 
+
+### Seeds
+There are files with seeds in them (4 digit numbers starting from 0001 and ascends). A seedfile can be generated with the bash script `generate_seeds.sh` in a following way:
+
+    ./generate_seeds.sh FROM TO filename.txt
+
+where `FROM` and `TO` are integers on the interval [1, 9999]. The outputfile are one seed per line in ascending order of increments 1 from `FROM` to `TO`. 
+
+### Running simulations
+Simulations are most easily run with a seed file in the following way:
+
+    ./simulate.sh somefile.txt
+
+where `somefile.txt` contain seeds. The file 
+
+### Cleaning up
 
 
 ## Simulations run
@@ -69,3 +99,4 @@ The data itself will be stored here: `/mn/stornext/d10/data/johanmkr/simulations
 |0013|30-07-2023 at 14:11|791|
 |0014|30-07-2023 at 14:24|788|
 |0015|30-07-2023 at 14:37|793|
+|0016|30-07-2023 at 14:51|791|
