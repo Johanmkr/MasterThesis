@@ -99,6 +99,13 @@ or manually:
 
 after sourcing the library. **NBNBNB** this also deletes the output data from a given simulation. 
 
+### Keeping track
+Simulations left for a long time updates the `README.md` after each individual simulation. Running the script:
+
+    ./git_upload X
+
+will add the `README.md` file and push it to git every 15 minutes for `X` hours. In this way, the progress of the simulations can be tracked online on github. 
+
 
 ## Simulations run
 
@@ -121,3 +128,4 @@ after sourcing the library. **NBNBNB** this also deletes the output data from a 
 |0015|30-07-2023 at 14:37|793|
 |0016|30-07-2023 at 14:51|791|
 |0017|30-07-2023 at 15:04|798|
+|0018|30-07-2023 at 15:17|786|
