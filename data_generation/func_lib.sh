@@ -37,6 +37,15 @@ generate_initialisation(){
     sed -i "s/^\(gravity theory\s*=\s*\).*/\1Newton/" seed${seed}newton.ini
     sed -i "s/^\(gravity theory\s*=\s*\).*/\1GR/" seed${seed}gr.ini
 
+    # Change file bases
+    sed -i "s/^\(generic file base\s*=\s*\).*/\1newton/" seed${seed}newton.ini
+    sed -i "s/^\(generic file base\s*=\s*\).*/\1gr/" seed${seed}gr.ini
+    sed -i "s/^\(snapshot file base\s*=\s*\).*/\1newton_snap/" seed${seed}newton.ini
+    sed -i "s/^\(snapshot file base\s*=\s*\).*/\1gr_snap/" seed${seed}gr.ini
+    sed -i "s/^\(Pk file base\s*=\s*\).*/\1newton_pk/" seed${seed}newton.ini
+    sed -i "s/^\(Pk file base\s*=\s*\).*/\1gr_pk/" seed${seed}gr.ini
+
+
     # Change output path
     local newtonpath="$DataSTORAGEdir/seed${seed}/newton/"
     local grpath="$DataSTORAGEdir/seed${seed}/gr/"
@@ -86,8 +95,8 @@ execute_simulation(){
         #echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
 
         # Execution
-        mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini
-        mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini
+        mpirun -np 64 ./gevolution -n 8 -m 8 -s $newton_ini
+        mpirun -np 64 ./gevolution -n 8 -m 8 -s $gr_ini
         end_time=$(date +%s)
         elapsed_time=$(echo "$end_time - $start_time" | bc)
 
