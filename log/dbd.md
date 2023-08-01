@@ -74,4 +74,19 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
 * Fixed an issue with the simulations stopping after one run, the loop exited. Wrote new loop and things seem to work. 
 * Added functionality to delete seed information from the data_generation folder.
 * Started a run of 200 simulations.
-* Fixed the automatic pushing to github, setting it to every 15 minutes. Can be changed manually. 
+* Fixed the automatic pushing to github, setting it to every 15 minutes. Can be changed manually.
+
+## Monday 31.07.23
+* Simulations works, consulted Julian and made some changes to the initial tmp.ini file. Made some test runs during the night. 
+* Reading theory about how the gevolution code works.
+
+## Tuesday 01.08.23
+* Got som feedback on tmp.ini. Will probably make some changes. 
+* Re-investigates the time it takes to execute 256 and 512 runs on different UiO-nodes. 
+* Have now run from seed 0000-0749, 750 simulations in total. Will run seed 1000-1999 with additional output and matter power spectra. THe distribution of work will be as follows:
+    |seeds|node|
+    |-----|----|
+    |1000-1249| hyades7|
+    |1250-1499| hyades9|
+    |1500-1749| hyades10|
+    |1750-1999| hyades3|
