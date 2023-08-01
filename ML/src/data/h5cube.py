@@ -41,4 +41,4 @@ if __name__=="__main__":
     filename = "/lcdm_snap000_phi.h5"
     path = output_path+run_type+gravity+filename
 
-    embed()
+    # embed()
