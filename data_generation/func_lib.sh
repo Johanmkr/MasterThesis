@@ -67,6 +67,7 @@ execute_simulation(){
         echo "Simulation with seed: $seed is already run"
         echo ""
     else
+        echo "$seed" >> $DataGENERATIONdir/simulations_run.txt
         # Check if initialised 
         if ! grep -q "\<$seed\>" "$DataGENERATIONdir/initialisations/log_ini.txt"; then
             echo "Seed ($seed) not yet initialised, initialising now..."
@@ -106,7 +107,7 @@ execute_simulation(){
         cd "$DataGENERATIONdir"
         formatted_date=$(date +"%d-%m-%Y at %H:%M")
        	echo "|$seed|$formatted_date|$elapsed_time|" >> README.md
-       	echo "$seed" >> simulations_run.txt
+       	# echo "$seed" >> simulations_run.txt
         echo ""
     fi
 }
