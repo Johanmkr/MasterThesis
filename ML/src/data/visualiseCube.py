@@ -59,7 +59,6 @@ class VisualiseCube:
 
 
 
-
 if __name__=="__main__":
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
     if input("Enter cube manually?") in ["y", "yes", "Y"]:
