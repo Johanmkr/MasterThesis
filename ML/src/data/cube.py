@@ -28,9 +28,8 @@ class Cube:
     def __init__(self, cube_path:str) -> None:
         """
             Initialise the Cube object. 
-            args:
-                cube_path: str
-                    Path to the h5 file containing the cube.
+            Args:
+                cube_path (str): Path to the h5 file containing the cube.
         """
         self.cubePath = cube_path
         self.gr = "gr_snap" in self.cubePath
@@ -48,6 +47,23 @@ class Cube:
         self.h5Data = h5File["data"]
         self.data = self.h5Data[()]
         h5File.close()
+
+    def get_gradient(self, dim:int=0) -> None:
+        """
+            Get the gradient of the cube.
+            Args:   
+                dim (int): The dimension to take the gradient in.
+        """
+        self.gradient = np.gradient(self.data)[dim]
+        return self.gradient
+
+    ###TODO: fix the below functino to take the dimension into account. 
+    def get_laplacian(self) -> None:
+        """
+            Get the laplacian of the cube.
+        """
+        self.laplacian = np.gradient(np.gradient(self.data))
+        return self.laplacian
     
     def __call__(self) -> np.ndarray:
         """
@@ -55,9 +71,11 @@ class Cube:
         """
         return self.data
     
-    def __getitem__(self, idx) -> np.ndarray:
+    def __getitem__(self, idx:int/list/tuple/slice) -> np.ndarray:
         """
             Return the cube data for a given index/indices.
+            Args:
+                idx (int, list, tuple, slice): The index/indices to return.
         """
         return self.data[idx]
     

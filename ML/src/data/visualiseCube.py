@@ -7,25 +7,26 @@ import cube
 from IPython import embed
 
 class VisualiseCube:
-    def __init__(self, cube:cube.Cube, save_path:str=None, save_name:str=None, show:bool=True, axis:int=0) -> None:
+    def __init__(self, cube:cube.Cube, sim_type:str=None, save_path:str=None, save_name:str=None, show:bool=True, axis:int=0) -> None:
         self.cube = cube
+        self.data = self.cube.get_gradient() if sim_type == "gradient" else self.cube.get_laplacian() if sim_type == "laplacian" else self.cube.data
         self.savePath = save_path if save_path is not None else "./animations/"
         self.saveName = save_name if save_name is not None else f"seed{self.cube.seed}_{'gr' if self.cube.gr else 'newton'}_redshift{self.cube.redshift}"
         self.show = show
         self.axis = axis
         self.name = f"Seed: {self.cube.seed}, Gravity: {'GR' if self.cube.gr else 'Newton'}, Redshift: {self.cube.redshift}"
-
+        embed()
         self._initialise_figure()
         self._initialise_animation()
         # self._initialise_animation_writer()
 
     def _update_frame(self, i:int) -> None:
         if self.axis == 0:
-            data = self.cube[i, :, :]
+            data = self.data[i, :, :]
         elif self.axis == 1:
-            data = self.cube[:, i, :]
+            data = self.data[:, i, :]
         elif self.axis == 2:
-            data = self.cube[:, :, i]
+            data = self.data[:, :, i]
         self.im.set_array(data)
         self.title.set_text(f"{self.name}, ax {self.axis} idx: {i}")
         return self.im,
@@ -36,15 +37,15 @@ class VisualiseCube:
         self.title = self.ax.set_title(f"{self.name}, ax {self.axis} idx: 0")
         # self.fig.tight_layout()
         if self.axis == 0:
-            self.im = self.ax.imshow(self.cube[0,:,:], cmap="viridis", origin="lower")
+            self.im = self.ax.imshow(self.data[0,:,:], cmap="viridis", origin="lower")
             self.ax.set_xlabel("axis 1")
             self.ax.set_ylabel("axis 2")
         elif self.axis == 1:
-            self.im = self.ax.imshow(self.cube[:,0,:], cmap="viridis", origin="lower")
+            self.im = self.ax.imshow(self.data[:,0,:], cmap="viridis", origin="lower")
             self.ax.set_xlabel("axis 0")
             self.ax.set_ylabel("axis 2")
         elif self.axis == 2:
-            self.im = self.ax.imshow(self.cube[:,:,0], cmap="viridis", origin="lower")
+            self.im = self.ax.imshow(self.data[:,:,0], cmap="viridis", origin="lower")
             self.ax.set_xlabel("axis 0")
             self.ax.set_ylabel("axis 1")
         self.fig.colorbar(self.im, label=r"$\phi$")
@@ -71,10 +72,10 @@ if __name__=="__main__":
         gravity = "newton"
         redshift = 1
         axis=0
-    path = datapath + f"seed{seed_nr}/" + gravity + f"/{gravity}_{cube.redshift_to_snap[redshift]}_phi.h5"
+    path = datapath + f"seed{seed_nr:04d}/" + gravity + f"/{gravity}_{cube.redshift_to_snap[redshift]}_phi.h5"
 
     obj = cube.Cube(path)
-    vis = VisualiseCube(obj, axis)
+    vis = VisualiseCube(obj, sim_type="gradient", axis=axis)
     plt.show()
 
     # embed()
