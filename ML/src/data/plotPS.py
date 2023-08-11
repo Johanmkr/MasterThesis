@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import powerspectra as ps
+import cambPK as cPk
 
 class PlotPowerSpectra:
     def __init__(self, data_dir:str) -> None:
@@ -12,6 +13,7 @@ class PlotPowerSpectra:
         self.dataDir = data_dir
         self.grPS = ps.PowerSpectra(self.dataDir + "gr")
         self.newtonPS = ps.PowerSpectra(self.dataDir + "newton")
+        self.cambObj = None
 
     def plot_ps(self, pk_type:str="delta", redshift:float=0., kmin:int=0, kmax:int=1000, save:bool=False) -> None:
         """
@@ -57,6 +59,63 @@ class PlotPowerSpectra:
         else:
             plt.show()
 
+    def init_camb(self) -> None:
+        """
+            Initialise the CAMB power spectra.
+        """
+        if isinstance(self.cambObj, cPk.CambSpectra):
+            pass
+        else:
+            self.cambObj = cPk.CambSpectra()
+
+    def compare_camb(self, redshift:float=0.0, kmin:int=0, kmax:int=1000, save:bool=False) -> None:
+        """
+            Plot the power spectra for both GR and Newton.
+            Args:
+                redshift (float/int): The redshift of the power spectrum to plot.
+                kmin (int): The minimum k to plot.
+                kmax (int): The maximum k to plot.
+                save (bool): Whether to save the plot or not.
+        """
+
+        # Initialise the CAMB object
+        self.init_camb()
+
+        # Get the power spectra
+        gr_spectrum = self.grPS.get_power_spectrum("delta", redshift)
+        newton_spectrum = self.newtonPS.get_power_spectrum("delta", redshift)
+        camb_spectrum = self.cambObj(redshift)
+        fig, ax = plt.subplots(1, 1, figsize=(10, 10))
+        ax.plot(gr_spectrum["k"], gr_spectrum["pk"], label="GR", color="blue")
+        ax.plot(newton_spectrum["k"], gr_spectrum["pk"], label="Newton", ls="--", color="red")
+        ax.plot(*camb_spectrum, label="CAMB", ls=":", color="green")
+        ax.set_xscale("log")
+        ax.set_yscale("log")
+        ax.set_xlabel("k")
+        ax.set_ylabel("P(k)")
+        ax.set_title(f"Power spectrum of 'delta' at redshift z={redshift}, for seed {self.grPS.seed}")
+        # ax.set_xlim(kmin, kmax)
+        ax.legend()
+
+        # New axis right below the first one for the ratio
+        ax2 = ax.twinx()
+        diff = np.abs(gr_spectrum["pk"] / newton_spectrum["pk"])
+        ax2.plot(gr_spectrum["k"], diff, color="black", ls="--", label="diff")
+        ax2.set_xscale("log")
+        ax2.set_xscale("log")
+        ax2.set_xlabel("k")
+        ax2.set_ylabel("P(k) GR - P(k) Newton")
+        # ax2.set_xlim(kmin, kmax)
+        ax2.set_ylim(0, diff.max()+diff.max()*0.1)
+        ax2.grid()
+        ax2.legend()
+    
+
+        if save:
+            plt.savefig(self.dataDir + "ps.png")
+        else:
+            plt.show()
+
 
 
 if __name__=="__main__":
@@ -73,4 +132,5 @@ if __name__=="__main__":
 
     path = datapath + f"seed{seed_nr:04d}/"
     obj = PlotPowerSpectra(path)
-    obj.plot_ps(pk_type=pktype, redshift=redshift)
+    # obj.plot_ps(pk_type=pktype, redshift=redshift)
+    obj.compare_camb(redshift=0.0)

@@ -15,7 +15,7 @@ class VisualiseCube:
         self.show = show
         self.axis = axis
         self.name = f"Seed: {self.cube.seed}, Gravity: {'GR' if self.cube.gr else 'Newton'}, Redshift: {self.cube.redshift}"
-        embed()
+        # embed()
         self._initialise_figure()
         self._initialise_animation()
         # self._initialise_animation_writer()
@@ -75,7 +75,7 @@ if __name__=="__main__":
     path = datapath + f"seed{seed_nr:04d}/" + gravity + f"/{gravity}_{cube.redshift_to_snap[redshift]}_phi.h5"
 
     obj = cube.Cube(path)
-    vis = VisualiseCube(obj, sim_type="gradient", axis=axis)
+    vis = VisualiseCube(obj, axis=axis)
     plt.show()
 
     # embed()

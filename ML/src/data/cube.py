@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import h5py
+from typing import Union
 
 # Used for testing only
 from IPython import embed
@@ -71,7 +72,7 @@ class Cube:
         """
         return self.data
     
-    def __getitem__(self, idx:int/list/tuple/slice) -> np.ndarray:
+    def __getitem__(self, idx:Union[int, tuple, slice, list]) -> np.ndarray:
         """
             Return the cube data for a given index/indices.
             Args:
