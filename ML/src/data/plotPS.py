@@ -84,10 +84,12 @@ class PlotPowerSpectra:
         # Get the power spectra
         gr_spectrum = self.grPS.get_power_spectrum("delta", redshift)
         newton_spectrum = self.newtonPS.get_power_spectrum("delta", redshift)
+        gr_spectrum_pk = gr_spectrum["pk"] / gr_spectrum["k"]**3 * (2*np.pi)**2
+        newton_spectrum_pk = newton_spectrum["pk"] / newton_spectrum["k"]**3 * (2*np.pi)**2
         camb_spectrum = self.cambObj(redshift)
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
-        ax.plot(gr_spectrum["k"], gr_spectrum["pk"], label="GR", color="blue")
-        ax.plot(newton_spectrum["k"], gr_spectrum["pk"], label="Newton", ls="--", color="red")
+        ax.plot(gr_spectrum["k"], gr_spectrum_pk, label="GR", color="blue")
+        ax.plot(newton_spectrum["k"], gr_spectrum_pk, label="Newton", ls="--", color="red")
         ax.plot(*camb_spectrum, label="CAMB", ls=":", color="green")
         ax.set_xscale("log")
         ax.set_yscale("log")
