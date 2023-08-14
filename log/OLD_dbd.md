@@ -90,3 +90,6 @@ Look more specifically on the outputs of gevolution runs, how to tweak settings.
     |1250-1499| hyades9|
     |1500-1749| hyades10|
     |1750-1999| hyades3|
+
+
+NB: Forgot to write up daily summaries, but the overall work done in this period is included in `weekly_updates/README.md`.
