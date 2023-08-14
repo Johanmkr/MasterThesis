@@ -2,6 +2,7 @@
 
 file="README.md"
 
+
 # Set the start and end subheadings
 start_subheading="## Tree"
 end_subheading="##"
@@ -33,8 +34,14 @@ while IFS= read -r line; do
             remove=true
         fi
     fi
+
     
 done < "$file"
+
+#TODO: Fix the files below initialisation in the tree
+
+# Loop through the temp file and remove lines below initialisaiton in the tree
+
 
 mv "$temp_file" "$file"
     
