@@ -96,7 +96,7 @@ class PlotPowerSpectra:
         # Get the power spectra
         gr_spectrum = self.grPS.get_power_spectrum("delta", redshift)
         newton_spectrum = self.newtonPS.get_power_spectrum("delta", redshift)
-        gr_spectrum_pk = gr_spectrum["pk"] / gr_spectrum["k"]**3 * (2*np.pi)**2
+        gr_spectrum_pk = gr_spectrum["pk"] / gr_spectrum["k"]**3 * 2*np.pi**2
         newton_spectrum_pk = newton_spectrum["pk"] / newton_spectrum["k"]**3 * (2*np.pi)**2
         camb_spectrum = self.cambObj(redshift)
         fig, ax = plt.subplots(1, 1, figsize=(10, 10))
@@ -106,8 +106,8 @@ class PlotPowerSpectra:
         ax.plot(*self.classObj(), label="CLASS", ls=":", color="orange")
         ax.set_xscale("log")
         ax.set_yscale("log")
-        ax.set_xlabel("k")
-        ax.set_ylabel("P(k)")
+        ax.set_xlabel("k [h/Mpc]")
+        ax.set_ylabel(r"P(k) [Mpc/h]$^3$")
         ax.set_title(f"Power spectrum of 'delta' at redshift z={redshift}, for seed {self.grPS.seed}")
         # ax.set_xlim(kmin, kmax)
         ax.legend()
@@ -143,9 +143,9 @@ if __name__=="__main__":
     else:
         seed_nr = 0000
         pktype = "delta"
-        redshift = 50
+        redshift = 0.0
 
     path = datapath + f"seed{seed_nr:04d}/"
     obj = PlotPowerSpectra(path)
     # obj.plot_ps(pk_type=pktype, redshift=redshift)
-    obj.compare_camb(redshift=0.0)
+    obj.compare_camb(redshift=redshift)
