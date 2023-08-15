@@ -1,7 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import powerspectra as ps
-import cambPK as cPk
+import cambPK as caPk
+import classPK as clPk
 
 class PlotPowerSpectra:
     def __init__(self, data_dir:str) -> None:
@@ -14,6 +15,7 @@ class PlotPowerSpectra:
         self.grPS = ps.PowerSpectra(self.dataDir + "gr")
         self.newtonPS = ps.PowerSpectra(self.dataDir + "newton")
         self.cambObj = None
+        self.classObj = None
 
     def plot_ps(self, pk_type:str="delta", redshift:float=0., kmin:int=0, kmax:int=1000, save:bool=False) -> None:
         """
@@ -63,10 +65,19 @@ class PlotPowerSpectra:
         """
             Initialise the CAMB power spectra.
         """
-        if isinstance(self.cambObj, cPk.CambSpectra):
+        if isinstance(self.cambObj, caPk.CambSpectra):
             pass
         else:
-            self.cambObj = cPk.CambSpectra()
+            self.cambObj = caPk.CambSpectra()
+
+    def init_class(self) -> None:
+        """
+            Initialise the CLASS power spectra.
+        """
+        if isinstance(self.classObj, clPk.ClassSpectra):
+            pass
+        else:
+            self.classObj = clPk.ClassSpectra()
 
     def compare_camb(self, redshift:float=0.0, kmin:int=0, kmax:int=1000, save:bool=False) -> None:
         """
@@ -78,8 +89,9 @@ class PlotPowerSpectra:
                 save (bool): Whether to save the plot or not.
         """
 
-        # Initialise the CAMB object
+        # Initialise the CAMB and CLASS object
         self.init_camb()
+        self.init_class()
 
         # Get the power spectra
         gr_spectrum = self.grPS.get_power_spectrum("delta", redshift)
@@ -91,6 +103,7 @@ class PlotPowerSpectra:
         ax.plot(gr_spectrum["k"], gr_spectrum_pk, label="GR", color="blue")
         ax.plot(newton_spectrum["k"], gr_spectrum_pk, label="Newton", ls="--", color="red")
         ax.plot(*camb_spectrum, label="CAMB", ls=":", color="green")
+        ax.plot(*self.classObj(), label="CLASS", ls=":", color="orange")
         ax.set_xscale("log")
         ax.set_yscale("log")
         ax.set_xlabel("k")
@@ -99,18 +112,18 @@ class PlotPowerSpectra:
         # ax.set_xlim(kmin, kmax)
         ax.legend()
 
-        # New axis right below the first one for the ratio
-        ax2 = ax.twinx()
-        diff = np.abs(gr_spectrum["pk"] / newton_spectrum["pk"])
-        ax2.plot(gr_spectrum["k"], diff, color="black", ls="--", label="diff")
-        ax2.set_xscale("log")
-        ax2.set_xscale("log")
-        ax2.set_xlabel("k")
-        ax2.set_ylabel("P(k) GR - P(k) Newton")
-        # ax2.set_xlim(kmin, kmax)
-        ax2.set_ylim(0, diff.max()+diff.max()*0.1)
-        ax2.grid()
-        ax2.legend()
+        # # New axis right below the first one for the ratio
+        # ax2 = ax.twinx()
+        # diff = np.abs(gr_spectrum["pk"] / newton_spectrum["pk"])
+        # ax2.plot(gr_spectrum["k"], diff, color="black", ls="--", label="diff")
+        # ax2.set_xscale("log")
+        # ax2.set_xscale("log")
+        # ax2.set_xlabel("k")
+        # ax2.set_ylabel("P(k) GR - P(k) Newton")
+        # # ax2.set_xlim(kmin, kmax)
+        # ax2.set_ylim(0, diff.max()+diff.max()*0.1)
+        # ax2.grid()
+        # ax2.legend()
     
 
         if save:
