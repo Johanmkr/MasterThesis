@@ -4,6 +4,7 @@ from figure import CustomFigure
 import powerspectra as ps
 import cambPK as caPk
 import classPK as clPk
+from typing import Union
 
 from IPython import embed
 
@@ -18,6 +19,7 @@ k_boxsize = 2*np.pi/boxsize
 # print(k_nyquist)
 # print(k_max)
 
+#TODO: imporve the plt.savefig statements in all the plotting functions.
 class PlotPowerSpectra:
     def __init__(self, data_dir:str) -> None:
         """
@@ -77,14 +79,83 @@ class PlotPowerSpectra:
 
         comp_plot.set_settings(settings)
         self._add_gr_newton(comp_plot.ax, pk_type, redshift)
-        self._add_axis_limits(comp_plot.ax)
+        # self._add_axis_limits(comp_plot.ax)
         self._add_camb_class(comp_plot.ax, redshift)
         self._add_limits(comp_plot.ax)
+        comp_plot.ax.legend(loc="lower left")
 
         if save:
             plt.savefig(self.dataDir + "ps.png")
         else:
             plt.show()
+
+    def plot_average_ps(self, pk_type:str="delta", redshift:float=0.0, seed_range:Union[list, np.ndarray, tuple]=np.arange(10, dtype=int), save:bool=False) -> None:
+        """
+            Plot the average power spectrum for a given seed range.
+            Args:
+                pk_type (str): The type of power spectrum to plot. Can be ["deltacdm",      "deltaclass", "delta", "phi"] for GR and ["delta", "deltaclass", "phi"] for Newton. Defaults to "delta".
+                redshift (float/int): The redshift of the power spectrum to plot. Defaults to 0.
+                seed_range (list, np.ndarray, tuple): The range of seeds to average over.
+                save (bool): Whether to save the plot or not.
+        """
+
+        avg_plot = CustomFigure()
+
+        settings = {
+            "xscale": "log",
+            "yscale": "log",
+            "xlabel": r"k $[h/Mpc]$",
+            "ylabel": r"P(k) $[h/Mpc]^3$",
+            "title": f"Average power spectrum of '{pk_type}' at redshift z={redshift:.1f}"
+        }
+        avg_plot.set_settings(settings)
+        self._add_averages(avg_plot.ax, pk_type, redshift, seed_range)
+
+        avg_plot.ax.legend(loc="lower left")
+
+        if save:
+            plt.savefig(self.dataDir + "ps.png")
+        else:
+            plt.show()
+
+    def _add_averages(self, ax:plt.axis, pk_type:str, redshift:float, seed_range:Union[list, np.ndarray, tuple]):
+        """
+            Add the average power spectrum to the plot.
+            Args:
+                ax (plt.axis): The axis to plot on.
+                pk_type (str): The type of power spectrum to plot. Can be ["deltacdm",      "deltaclass", "delta", "phi"] for GR and ["delta", "deltaclass", "phi"] for Newton. Defaults to "delta".
+                redshift (float/int): The redshift of the power spectrum to plot. Defaults to 0.
+                seed_range (list, np.ndarray, tuple): The range of seeds to average over.
+        """
+        #Get the first power spectra 
+        gr_avg = ps.PowerSpectra(self._path_to_different_seed(seed_range[0])+"gr")
+        newton_avg = ps.PowerSpectra(self._path_to_different_seed(seed_range[0])+"newton")
+        gr_avg = gr_avg.get_power_spectrum(pk_type, redshift)
+        newton_avg = newton_avg.get_power_spectrum(pk_type, redshift)
+        for seed in seed_range:
+            # Create local instances of the power spectra
+            local_gr = ps.PowerSpectra(self._path_to_different_seed(seed)+"gr")
+            local_newton = ps.PowerSpectra(self._path_to_different_seed(seed)+"newton")
+            # Get the power spectra and add them to the average
+            gr_avg["pk"] += local_gr.get_power_spectrum(pk_type, redshift)["pk"]
+            newton_avg["pk"] += local_newton.get_power_spectrum(pk_type, redshift)["pk"]
+        # Divide by the number of seeds to get the average
+        gr_avg["pk"] /= len(seed_range)
+        newton_avg["pk"] /= len(seed_range)
+        # Plot the average power spectra
+        ax.loglog(gr_avg["k"], gr_avg["pk"], label="GR", color="blue")
+        ax.loglog(newton_avg["k"], newton_avg["pk"], label="Newton", ls="--", color="red")
+        # embed()
+    
+    def _path_to_different_seed(self, seed:int) -> str:
+        """
+            Return the path to the power spectra for a different seed.
+            Args:
+                seed (int): The seed to get the path for.
+            Returns:
+                str: The path to the power spectra for the given seed.
+        """
+        return self.dataDir.replace(f"seed{self.grPS.seed:04d}", f"seed{seed:04d}")
 
     def _add_gr_newton(self, ax:plt.axis, pk_type:str, redshift:float, add_ratio:bool=True) -> None:
         """
@@ -99,6 +170,7 @@ class PlotPowerSpectra:
         newton_spectrum = self.newtonPS.get_power_spectrum(pk_type, redshift)
         ax.loglog(gr_spectrum["k"], gr_spectrum["pk"], label="GR", color="blue")
         ax.loglog(newton_spectrum["k"], newton_spectrum["pk"], label="Newton", ls="--", color="red")
+        # ax.legend(loc="lower left")
 
         if add_ratio:
             ax2 = ax.twinx()
@@ -169,5 +241,6 @@ if __name__=="__main__":
 
     path = datapath + f"seed{seed_nr:04d}/"
     obj = PlotPowerSpectra(path)
-    # obj.plot_ps(pk_type=pktype, redshift=redshift)
-    obj.compare_camb_class(redshift=redshift)
+    obj.plot_ps(pk_type=pktype, redshift=redshift)
+    # obj.compare_camb_class(redshift=redshift)
+    obj.plot_average_ps(pk_type=pktype, redshift=redshift, seed_range=np.arange(2000, dtype=int))
