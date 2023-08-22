@@ -54,8 +54,9 @@ redshift_to_pk = {
     0: "pk020"
 }
 
+#TODO: Cange this to only read and store the power spectra needed, not store all of them in a dictionary.
 class PowerSpectra:
-    def __init__(self, data_dir:str) -> None:
+    def __init__(self, data_dir:str, store_all:bool=False) -> None:
         """
             Initialise the PowerSpectra object.
             Args:
@@ -66,6 +67,7 @@ class PowerSpectra:
         self.gravity = "gr" if self.gr else "newton"
         self.seed = int(self.dataDir[-7:-3] if self.gr else self.dataDir[-11:-7]) # Will be 0000, 0001, etc.
         self.pk_types = ["deltacdm", "deltaclass", "delta", "phi"] if self.gr else ["delta", "deltaclass", "phi"]
+        self.store_all = store_all
 
         # Initialise the power spectra
         self._initialise_power_spectra()
@@ -89,38 +91,42 @@ class PowerSpectra:
             Initialise the power spectra dictionary.
         """
         self.powerSpectra = {}
-        for pk_type in self.pk_types:
-            self.powerSpectra[pk_type] = {}
-            for redshift in pk_to_redshift.values():
-                self.powerSpectra[pk_type][redshift] = self._read_pk(pk_type, redshift)
+        if self.store_all:
+            for pk_type in self.pk_types:
+                self.powerSpectra[pk_type] = {}
+                for redshift in pk_to_redshift.values():
+                    self.powerSpectra[pk_type][redshift] = self._read_pk(pk_type, redshift)
 
-    def _denormalise(self, pk_type:str, redshift:float) -> None:
+    def _denormalise(self, powerspectrum:pd.DataFrame) -> pd.DataFrame:
         """
             Denormalise the power spectrum into units of Mpc/h.
             Args:
-                pk_type (str): The type of power spectrum to denormalise.
-                redshift (float): The redshift of the power spectrum to denormalise.
+                powerspectrum (pd.DataFrame): The power spectrum to denormalise.
+            Returns:
+                pd.DataFrame: The denormalised power spectrum.
         """
-        # Get the power spectrum
-        pk_dn = self.powerSpectra[pk_type][redshift].copy()
+        # Copy power spectrum
+        pk_dn = powerspectrum.copy()
         # Denormalise the power spectrum
         pk_dn["pk"] *= pk_dn["k"]**(-3)*(2*np.pi**2)
         pk_dn["sigma_pk"] *= pk_dn["k"]**(-3)*(2*np.pi**2)
         return pk_dn
 
-    def get_power_spectrum(self, pk_type:str, redshift:float, denormalise:bool=True) -> np.ndarray:
+    def get_power_spectrum(self, pk_type:str, redshift:float, denormalise:bool=True) -> pd.DataFrame:
         """
             Get the power spectrum from the dictionary.
             Args:
                 pk_type (str): The type of power spectrum to get.
                 redshift (float): The redshift of the power spectrum to get.
             Returns:
-                np.ndarray: The power spectrum.
+                pd.DataFrame: The power spectrum.
         """
-        if denormalise:
-            return self._denormalise(pk_type, redshift)
+        if self.store_all:
+            return self._denormalise(self.powerSpectra[pk_type][redshift]) if denormalise else self.powerSpectra[pk_type][redshift]
         else:
-            return self.powerSpectra[pk_type][redshift]
+            pk = self._read_pk(pk_type, redshift)
+            return self._denormalise(pk) if denormalise else pk
+
 
 if __name__=="__main__":
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
