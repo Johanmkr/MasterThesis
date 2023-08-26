@@ -107,9 +107,10 @@ class PowerSpectra:
         """
         # Copy power spectrum
         pk_dn = powerspectrum.copy()
+        denorm_factor = pk_dn["k"]**(-3)*(2*np.pi**2)
         # Denormalise the power spectrum
-        pk_dn["pk"] *= pk_dn["k"]**(-3)*(2*np.pi**2)
-        pk_dn["sigma_pk"] *= pk_dn["k"]**(-3)*(2*np.pi**2)
+        pk_dn["pk"] *= denorm_factor
+        pk_dn["sigma_pk"] *= denorm_factor
         return pk_dn
 
     def get_power_spectrum(self, pk_type:str, redshift:float, denormalise:bool=True) -> pd.DataFrame:
@@ -118,6 +119,7 @@ class PowerSpectra:
             Args:
                 pk_type (str): The type of power spectrum to get.
                 redshift (float): The redshift of the power spectrum to get.
+                denormalise (bool): Whether to denormalise the power spectrum.
             Returns:
                 pd.DataFrame: The power spectrum.
         """
