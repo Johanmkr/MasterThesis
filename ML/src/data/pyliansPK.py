@@ -39,6 +39,8 @@ class CubePowerSpectra:
             Returns:
                 pd.DataFrame: The power spectrum.
         """
+        # k1D = self.Pk.k3D
+        # Pk1D = self.Pk.Pk[:,0] #monopole
         k1D = self.Pk.k1D
         Pk1D = self.Pk.Pk1D
         dPk = pd.DataFrame({"k": k1D, "pk": Pk1D})
@@ -50,7 +52,7 @@ class CubePowerSpectra:
 
 if __name__=="__main__":
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
-    if input("Enter cube manually?") in ["y", "yes", "Y"]:
+    if input("Enter cube manually? ") in ["y", "yes", "Y"]:
         seed_nr = int(input("Enter seed [0000 - 1999]: "))
         gravity = input("Enter gravity [gr, newton]: ")
         redshift = int(input("Enter redshift [0, 1, 5, 10, 15, 20]: "))
