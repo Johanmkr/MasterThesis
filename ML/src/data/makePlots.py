@@ -30,7 +30,7 @@ if __name__ == '__main__':
 
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
 
-    if input("Enter cube manually?") in ["y", "yes", "Y"]:
+    if input("Enter cube manually? ") in ["y", "yes", "Y"]:
         try:
             seed_nr = int(input("Enter seed [0000 - 1999]: "))
         except ValueError:
