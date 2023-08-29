@@ -22,6 +22,7 @@ k_boxsize = 2*np.pi/boxsize
 # print(k_max)
 
 #TODO: imporve the plt.savefig statements in all the plotting functions.
+#TODO: Rewrite docstrings for all functions
 class PlotPowerSpectra:
     def __init__(self, data_dir:str) -> None:
         """
@@ -55,8 +56,12 @@ class PlotPowerSpectra:
         }
 
         ps_plot.set_settings(settings)
-        self._add_gr_newton(ps_plot.ax, pk_type, redshift, add_ratio=False)
+        gr_line, newton_line = self._add_gr_newton(ps_plot.ax, pk_type, redshift, add_ratio=False)
+        gr_newton_line_legend = plt.legend(handles=[gr_line], loc="upper right")
+        ps_plot.ax.add_artist(gr_newton_line_legend)
 
+        self._add_gr_newton_legend(ps_plot.ax)
+        
         if save:
             plt.savefig(self.dataDir + "ps.png")
         else:
@@ -151,7 +156,7 @@ class PlotPowerSpectra:
         else:
             plt.show()
 
-    def _add_averages(self, ax:plt.axis, pk_type:str, redshift:float, seed_range:Union[list, np.ndarray, tuple]):
+    def _add_averages(self, ax:plt.axis, pk_type:str, redshift:float, seed_range:Union[list, np.ndarray, tuple], color="green") -> tuple:
         """
             Add the average power spectrum to the plot.
             Args:
@@ -166,6 +171,8 @@ class PlotPowerSpectra:
         newton_avg = ps.PowerSpectra(self._path_to_different_seed(seed_range[0])+"newton")
         gr_avg = gr_avg.get_power_spectrum(pk_type, redshift)
         newton_avg = newton_avg.get_power_spectrum(pk_type, redshift)
+
+        # Loop over remaining seeds and add them to the average
         for seed in seed_range:
             # Create local instances of the power spectra
             local_gr = ps.PowerSpectra(self._path_to_different_seed(seed)+"gr")
@@ -173,13 +180,15 @@ class PlotPowerSpectra:
             # Get the power spectra and add them to the average
             gr_avg["pk"] += local_gr.get_power_spectrum(pk_type, redshift)["pk"]
             newton_avg["pk"] += local_newton.get_power_spectrum(pk_type, redshift)["pk"]
-        # Divide by the number of seeds to get the average
+
+        # Divide by the number of seeds to get the true average
         gr_avg["pk"] /= len(seed_range)
         newton_avg["pk"] /= len(seed_range)
+
         # Plot the average power spectra
-        ax.loglog(gr_avg["k"], gr_avg["pk"], label="Avg.", color="green")
-        ax.loglog(newton_avg["k"], newton_avg["pk"], ls="--", color="green")
-        # embed()
+        gr_avg_line, = ax.loglog(gr_avg["k"], gr_avg["pk"], label="Avg.", color=color)
+        newton_avg_line, = ax.loglog(newton_avg["k"], newton_avg["pk"], ls="--", color=color)
+        return gr_avg_line, newton_avg_line
     
     def _path_to_different_seed(self, seed:int) -> str:
         """
@@ -191,30 +200,32 @@ class PlotPowerSpectra:
         """
         return self.dataDir.replace(f"seed{self.grPS.seed:04d}", f"seed{seed:04d}")
 
-    def _add_gr_newton(self, ax:plt.axis, pk_type:str, redshift:float, add_ratio:bool=True) -> None:
+    def _add_gr_newton(self, ax:plt.axis, pk_type:str, redshift:float, add_ratio:bool=True, color="blue") -> tuple:
         """
             Plot the power spectra for both GR and Newton.
             Args:
                 ax (plt.axis): The axis to plot on.
-                pk_type (str): The type of power spectrum to plot. Can be ["deltacdm",      "deltaclass", "delta", "phi"] for GR and ["delta", "deltaclass", "phi"] for Newton. Defaults to "delta".
+                pk_type (str): The type of power spectrum to plot. Can be ["deltacdm", "deltaclass", "delta", "phi"] for GR and ["delta", "deltaclass", "phi"] for Newton. Defaults to "delta".
                 redshift (float/int): The redshift of the power spectrum to plot. Defaults to 0.
                 add_ratio (bool): Whether to add the ratio between GR and Newton to the plot or not. Defaults to True.
         """
         gr_spectrum = self.grPS.get_power_spectrum(pk_type, redshift)
         newton_spectrum = self.newtonPS.get_power_spectrum(pk_type, redshift)
-        ax.loglog(gr_spectrum["k"], gr_spectrum["pk"], label="Gevolution", color="blue")
-        ax.loglog(newton_spectrum["k"], newton_spectrum["pk"], ls="--", color="blue")
-        # ax.legend(loc="lower left")
+        gr_line, = ax.loglog(gr_spectrum["k"], gr_spectrum["pk"], label="Gevolution", color=color)
+        newton_line, = ax.loglog(newton_spectrum["k"], newton_spectrum["pk"], ls="--", color=color)
+        
 
         if add_ratio:
             ax2 = ax.twinx()
             ratio = np.abs(gr_spectrum["pk"] - newton_spectrum["pk"])/newton_spectrum["pk"]
-            ax2.plot(gr_spectrum["k"], ratio, color="black", ls=":", label="Ratio")
+            ratio_line, = ax2.plot(gr_spectrum["k"], ratio, color="black", ls=":", label="Ratio")
             ax2.set_ylabel(r"$[P(k)_{GR} - P(k)_{New}] / P(k)_{New}$")
             ax2.set_ylim(ratio.min()-ratio.min()*0.1, ratio.max()+ratio.max()*0.1)
             ax2.legend(loc="lower right")
+            return gr_line, newton_line, ratio_line
+        return gr_line, newton_line
 
-    def _add_camb_class(self, ax:plt.axis, redshift:float) -> None:
+    def _add_camb_class(self, ax:plt.axis, redshift:float) -> tuple:
         """
             Plot the power spectra from CAMB and CLASS.
             Args:
@@ -225,17 +236,19 @@ class PlotPowerSpectra:
         self._init_class()
         camb_spectrum = self.cambObj(redshift)
         class_spectrum = self.classObj(redshift)
-        ax.plot(*camb_spectrum, label="CAMB", ls=":", color="purple")
-        ax.plot(*class_spectrum, label="CLASS", ls=":", color="orange")
+        camb_line, = ax.plot(*camb_spectrum, label="CAMB", ls=":", color="purple")
+        class_line, = ax.plot(*class_spectrum, label="CLASS", ls=":", color="orange")
+        return camb_line, class_line
 
-    def _add_limits(self, ax:plt.axis) -> None:
+    def _add_limits(self, ax:plt.axis) -> tuple:
         """
             Add the nyquist frequency and box size to the plot.
             Args:
                 ax (plt.axis): The axis to plot on.
         """
-        ax.axvline(k_nyquist, ls="--", color="black", label="Nyquist frequency")
-        ax.axvline(k_boxsize, ls="-.", color="black", label="Box size")
+        nyq_line, = ax.axvline(k_nyquist, ls="--", color="black", label="Nyquist frequency")
+        box_line, = ax.axvline(k_boxsize, ls="-.", color="black", label="Box size")
+        return nyq_line, box_line
 
     def _add_axis_limits(self, ax:plt.axis) -> None:
         #scale whole figure to the limits governed by the boxsize and nyquist frequency and the extremal values of the gr and newton power spectra withing that region
@@ -247,7 +260,7 @@ class PlotPowerSpectra:
         # print(dataarrays.min(), dataarrays.max())
         # ax.set_ylim(ymin, ymax+ymax*0.1)
 
-    def _add_cube_spectra(self, ax:plt.axis, redshift:float) -> None:
+    def _add_cube_spectra(self, ax:plt.axis, redshift:float, color="red") -> tuple:
         """
             Plot the power spectra from the cube. This can only be found for phi as this is the only field that is saved.
             Args:
@@ -255,10 +268,25 @@ class PlotPowerSpectra:
                 pk_type (str): The type of power spectrum to plot. Can be ["deltacdm", "deltaclass", "delta", "phi"] for GR and ["delta", "deltaclass", "phi"] for Newton. Defaults to "delta".
                 redshift (float/int): The redshift of the power spectrum to plot.
         """
-        cube_spectrum_gr = pyliansPK.CubePowerSpectra(self.dataDir + f"gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5").get_1d_power_spectrum()
-        cube_spectrum_newton = pyliansPK.CubePowerSpectra(self.dataDir + f"newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5").get_1d_power_spectrum()
-        ax.loglog(cube_spectrum_gr["k"], cube_spectrum_gr["pk"], label="Cube", color="red")
-        ax.loglog(cube_spectrum_newton["k"], cube_spectrum_newton["pk"], ls="--", color="red")
+        grcubedir = self.dataDir + f"gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5"
+        newtoncubedir = self.dataDir + f"newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5"
+
+        cube_spectrum_gr = pyliansPK.CubePowerSpectra(grcubedir).get_1d_power_spectrum()
+        cube_spectrum_newton = pyliansPK.CubePowerSpectra(newtoncubedir).get_1d_power_spectrum()
+        gr_cube_line, = ax.loglog(cube_spectrum_gr["k"], cube_spectrum_gr["pk"], label="Cube", color=color)
+        newton_cube_line, = ax.loglog(cube_spectrum_newton["k"], cube_spectrum_newton["pk"], ls="--", color=color)
+        return gr_cube_line, newton_cube_line
+
+    def _add_gr_newton_legend(self, ax:plt.axis) -> None:
+        """
+            Add the legend for the GR and Newton power spectra.
+            Args:
+                ax (plt.axis): The axis to plot on.
+        """
+        empty_gr_line, = ax.plot([], [], label="GR", color="grey")
+        empty_newton_line, = ax.plot([], [], label="Newton", color="grey", ls="--")
+        descriptive_legend = plt.legend(handles=[empty_gr_line, empty_newton_line], loc="lower left", ncols=2)
+        ax.add_artist(descriptive_legend)
 
     def _init_camb(self) -> None:
         """
