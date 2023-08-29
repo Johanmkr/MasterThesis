@@ -14,24 +14,10 @@ class CubePowerSpectra:
             cube_object = cube.Cube(cube_object)
         self.cube = cube_object
         self.data = self.cube.data
-        self.Pk = PKL.Pk(self.data.astype(np.float32), 5120, axis=0, MAS="CIC", **kwargs)
+        self.Pk = PKL.Pk(self.data.astype(np.float32), 5120, axis=0, MAS="TSC", **kwargs)
 
-    def _denormalise(self, powerspectrum:pd.DataFrame) -> pd.DataFrame:
-        """
-            Denormalise the power spectrum into units of Mpc/h.
-            Args:
-                powerspectrum (pd.DataFrame): The power spectrum to denormalise.
-            Returns:
-                pd.DataFrame: The denormalised power spectrum.
-        """
-        # Copy power spectrum
-        pk_dn = powerspectrum.copy()
-        denorm_factor = pk_dn["k"]**(-3)*(2*np.pi**2)
-        # Denormalise the power spectrum
-        pk_dn["pk"] *= denorm_factor
-        return pk_dn
     
-    def get_1d_power_spectrum(self, denormalise:bool=True) -> pd.DataFrame:
+    def get_1d_power_spectrum(self) -> pd.DataFrame:
         """
             Get the power spectrum from the dictionary.
             Args:
@@ -39,12 +25,12 @@ class CubePowerSpectra:
             Returns:
                 pd.DataFrame: The power spectrum.
         """
-        # k1D = self.Pk.k3D
-        # Pk1D = self.Pk.Pk[:,0] #monopole
-        k1D = self.Pk.k1D
-        Pk1D = self.Pk.Pk1D
+        k1D = self.Pk.k3D
+        Pk1D = self.Pk.Pk[:,0] #monopole
+        # k1D = self.Pk.k1D
+        # Pk1D = self.Pk.Pk1D
         dPk = pd.DataFrame({"k": k1D, "pk": Pk1D})
-        return self._denormalise(dPk) if denormalise else dPk
+        return dPk
 
 
 
