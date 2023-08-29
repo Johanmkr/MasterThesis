@@ -54,7 +54,6 @@ redshift_to_pk = {
     0: "pk020"
 }
 
-#TODO: Cange this to only read and store the power spectra needed, not store all of them in a dictionary.
 class PowerSpectra:
     def __init__(self, data_dir:str, store_all:bool=False) -> None:
         """
