@@ -61,6 +61,7 @@ class PlotPowerSpectra:
         ps_plot.ax.add_artist(gr_newton_line_legend)
 
         self._add_gr_newton_legend(ps_plot.ax)
+        self._add_axis_limits(ps_plot.ax)
         
         if save:
             plt.savefig(self.dataDir + "ps.png")
@@ -146,9 +147,9 @@ class PlotPowerSpectra:
         }
 
         cube_plot.set_settings(settings)
-        self._add_gr_newton(cube_plot.ax, "phi", redshift)
+        gr_newton = self._add_gr_newton(cube_plot.ax, "phi", redshift)
         self._add_cube_spectra(cube_plot.ax, redshift)
-        self._add_limits(cube_plot.ax)
+        limits = self._add_limits(cube_plot.ax)
         cube_plot.ax.legend(loc="lower left")
 
         if save:
@@ -200,7 +201,7 @@ class PlotPowerSpectra:
         """
         return self.dataDir.replace(f"seed{self.grPS.seed:04d}", f"seed{seed:04d}")
 
-    def _add_gr_newton(self, ax:plt.axis, pk_type:str, redshift:float, add_ratio:bool=True, color="blue") -> tuple:
+    def _add_gr_newton(self, ax:plt.axis, pk_type:str, redshift:float, add_ratio:bool=True, **kwargs:dict) -> tuple:
         """
             Plot the power spectra for both GR and Newton.
             Args:
@@ -214,7 +215,6 @@ class PlotPowerSpectra:
         gr_line, = ax.loglog(gr_spectrum["k"], gr_spectrum["pk"], label="Gevolution", color=color)
         newton_line, = ax.loglog(newton_spectrum["k"], newton_spectrum["pk"], ls="--", color=color)
         
-
         if add_ratio:
             ax2 = ax.twinx()
             ratio = np.abs(gr_spectrum["pk"] - newton_spectrum["pk"])/newton_spectrum["pk"]
@@ -246,17 +246,17 @@ class PlotPowerSpectra:
             Args:
                 ax (plt.axis): The axis to plot on.
         """
-        nyq_line, = ax.axvline(k_nyquist, ls="--", color="black", label="Nyquist frequency")
-        box_line, = ax.axvline(k_boxsize, ls="-.", color="black", label="Box size")
+        nyq_line = ax.axvline(k_nyquist, ls="--", color="black", label="Nyquist frequency")
+        box_line = ax.axvline(k_boxsize, ls="-.", color="black", label="Box size")
         return nyq_line, box_line
 
     def _add_axis_limits(self, ax:plt.axis) -> None:
         #scale whole figure to the limits governed by the boxsize and nyquist frequency and the extremal values of the gr and newton power spectra withing that region
         ax.set_xlim(k_boxsize, k_nyquist)
         #TODO: fix below ylims for power spectra
-        indices = np.arange(ax.get_xticks().size)
-        new_indices = indices[(ax.get_xticks() < k_nyquist) & (ax.get_xticks() > k_boxsize)]
-        dataarrays = np.array([ax.lines[i].get_data()[1][new_indices] for i in range(len(ax.lines))])
+        # indices = np.arange(ax.get_xticks().size)
+        # new_indices = indices[(ax.get_xticks() < k_nyquist) & (ax.get_xticks() > k_boxsize)]
+        # dataarrays = np.array([ax.lines[i].get_data()[1][new_indices] for i in range(len(ax.lines))])
         # print(dataarrays.min(), dataarrays.max())
         # ax.set_ylim(ymin, ymax+ymax*0.1)
 
