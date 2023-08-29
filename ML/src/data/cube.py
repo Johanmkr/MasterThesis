@@ -24,6 +24,25 @@ redshift_to_snap = {
     0: "snap005"
 }
 
+#TODO: I think this is wrong, but for testing only
+# snap_to_redshift = {
+#     "snap000": 0,
+#     "snap001": 1,
+#     "snap002": 5,
+#     "snap003": 10,
+#     "snap004": 15,
+#     "snap005": 20
+# }
+
+# redshift_to_snap = {
+#     0: "snap000",
+#     1: "snap001",
+#     5: "snap002",
+#     10: "snap003",
+#     15: "snap004",
+#     20: "snap005"
+# }
+
 
 class Cube:
     def __init__(self, cube_path:str) -> None:
