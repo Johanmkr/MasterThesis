@@ -27,7 +27,7 @@ class CambSpectra:
     def __init__(self) -> None:
         self.pars = camb.CAMBparams()
         self.pars.set_cosmology(**camb_main_params)
-        self.pars.InitPower.set_params(camb_init_power_params)
+        self.pars.InitPower.set_params(**camb_init_power_params)
         self.pars.set_for_lmax(2500, lens_potential_accuracy=0)
     
     def __call__(self, redshift:float=0.0):# -> tuple(np.ndarray, np.ndarray):
