@@ -360,55 +360,6 @@ class AddPowerSpectraComponents:
         if not hasattr(self, "classObj"):
             self.classObj = clPk.ClassSpectra()
 
-    
-"""
-    def _add_gr_newton(self, ax:plt.axis, pk_type:str, redshift:float, add_ratio:bool=True, **kwargs:dict) -> tuple:
-        gr_spectrum = self.grPS.get_power_spectrum(pk_type, redshift)
-        newton_spectrum = self.newtonPS.get_power_spectrum(pk_type, redshift)
-        gr_line, = ax.loglog(gr_spectrum["k"], gr_spectrum["pk"], label="Gevolution", **kwargs)
-        newton_line, = ax.loglog(newton_spectrum["k"], newton_spectrum["pk"], ls="--", **kwargs)
-        
-        if add_ratio:
-            ax2 = ax.twinx()
-            ratio = np.abs(gr_spectrum["pk"] - newton_spectrum["pk"])/newton_spectrum["pk"]
-            ratio_line, = ax2.plot(gr_spectrum["k"], ratio, color="black", ls=":", label="Ratio")
-            ax2.set_ylabel(r"$[P(k)_{GR} - P(k)_{New}] / P(k)_{New}$")
-            ax2.set_ylim(ratio.min()-ratio.min()*0.1, ratio.max()+ratio.max()*0.1)
-            ax2.legend(loc="lower right")
-            return gr_line, newton_line, ratio_line
-        return gr_line, newton_line
-
-    def _add_camb_class(self, ax:plt.axis, redshift:float) -> tuple:
-        self._init_camb()
-        self._init_class()
-        camb_spectrum = self.cambObj(redshift)
-        class_spectrum = self.classObj(redshift)
-        camb_line, = ax.plot(*camb_spectrum, label="CAMB", ls=":", color="purple")
-        class_line, = ax.plot(*class_spectrum, label="CLASS", ls=":", color="orange")
-        return camb_line, class_line
-
-
-    def _add_axis_limits(self, ax:plt.axis) -> None:
-        #scale whole figure to the limits governed by the boxsize and nyquist frequency and the extremal values of the gr and newton power spectra withing that region
-        ax.set_xlim(k_boxsize, k_nyquist)
-        #TODO: fix below ylims for power spectra
-        # indices = np.arange(ax.get_xticks().size)
-        # new_indices = indices[(ax.get_xticks() < k_nyquist) & (ax.get_xticks() > k_boxsize)]
-        # dataarrays = np.array([ax.lines[i].get_data()[1][new_indices] for i in range(len(ax.lines))])
-        # print(dataarrays.min(), dataarrays.max())
-        # ax.set_ylim(ymin, ymax+ymax*0.1)
-
-    def _add_cube_spectra(self, ax:plt.axis, redshift:float, color="red") -> tuple:
-        grcubedir = self.dataDir + f"gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5"
-        newtoncubedir = self.dataDir + f"newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5"
-
-        cube_spectrum_gr = pyliansPK.CubePowerSpectra(grcubedir).get_1d_power_spectrum()
-        cube_spectrum_newton = pyliansPK.CubePowerSpectra(newtoncubedir).get_1d_power_spectrum()
-        gr_cube_line, = ax.loglog(cube_spectrum_gr["k"], cube_spectrum_gr["pk"], label="Cube", color=color)
-        newton_cube_line, = ax.loglog(cube_spectrum_newton["k"], cube_spectrum_newton["pk"], ls="--", color=color)
-        return gr_cube_line, newton_cube_line
-
- """       
 
 
 if __name__=="__main__":
