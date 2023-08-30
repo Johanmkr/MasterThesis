@@ -40,7 +40,7 @@ class MakeFigures:
                 save (bool): Whether to save the plot or not.
         """
 
-        figures = []
+        # figures = []
 
         if isinstance(seeds, int):
             seeds = [seeds]
@@ -58,9 +58,9 @@ class MakeFigures:
 
             figure.set_settings(settings)
             lines = []
-            lines.append(adder.add_gr_gev(pk_type, redshift, color="blue"))
-            lines.append(adder.add_newton_gev(pk_type, redshift, color="blue"))
-            # lines.extend(adder.add_gr_newton_gev(pk_type, redshift, color="blue"))
+            # lines.append(adder.add_gr_gev(pk_type, redshift, color="blue"))
+            # lines.append(adder.add_newton_gev(pk_type, redshift, color="blue"))
+            lines.extend(adder.add_gr_newton_gev(pk_type, redshift, color="blue"))
 
             for line in lines:
                 figure.ax.add_line(line)
@@ -87,28 +87,45 @@ class MakeFigures:
                 save (bool): Whether to save the plot or not.   
         """
 
-        comp_plot = CustomFigure()
-        settings = {
-            "xscale": "log",
-            "yscale": "log",
-            "xlabel": r"k $[h/Mpc]$",
-            "ylabel": r"P(k) $[h/Mpc]^3$",
-            "title": f"Power spectrum of '{pk_type}' at redshift z={redshift:.1f}, for seed {self.grPS.seed:04d}"
-        }
+        if isinstance(seeds, int):
+            seeds = [seeds]
 
-        comp_plot.set_settings(settings)
-        self._add_gr_newton(comp_plot.ax, pk_type, redshift)
-        # self._add_axis_limits(comp_plot.ax)
-        self._add_camb_class(comp_plot.ax, redshift)
-        self._add_limits(comp_plot.ax)
-        comp_plot.ax.legend(loc="lower left")
+        for seed in seeds:
+            figure = CustomFigure()
+            adder = AddPowerSpectraComponents(self.dataDirwoSeed + f"seed{seed:04d}/")
+            settings = {
+                "xscale": "log",
+                "yscale": "log",
+                "xlabel": r"k $[h/Mpc]$",
+                "ylabel": r"P(k) $[h/Mpc]^3$",
+                "title": f"Power spectrum of '{pk_type}' at redshift z={redshift:.1f}, for seed {seed:04d}"
+            }
 
-        if save:
-            plt.savefig(self.dataDir + "ps.png")
-        else:
-            plt.show()
+            figure.set_settings(settings)
+            lines = []
+            lines.extend(adder.add_gr_newton_gev("delta", redshift, color="blue"))
+            lines.append(adder.add_CAMB_spectrum(redshift, color="purple"))
+            lines.append(adder.add_CLASS_spectrum(redshift, color="orange"))
 
-    def plot_average_ps(self, seeds:Union[int, tuple, list]=1234, pk_type:str="delta", redshift:float=0.0, seed_range:Union[list, np.ndarray, tuple]=np.arange(10, dtype=int), save:bool=False) -> None:
+            for line in lines:
+                figure.ax.add_line(line)
+
+            figure.ax.autoscale_view()
+
+            leg1 = figure.ax.legend(handles=lines, loc="upper left")
+            figure.ax.add_artist(leg1)
+
+            adder._add_gr_newton_legend(figure.ax)
+
+
+
+            if save:
+                plt.savefig(self.dataDir + "ps.png")
+            else:
+                plt.show()
+
+
+    def plot_average_ps(self, seeds:Union[int, tuple, list]=1234, pk_type:str="delta", redshift:float=0.0, seed_range:Union[list, np.ndarray, tuple]=np.arange(0, 1999, 10, dtype=int), save:bool=False) -> None:
         """
             Plot the average power spectrum for a given seed range.
             Args:
@@ -118,27 +135,54 @@ class MakeFigures:
                 save (bool): Whether to save the plot or not.
         """
 
-        avg_plot = CustomFigure()
+        if isinstance(seeds, int):
+            seeds = [seeds]
 
-        settings = {
-            "xscale": "log",
-            "yscale": "log",
-            "xlabel": r"k $[h/Mpc]$",
-            "ylabel": r"P(k) $[h/Mpc]^3$",
-            "title": f"Average power spectrum of '{pk_type}' at redshift z={redshift:.1f}"
-        }
-        avg_plot.set_settings(settings)
-        self._add_averages(avg_plot.ax, pk_type, redshift, seed_range)
-        self._add_camb_class(avg_plot.ax, redshift)
-        self._add_limits(avg_plot.ax)
-        self._add_gr_newton(avg_plot.ax, pk_type, redshift, add_ratio=False)
+        default_adder = AddPowerSpectraComponents(self.dataDirwoSeed + f"seed{seeds[0]:04d}/")
+        avg_gr, avg_newton = default_adder.add_averages(pk_type, redshift, seed_range, color="lime")
 
-        avg_plot.ax.legend(loc="lower left")
+        for seed in seeds:  
+            avg_plot = CustomFigure()
+            adder = AddPowerSpectraComponents(self.dataDirwoSeed + f"seed{seed:04d}/")
 
-        if save:
-            plt.savefig(self.dataDir + "ps.png")
-        else:
-            plt.show()
+            settings = {
+                "xscale": "log",
+                "yscale": "log",
+                "xlabel": r"k $[h/Mpc]$",
+                "ylabel": r"P(k) $[h/Mpc]^3$",
+                "title": f"Average power spectrum of '{pk_type}' at redshift z={redshift:.1f}, with seed {seed:04d}"
+            }
+            avg_plot.set_settings(settings)
+
+            lines = []
+
+            # lines.append(adder.add_averages(pk_type, redshift, seed_range, color="green"))
+            lines.extend(adder.add_gr_newton_gev(pk_type, redshift, color="blue"))
+
+            if pk_type == "delta":
+                lines.append(adder.add_CAMB_spectrum(redshift, color="purple"))
+                lines.append(adder.add_CLASS_spectrum(redshift, color="orange"))
+            
+            copied_avg_gr = Line2D(avg_gr.get_xdata(), avg_gr.get_ydata(), label="Avg.", color="springgreen")
+            copied_avg_newton = Line2D(avg_newton.get_xdata(), avg_newton.get_ydata(), ls="--", color="springgreen")
+            lines.append(copied_avg_gr)
+            lines.append(copied_avg_newton)
+            
+            for line in lines:
+                avg_plot.ax.add_line(line)
+
+            adder._add_gr_newton_legend(avg_plot.ax)
+
+            leg1 = avg_plot.ax.legend(handles=lines, loc="upper right")
+            
+            avg_plot.ax.add_artist(leg1)
+
+            # avg_plot.ax.legend(loc="lower left")
+
+            if save:
+                plt.savefig(self.dataDir + "ps.png")
+            else:
+                plt.show()
 
     def plot_cube_ps(self, seeds:Union[int, tuple, list]=1234, redshift:float=0.0, save:bool=False) -> None:
         """
@@ -147,26 +191,42 @@ class MakeFigures:
                 redshift (float/int): The redshift of the power spectrum to plot.
                 save (bool): Whether to save the plot or not.
         """
-        cube_plot = CustomFigure()
 
-        settings = {
-            "xscale": "log",
-            "yscale": "log",
-            "xlabel": r"k $[h/Mpc]$",
-            "ylabel": r"P(k) $[h/Mpc]^3$",
-            "title": f"Power spectrum of 'phi' at redshift z={redshift:.1f}, for seed {self.grPS.seed:04d}"
-        }
+        if isinstance(seeds, int):
+            seeds = [seeds]
 
-        cube_plot.set_settings(settings)
-        gr_newton = self._add_gr_newton(cube_plot.ax, "phi", redshift)
-        self._add_cube_spectra(cube_plot.ax, redshift)
-        limits = self._add_limits(cube_plot.ax)
-        cube_plot.ax.legend(loc="lower left")
+        for seed in seeds:  
+            cube_plot = CustomFigure()
+            adder = AddPowerSpectraComponents(self.dataDirwoSeed + f"seed{seed:04d}/")
 
-        if save:
-            plt.savefig(self.dataDir + "ps.png")
-        else:
-            plt.show()
+            settings = {
+                "xscale": "log",
+                "yscale": "log",
+                "xlabel": r"k $[h/Mpc]$",
+                "ylabel": r"P(k) $[h/Mpc]^3$",
+                "title": f"Power spectrum of 'phi' at redshift z={redshift:.1f}, for seed {seed:04d}"
+            }
+
+            cube_plot.set_settings(settings)
+
+            lines = []
+
+            lines.extend(adder.add_gr_newton_gev("phi", redshift, color="blue"))
+            lines.extend(adder.add_cube_spectra(redshift, color="red"))
+
+            for line in lines:
+                cube_plot.ax.add_line(line)
+            
+            leg1 = cube_plot.ax.legend(handles=lines, loc="upper right")
+            cube_plot.ax.add_artist(leg1)
+
+            adder._add_gr_newton_legend(cube_plot.ax)
+            cube_plot.ax.autoscale_view()
+
+            if save:
+                plt.savefig(self.dataDir + "ps.png")
+            else:
+                plt.show()
 
 
 class AddPowerSpectraComponents:
@@ -182,7 +242,7 @@ class AddPowerSpectraComponents:
 
     def add_gr_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> Line2D:
         gr_spectrum = self.grPS.get_power_spectrum(pk_type, redshift)
-        gr_line = Line2D(gr_spectrum["k"], gr_spectrum["pk"], label="Gev", **kwargs)
+        gr_line = Line2D(gr_spectrum["k"], gr_spectrum["pk"], label="Gev.", **kwargs)
         return gr_line
 
     def add_newton_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> Line2D:
@@ -194,20 +254,18 @@ class AddPowerSpectraComponents:
         return self.add_gr_gev(pk_type, redshift, **kwargs), self.add_newton_gev(pk_type, redshift, **kwargs)
     
     def add_CAMB_spectrum(self, redshift:float, **kwargs:dict) -> Line2D:
-        if not hasattr(self, "cambObj"):
-            self._init_camb()
+        self._init_camb()
         camb_spectrum = self.cambObj(redshift)
-        camb_line = Line2D(camb_spectrum[0], camb_spectrum[1], **kwargs)
+        camb_line = Line2D(camb_spectrum[0], camb_spectrum[1], label="CAMB", ls=":", **kwargs)
         return camb_line
     
     def add_CLASS_spectrum(self, redshift:float, **kwargs:dict) -> Line2D:
-        if not hasattr(self, "classObj"):
-            self._init_class()
+        self._init_class()
         class_spectrum = self.classObj(redshift)
-        class_line = Line2D(class_spectrum[0], class_spectrum[1], **kwargs)
+        class_line = Line2D(class_spectrum[0], class_spectrum[1], label="CLASS", ls=":", **kwargs)
         return class_line
     
-    def add_averages(self, pk_type:str, redshift:float, seed_range:Union[list, np.ndarray, tuple], **kwargs) -> tuple:
+    def add_averages(self, pk_type:str, redshift:float, seed_range:Union[list, np.ndarray, tuple], **kwargs:dict) -> tuple:
         """
             Add the average power spectrum to the plot.
             Args:
@@ -248,14 +306,14 @@ class AddPowerSpectraComponents:
             Args:
                 redshift (float/int): The redshift of the power spectrum to plot.
         """
-        grcubedir = self.dataDir + f"gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5"
-        newtoncubedir = self.dataDir + f"newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5"
+        grcubedir = self.dataDirwSeed + f"gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5"
+        newtoncubedir = self.dataDirwSeed + f"newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5"
 
         cube_spectrum_gr = pyliansPK.CubePowerSpectra(grcubedir).get_1d_power_spectrum()
         cube_spectrum_newton = pyliansPK.CubePowerSpectra(newtoncubedir).get_1d_power_spectrum()
         gr_cube_line = Line2D(cube_spectrum_gr["k"], cube_spectrum_gr["pk"], label="Cube", **kwargs)
         newton_cube_line = Line2D(cube_spectrum_newton["k"], cube_spectrum_newton["pk"], ls="--", **kwargs)
-        return (gr_cube_line, newton_cube_line)
+        return gr_cube_line, newton_cube_line
 
     def _path_to_different_seed(self, seed:int) -> str:
         """
@@ -292,18 +350,14 @@ class AddPowerSpectraComponents:
         """
             Initialise the CAMB power spectra.
         """
-        if isinstance(self.cambObj, caPk.CambSpectra):
-            pass
-        else:
+        if not hasattr(self, "cambObj"):
             self.cambObj = caPk.CambSpectra()
 
     def _init_class(self) -> None:
         """
             Initialise the CLASS power spectra.
         """
-        if isinstance(self.classObj, clPk.ClassSpectra):
-            pass
-        else:
+        if not hasattr(self, "classObj"):
             self.classObj = clPk.ClassSpectra()
 
     
@@ -371,6 +425,8 @@ if __name__=="__main__":
 
     path = datapath 
     obj = MakeFigures(path)
-    obj.plot_ps(seeds=[0000,1234,1999], pk_type=pktype, redshift=redshift)
-    #obj.compare_camb_class(redshift=redshift)
-    # obj.plot_average_ps(pk_type=pktype, redshift=redshift, seed_range=np.arange(2000, dtype=int))
+    # obj.plot_ps(seeds=[0000,1234,1999], pk_type=pktype, redshift=redshift)
+    # obj.compare_camb_class(seeds=[0000,1234,1999], redshift=redshift)
+    # obj.plot_average_ps(seeds=[0000, 1234, 1999], pk_type=pktype, redshift=redshift, seed_range=np.arange(0,2000, 20, dtype=int))
+    obj.plot_cube_ps(seeds=[0000, 1234, 1999], redshift=redshift)
+
