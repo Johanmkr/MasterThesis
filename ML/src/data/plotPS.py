@@ -274,7 +274,7 @@ class AddPowerSpectraComponents:
                 redshift (float/int): The redshift of the power spectrum to plot. Defaults to 0.
                 seed_range (list, np.ndarray, tuple): The range of seeds to average over.
         """
-        print(f"Averaging over seeds: {seed_range}")
+        print(f"Averaging over a total of {len(seed_range)} seeds ranging over: [{seed_range[0]} - {seed_range[-1]}] in incriments of {seed_range[1]-seed_range[0]}.")
 
         #Get the first power spectra 
         gr_avg = ps.PowerSpectra(self._path_to_different_seed(seed_range[0])+"gr")
