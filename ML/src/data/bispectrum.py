@@ -4,7 +4,9 @@ import Pk_library as PKL
 import cube
 
 
-class Bispectrum()
+class Bispectrum:
+    def __init__(self):
+        pass
 
 if __name__=="__main__":
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
