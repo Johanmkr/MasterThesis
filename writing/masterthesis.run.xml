@@ -82,7 +82,7 @@
       <file>masterthesis.bcf</file>
     </requires>
     <requires type="editable">
-      <file>myref.bib</file>
+      <file>references/project_description.bib</file>
     </requires>
   </external>
 </requests>
