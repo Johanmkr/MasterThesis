@@ -1,5 +1,16 @@
 \usepackage[utf8]{inputenc} 
 \usepackage[T1]{url}\urlstyle{sf}
 \usepackage{babel, csquotes, graphicx, textcomp, old_el_paso/uiomasterfp, varioref}
-% \usepackage[backend=biber,style=numeric-comp]{biblatex}
+\usepackage[backend=biber,style=numeric-comp]{biblatex}
 \usepackage[hidelinks, hypertexnames=false]{hyperref}
+
+
+% Referecing sections, equations etc
+\usepackage[capitalize]{cleveref}
+\crefdefaultlabelformat{\textbf{#2}}
+\crefname{eq}{Eq.}{Eq.}
+\crefname{sec}{Sec.}{Sec.}
+\crefname{app}{App.}{App.}
+\crefname{fig}{Fig.}{Fig.}
+\crefname{tab}{Tab.}{Tab.}
+\crefdefaultlabelformat{#2#1#3}
