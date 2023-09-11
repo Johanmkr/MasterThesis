@@ -9,7 +9,7 @@ relativistic corrections using machine learning
 techniques}         %% ... if any
 \author{Johan Mylius Kroken}                  %% ... or whoever 
 
-% \addbibresource{mybib.bib}            %% ... or whatever
+\addbibresource{references/myref.bib}            %% ... or whatever
 
 \begin{document}
 \uiomasterfp[dept={Institute of Theoretical Astrophysics},  %% ... or your department
@@ -35,17 +35,25 @@ techniques}         %% ... if any
   Here comes your preface, including acknowledgments and thanks.
 \end{preface}
 
-\mainmatter{}
-\part{Introduction}                   %% ... Innledning or Innleiing
-\chapter{Background}                  %% ... or Bakgrunn
-\section{Xxx's work}                  %% ... or whatever
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  The main part of the thesis
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\part{The project}                    %% ... or ??
-\chapter{Planning the project}        %% ... or ??
+\mainmatter{}
+\chapter{Introduction}                  %% ... or Bakgrunn
+\input{chapters/introduction.tex}
+
+                  %% ... or whatever
+
+\part{Cosmological Structure Formation}                   %% ... or ??
+\input{chapters/cosmological_structure_formation/cosmological_structure_formation}
+
+\part{Machine Learning}                
+\input{chapters/machine_learning/machine_learning}
 
 \part{Conclusion}                     %% ... or ??
 \chapter{Results}                     %% ... or ??
 
 \backmatter{}
-% \printbibliography{}
+\printbibliography{}
 \end{document}
