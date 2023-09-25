@@ -45,7 +45,7 @@ redshift_to_snap = {
 
 
 class Cube:
-    def __init__(self, cube_path:str) -> None:
+    def __init__(self, cube_path:str, normalise:bool=False) -> None:
         """
             Initialise the Cube object. 
             Args:
@@ -58,6 +58,8 @@ class Cube:
         self.redshift = snap_to_redshift[self.snapID]
 
         self._read_cube()
+        if normalise:
+            self._normalise_cube()
     
     def _read_cube(self) -> None:
         """
@@ -67,6 +69,14 @@ class Cube:
         self.h5Data = h5File["data"]
         self.data = self.h5Data[()]
         h5File.close()
+
+    def _normalise_cube(self) -> None:
+        """
+            Normalise the cube.
+        """
+        self.cubeMean = np.mean(self.data)
+        self.cubeStd = np.std(self.data)
+        self.data = (self.data - self.cubeMean)/self.cubeStd
 
     def get_gradient(self, dim:int=0) -> None:
         """

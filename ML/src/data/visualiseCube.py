@@ -51,12 +51,32 @@ class VisualiseCube:
         self.fig.colorbar(self.im, label=r"$\phi$")
 
     def _initialise_animation(self) -> None:
-        self.anim = animation.FuncAnimation(self.fig, self._update_frame, frames=self.cube.data.shape[0], interval=50, blit=False)
+        self.anim = animation.FuncAnimation(self.fig, self._update_frame, frames=self.data.shape[0], interval=50, blit=False)
         # self.anim.event_source.add_callback(self._update_title)
 
     def _initialise_animation_writer(self) -> None:
         self.writer = animation.writers["ffmpeg"](fps=30)
         self.writer.setup(self.fig, self.savePath + self.saveName + ".mp4")
+
+class VisualiseDifference(VisualiseCube):
+    def __init__(self, seed:int, redshift:int, axis:int=0, save_path:str=None, save_name:str=None, show:bool=True) -> None:
+        self.seed = seed
+        self.redshift = redshift
+        self.axis = axis
+        self.savePath = save_path if save_path is not None else "./animations/"
+        self.saveName = save_name if save_name is not None else f"seed{self.seed}_redshift{self.redshift}"
+        self.show = show
+        self.name = f"Difference for seed: {self.seed}, Redshift: {self.redshift}: (GR - Newton)/GR)"
+        
+        self.GRcube = cube.Cube(f"/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/seed{self.seed:04d}/gr/gr_{cube.redshift_to_snap[self.redshift]}_phi.h5", normalise=True)
+        self.Newtoncube = cube.Cube(f"/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/seed{self.seed:04d}/newton/newton_{cube.redshift_to_snap[self.redshift]}_phi.h5", normalise=True)
+        self.data = (self.GRcube.data - self.Newtoncube.data)
+
+        percentile1 = np.percentile(self.data, 1)
+        percentile99 = np.percentile(self.data, 99)
+        self.data = self.data.clip(percentile1, percentile99)
+        self._initialise_figure()
+        self._initialise_animation()
 
 
 
@@ -74,8 +94,9 @@ if __name__=="__main__":
         axis=0
     path = datapath + f"seed{seed_nr:04d}/" + gravity + f"/{gravity}_{cube.redshift_to_snap[redshift]}_phi.h5"
 
-    obj = cube.Cube(path)
-    vis = VisualiseCube(obj, axis=axis)
+    # obj = cube.Cube(path)
+    # vis = VisualiseCube(obj, axis=axis)
+    vis = VisualiseDifference(seed_nr, redshift, axis=axis)
     plt.show()
 
     # embed()
