@@ -2,7 +2,7 @@
 \usepackage{old_el_paso/overhead}
 \usepackage{newcommands}
 
-% \includeonly{chapters/machine_learning/machine_learning}
+% \includeonly{chapters/cosmological_structure_formation/cosmological_structure_formation}
 
 
 \title{-sometitle-}        %% ... or whatever
@@ -13,7 +13,8 @@ techniques}         %% ... if any
 
 % References
 \addbibresource{references/project_description.bib} 
-
+% \bibliographystyle{plainnat}
+ 
 
 \begin{document}
 \uiomasterfp[dept={Institute of Theoretical Astrophysics},  %% ... or your department
@@ -46,17 +47,20 @@ techniques}         %% ... if any
 \mainmatter{}
 
 % Introduction
-\include{chapters/introduction}
+\input{chapters/introduction}
+% \cite{2012PhRvD..85b3504J}
 
 % PART: Cosmological Structure Formation
-\include{chapters/cosmological_structure_formation/cosmological_structure_formation}
+\input{chapters/cosmological_structure_formation/cosmological_structure_formation}
 
 % PART: Machine Learning
-\include{chapters/machine_learning/machine_learning}
+\input{chapters/machine_learning/machine_learning}
 
 % \part{Conclusion}                     %% ... or ??
 % \chapter{Results}                     %% ... or ??
 
 \backmatter{}
-\printbibliography{}
+
+\printbibliography
+
 \end{document}

@@ -1,8 +1,9 @@
 \usepackage[utf8]{inputenc} 
 \usepackage[T1]{url}\urlstyle{sf}
 \usepackage{babel, csquotes, graphicx, textcomp, old_el_paso/uiomasterfp, varioref}
-\usepackage[backend=biber,style=numeric-comp]{biblatex}
+\usepackage[backend=biber,style=authoryear, autocite=inline]{biblatex}
 \usepackage[hidelinks, hypertexnames=false]{hyperref}
+% \usepackage{hyperref}
 
 
 % Referecing sections, equations etc
@@ -14,3 +15,11 @@
 \crefname{fig}{Fig.}{Fig.}
 \crefname{tab}{Tab.}{Tab.}
 \crefdefaultlabelformat{#2#1#3}
+
+% \hypersetup{
+%     colorlinks=true,
+%     linkcolor=black,
+%     filecolor=magenta,      
+%     urlcolor=black,
+%     citecolor=blue,
+% }
