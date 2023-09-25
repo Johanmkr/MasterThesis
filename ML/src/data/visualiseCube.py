@@ -66,7 +66,7 @@ class VisualiseDifference(VisualiseCube):
         self.savePath = save_path if save_path is not None else "./animations/"
         self.saveName = save_name if save_name is not None else f"seed{self.seed}_redshift{self.redshift}"
         self.show = show
-        self.name = f"Difference for seed: {self.seed}, Redshift: {self.redshift}: (GR - Newton)/GR)"
+        self.name = f"Difference for seed: {self.seed}, Redshift: {self.redshift}: GR - Newton"
         
         self.GRcube = cube.Cube(f"/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/seed{self.seed:04d}/gr/gr_{cube.redshift_to_snap[self.redshift]}_phi.h5", normalise=True)
         self.Newtoncube = cube.Cube(f"/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/seed{self.seed:04d}/newton/newton_{cube.redshift_to_snap[self.redshift]}_phi.h5", normalise=True)
