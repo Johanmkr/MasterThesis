@@ -2,11 +2,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 import Pk_library as PKL
 import cube
+from typing import Union
 
 
-class Bispectrum:
-    def __init__(self):
-        pass
+class CubeBispectrum:
+    def __init__(self, cube_object:Union[cube.Cube, str], kwargs:dict={"threads": 1, "verbose": False}) -> None:
+        if isinstance(cube_object, str):
+            cube_object = cube.Cube(cube_object)
+            self.cube = cube_object
+            self.data = self.cube.data
+            
 
 if __name__=="__main__":
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
