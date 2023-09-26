@@ -1,15 +1,15 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'masterthesis.blg'
-[81] biber:340> INFO - === Mon Sep 25, 2023, 15:37:13
+[80] biber:340> INFO - === Tue Sep 26, 2023, 12:16:26
 [97] Biber.pm:418> INFO - Reading 'masterthesis.bcf'
-[195] Biber.pm:972> INFO - Found 2 citekeys in bib section 0
-[215] Biber.pm:4383> INFO - Processing section 0
-[225] Biber.pm:4574> INFO - Looking for bibtex file 'references/project_description.bib' for section 0
-[231] bibtex.pm:1713> INFO - LaTeX decoding ...
-[306] bibtex.pm:1518> INFO - Found BibTeX data source 'references/project_description.bib'
-[370] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[370] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
-[370] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
-[370] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-UK'
-[379] bbl.pm:654> INFO - Writing 'masterthesis.bbl' with encoding 'UTF-8'
-[382] bbl.pm:757> INFO - Output to masterthesis.bbl
+[198] Biber.pm:972> INFO - Found 2 citekeys in bib section 0
+[218] Biber.pm:4383> INFO - Processing section 0
+[228] Biber.pm:4574> INFO - Looking for bibtex file 'references/project_description.bib' for section 0
+[234] bibtex.pm:1713> INFO - LaTeX decoding ...
+[309] bibtex.pm:1518> INFO - Found BibTeX data source 'references/project_description.bib'
+[372] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[372] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
+[372] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
+[373] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-UK'
+[380] bbl.pm:654> INFO - Writing 'masterthesis.bbl' with encoding 'UTF-8'
+[383] bbl.pm:757> INFO - Output to masterthesis.bbl

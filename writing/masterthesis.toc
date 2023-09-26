@@ -25,22 +25,31 @@
 \contentsline {section}{\numberline {4.3}Power Spectra}{9}{section.37}%
 \contentsline {section}{\numberline {4.4}Non-linear Evolution}{9}{section.38}%
 \contentsline {section}{\numberline {4.5}Bispectra}{9}{section.39}%
-\contentsline {chapter}{\numberline {5}Simulations}{11}{chapter.41}%
+\contentsline {chapter}{\numberline {5}Simulation theory}{11}{chapter.41}%
 \contentsline {section}{\numberline {5.1}N-body simulations}{11}{section.42}%
-\contentsline {section}{\numberline {5.2}Mass Assignments Schemes}{11}{section.43}%
-\contentsline {part}{II\hspace {1em}Machine Learning}{13}{part.44}%
-\contentsline {chapter}{\numberline {6}Neural Networks}{15}{chapter.45}%
-\contentsline {section}{\numberline {6.1}Forward pass - Prediction}{15}{section.46}%
-\contentsline {subsection}{\numberline {6.1.1}Activation functions}{15}{subsection.47}%
-\contentsline {subsection}{\numberline {6.1.2}Loss functions}{15}{subsection.48}%
-\contentsline {section}{\numberline {6.2}Backpropagation - Training}{15}{section.49}%
-\contentsline {subsection}{\numberline {6.2.1}Gradient descent}{15}{subsection.50}%
-\contentsline {subsection}{\numberline {6.2.2}Optimizers}{15}{subsection.51}%
-\contentsline {subsection}{\numberline {6.2.3}Regularization}{15}{subsection.52}%
-\contentsline {chapter}{\numberline {7}Convolutional Neural Networks}{17}{chapter.53}%
-\contentsline {section}{\numberline {7.1}Convolution}{17}{section.54}%
-\contentsline {section}{\numberline {7.2}New Layers}{17}{section.55}%
-\contentsline {subsection}{\numberline {7.2.1}Convolutional layers}{17}{subsection.56}%
-\contentsline {subsection}{\numberline {7.2.2}Pooling layers}{17}{subsection.57}%
-\contentsline {subsection}{\numberline {7.2.3}Dropout layers}{17}{subsection.58}%
+\contentsline {subsection}{\numberline {5.1.1}Describing a box of particles}{11}{subsection.43}%
+\contentsline {subsection}{\numberline {5.1.2}Forces and Fields}{11}{subsection.44}%
+\contentsline {subsection}{\numberline {5.1.3}Mass Assignment Schemes}{11}{subsection.45}%
+\contentsline {subsection}{\numberline {5.1.4}Validity of Box}{11}{subsection.46}%
+\contentsline {section}{\numberline {5.2}Newtonian Approach}{11}{section.47}%
+\contentsline {section}{\numberline {5.3}General Relativistic Approach}{11}{section.48}%
+\contentsline {part}{II\hspace {1em}Machine Learning}{13}{part.49}%
+\contentsline {chapter}{\numberline {6}Neural Networks}{15}{chapter.50}%
+\contentsline {section}{\numberline {6.1}Forward pass - Prediction}{15}{section.51}%
+\contentsline {subsection}{\numberline {6.1.1}Activation functions}{15}{subsection.52}%
+\contentsline {subsection}{\numberline {6.1.2}Loss functions}{15}{subsection.53}%
+\contentsline {section}{\numberline {6.2}Backpropagation - Training}{15}{section.54}%
+\contentsline {subsection}{\numberline {6.2.1}Gradient descent}{15}{subsection.55}%
+\contentsline {subsection}{\numberline {6.2.2}Optimizers}{15}{subsection.56}%
+\contentsline {subsection}{\numberline {6.2.3}Regularization}{15}{subsection.57}%
+\contentsline {chapter}{\numberline {7}Convolutional Neural Networks}{17}{chapter.58}%
+\contentsline {section}{\numberline {7.1}Convolution}{17}{section.59}%
+\contentsline {section}{\numberline {7.2}New Layers}{17}{section.60}%
+\contentsline {subsection}{\numberline {7.2.1}Convolutional layers}{17}{subsection.61}%
+\contentsline {subsection}{\numberline {7.2.2}Pooling layers}{17}{subsection.62}%
+\contentsline {subsection}{\numberline {7.2.3}Dropout layers}{17}{subsection.63}%
+\contentsline {part}{III\hspace {1em}Acquiring Data}{19}{part.64}%
+\contentsline {chapter}{\numberline {8}Simulations}{21}{chapter.65}%
+\contentsline {chapter}{\numberline {9}Data Verification}{23}{chapter.66}%
+\contentsline {chapter}{\numberline {10}Trainable Dataset}{25}{chapter.67}%
 \contentsfinish 
