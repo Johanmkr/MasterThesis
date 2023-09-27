@@ -14,11 +14,7 @@ class CubeBispectrum(cube.Cube):
         """
         super().__init__(cube_path, normalise)
         self.data = self.data.astype(np.float32)
-        self.boxsize = 5120 #Mpc/h
-        self.Ngrid = self.data.shape[0]
-        self.resolution = self.boxsize / self.Ngrid
-        self.kF = 2*np.pi / self.boxsize
-        self.kN = np.pi / self.resolution
+        
             
     def equilateral_bispectrum(self, k_range:np.array, kwargs:dict={"threads": 10}) -> tuple:
         """
