@@ -2,21 +2,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 import Pk_library as PKL
 import cube
+import pyliansPK
 from typing import Union
+import pandas as pd
 
 
 class CubeBispectrum(cube.Cube):
     def __init__(self, cube_path:str, normalise:bool=False) -> None:
         """
-            Initialise the Cube object. 
-            Args:
-                cube_path (str): Path to the h5 file containing the cube.
+            Initialise the CubeBispectrum object.
+        Args:
+            cube_path (str): Data path to the cube.
+            normalise (bool, optional): Whether to normalise the cube or not. Defaults to False.
         """
         super().__init__(cube_path, normalise)
         self.data = self.data.astype(np.float32)
         
             
-    def equilateral_bispectrum(self, k_range:np.array, kwargs:dict={"threads": 10}) -> tuple:
+    def equilateral_bispectrum(self, k_range:np.array, kwargs:dict={"threads": 10}) -> pd.DataFrame:
         """
             Get the equilateral bispectrum.
             Args:
@@ -25,13 +28,15 @@ class CubeBispectrum(cube.Cube):
                 tuple: The k range, bispectrum and reduced bispectrum.
         """
         theta = 3/2*np.pi #equilateral
-        Bk = np.zeros(len(k_range))
-        Bk_red = np.zeros(len(k_range))
+        B = np.zeros(len(k_range))
+        Q = np.zeros(len(k_range))
         for i, k in enumerate(k_range):
             BBk = PKL.Bk(self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs)
-            Bk[i] = BBk.B * k**3 / (2*np.pi**2)
-            Bk_red[i] = BBk.Q * k**3 / (2*np.pi**2)
-        return (k_range, Bk, Bk_red)
+            #TODO: Check the dimensionality below
+            B[i] = BBk.B * k**3 / (2*np.pi**2)
+            Q[i] = BBk.Q * k**3 / (2*np.pi**2)
+        dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
+        return dBk
     
     def squeezed_bispectrum(self, k_range:np.array, kwargs:dict={"threads": 10}) -> tuple:
         """
@@ -41,15 +46,18 @@ class CubeBispectrum(cube.Cube):
             Returns:
                 tuple: The k range, bispectrum and reduced bispectrum.
         """
-        Bk = np.zeros(len(k_range))
-        Bk_red = np.zeros(len(k_range))
+        B = np.zeros(len(k_range))
+        Q = np.zeros(len(k_range))
         for i, k in enumerate(k_range):
             # theta = np.arccos(1/2*(self.kN/k)**2 - 1)
             theta = 19/20 * np.pi
             BBk = PKL.Bk(self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs)
-            Bk[i] = BBk.B * k**3 / (2*np.pi**2)
-            Bk_red[i] = BBk.Q * k**3 / (2*np.pi**2)
-        return (k_range, Bk, Bk_red)
+            #TODO: Check the dimensionality below
+            B[i] = BBk.B * k**3 / (2*np.pi**2)
+            Q[i] = BBk.Q * k**3 / (2*np.pi**2)
+        dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
+        return dBk
+
     
 if __name__=="__main__":
     datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
