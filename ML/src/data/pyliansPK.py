@@ -8,16 +8,13 @@ import pandas as pd
 # For testing
 from IPython import embed
 
-class CubePowerSpectra:
-    def __init__(self, cube_object:Union[cube.Cube, str], kwargs:dict={"threads": 1, "verbose": False}) -> None:
-        if isinstance(cube_object, str):
-            cube_object = cube.Cube(cube_object)
-        self.cube = cube_object
-        self.data = self.cube.data
-        self.Pk = PKL.Pk(self.data.astype(np.float32), 5120, axis=0, MAS="TSC", **kwargs)
+class CubePowerSpectra(cube.Cube):
+    def __init__(self, cube_path:str, normalise:bool=False) -> None:
+        super().__init__(cube_path, normalise)
+        self.data = self.data.astype(np.float32) 
 
     
-    def get_1d_power_spectrum(self) -> pd.DataFrame:
+    def get_1d_power_spectrum(self, kwargs:dict={"threads": 10, "verbose": False}) -> pd.DataFrame:
         """
             Get the power spectrum from the dictionary.
             Args:
@@ -25,6 +22,7 @@ class CubePowerSpectra:
             Returns:
                 pd.DataFrame: The power spectrum.
         """
+        self.Pk = PKL.Pk(self.data, self.boxsize, axis=0, MAS="CIC", **kwargs)
         k1D = self.Pk.k3D
         Pk1D = self.Pk.Pk[:,0] #monopole
         # k1D = self.Pk.k1D
