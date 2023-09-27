@@ -60,6 +60,12 @@ class Cube:
         self._read_cube()
         if normalise:
             self._normalise_cube()
+
+        self.boxsize = 5120 #Mpc/h
+        self.Ngrid = self.data.shape[0]
+        self.resolution = self.boxsize / self.Ngrid
+        self.kF = 2*np.pi / self.boxsize
+        self.kN = np.pi / self.resolution
     
     def _read_cube(self) -> None:
         """
