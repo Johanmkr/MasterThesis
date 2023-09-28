@@ -66,6 +66,7 @@ class Cube:
         self.resolution = self.boxsize / self.Ngrid
         self.kF = 2*np.pi / self.boxsize
         self.kN = np.pi / self.resolution
+
     
     def _read_cube(self) -> None:
         """
