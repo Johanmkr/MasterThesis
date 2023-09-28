@@ -33,8 +33,8 @@ class CubeBispectrum(cube.Cube):
         for i, k in enumerate(k_range):
             BBk = PKL.Bk(self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs)
             #TODO: Check the dimensionality below
-            B[i] = BBk.B * k**3 / (2*np.pi**2)
-            Q[i] = BBk.Q * k**3 / (2*np.pi**2)
+            B[i] = BBk.B #* k**3 / (2*np.pi**2)
+            Q[i] = BBk.Q #* k**3 / (2*np.pi**2)
         dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
         return dBk
     
@@ -53,8 +53,8 @@ class CubeBispectrum(cube.Cube):
             theta = 19/20 * np.pi
             BBk = PKL.Bk(self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs)
             #TODO: Check the dimensionality below
-            B[i] = BBk.B * k**3 / (2*np.pi**2)
-            Q[i] = BBk.Q * k**3 / (2*np.pi**2)
+            B[i] = BBk.B #* k**3 / (2*np.pi**2)
+            Q[i] = BBk.Q #* k**3 / (2*np.pi**2)
         dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
         return dBk
 
@@ -71,5 +71,5 @@ if __name__=="__main__":
     k = np.array([2.4e-3])
     for i in np.arange(0,50,2):
         print(f"\n\n\nThreads: {i+2}")
-        cb.squeezed_bispectrum(k, {"threads": i+2})
+        cb.equilateral_bispectrum(k, {"threads": i+2})
     
