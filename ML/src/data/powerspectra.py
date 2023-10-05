@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import pandas as pd
+import pathlib as pl
 
 # For testing
 from IPython import embed
@@ -55,16 +56,16 @@ redshift_to_pk = {
 }
 
 class PowerSpectra:
-    def __init__(self, data_dir:str, store_all:bool=False) -> None:
+    def __init__(self, data_dir:pl.PosixPath, store_all:bool=False) -> None:
         """
             Initialise the PowerSpectra object.
             Args:
                 data_dir (str): The directory containing the power spectra.
         """
         self.dataDir = data_dir
-        self.gr = "gr" in self.dataDir
+        self.gr = "gr" in str(self.dataDir)
         self.gravity = "gr" if self.gr else "newton"
-        self.seed = int(self.dataDir[-7:-3] if self.gr else self.dataDir[-11:-7]) # Will be 0000, 0001, etc.
+        self.seed = int(str(self.dataDir)[-7:-3] if self.gr else str(self.dataDir)[-11:-7]) # Will be 0000, 0001, etc.
         self.pk_types = ["deltacdm", "deltaclass", "delta", "phi"] if self.gr else ["delta", "deltaclass", "phi"]
         self.store_all = store_all
 
@@ -80,7 +81,7 @@ class PowerSpectra:
             Returns:
                 dF (pd.DataFrame): The power spectrum as a pandas DataFrame.
         """
-        pk_path = self.dataDir + f"/{self.gravity}_{redshift_to_pk[redshift]}_{pk_type}.dat"
+        pk_path = self.dataDir / f"{self.gravity}_{redshift_to_pk[redshift]}_{pk_type}.dat"
         pk = np.loadtxt(pk_path, skiprows=1)
         dF = pd.DataFrame(pk, columns=["k", "pk", "sigma_k", "sigma_pk", "count"])
         return dF

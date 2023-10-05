@@ -8,12 +8,14 @@ import classPK as clPk
 import cube
 import pyliansPK
 from typing import Union
+import paths
+import pandas as pd
 
 from IPython import embed
 
 
 # Local variabels used for testing
-boxsize = 5120 #Mpcq
+boxsize = 5120 #Mpc
 ngrid = 256 #px
 resolution = boxsize/ngrid #Mpc/px
 k_nyquist = np.pi / resolution 
@@ -230,42 +232,43 @@ class MakeFigures:
 
 
 class AddPowerSpectraComponents:
-    def __init__(self, data_dir_with_seed:str) -> None:
+    def __init__(self, data_dir_with_seed:str, return_pd:bool=False) -> None:
         """
             Initialise the PowerSpectra objects for both GR and Newton.
             Args:
                 data_dir (str): The directory containing the power spectra (seed included)
         """
-        self.dataDirwSeed = data_dir_with_seed
-        self.grPS = ps.PowerSpectra(self.dataDirwSeed + "gr")
-        self.newtonPS = ps.PowerSpectra(self.dataDirwSeed + "newton")
+        self.dataDirwSeed:path = data_dir_with_seed
+        self.grPS = ps.PowerSpectra(self.dataDirwSeed / "gr")
+        self.newtonPS = ps.PowerSpectra(self.dataDirwSeed / "newton")
+        self.return_pd = return_pd
 
-    def add_gr_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> Line2D:
+    def add_gr_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> Line2D|pd.DataFrame:
         gr_spectrum = self.grPS.get_power_spectrum(pk_type, redshift)
         gr_line = Line2D(gr_spectrum["k"], gr_spectrum["pk"], label="Gev.", **kwargs)
-        return gr_line
+        return gr_line if not self.return_pd else gr_spectrum
 
-    def add_newton_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> Line2D:
+    def add_newton_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> Line2D|pd.DataFrame:
         newton_spectrum = self.newtonPS.get_power_spectrum(pk_type, redshift)
-        newton_line = Line2D(newton_spectrum["k"], newton_spectrum["pk"], ls="--", **kwargs)
-        return newton_line
+        newton_line = Line2D(newton_spectrum["k"], newton_spectrum["pk"], **kwargs)
+        return newton_line if not self.return_pd else newton_spectrum
 
     def add_gr_newton_gev(self, pk_type:str, redshift:float, **kwargs:dict) -> tuple:
-        return self.add_gr_gev(pk_type, redshift, **kwargs), self.add_newton_gev(pk_type, redshift, **kwargs)
+        return self.add_gr_gev(pk_type, redshift, **kwargs), self.add_newton_gev(pk_type, redshift, ls="--", **kwargs)
     
-    def add_CAMB_spectrum(self, redshift:float, **kwargs:dict) -> Line2D:
+    def add_CAMB_spectrum(self, redshift:float, **kwargs:dict) -> Line2D|pd.DataFrame:
         self._init_camb()
         camb_spectrum = self.cambObj(redshift)
         camb_line = Line2D(camb_spectrum[0], camb_spectrum[1], label="CAMB", ls=":", **kwargs)
-        return camb_line
+        return camb_line if not self.return_pd else pd.DataFrame({"k": camb_spectrum[0], "pk": camb_spectrum[1]})
     
-    def add_CLASS_spectrum(self, redshift:float, **kwargs:dict) -> Line2D:
+    def add_CLASS_spectrum(self, redshift:float, gauge:str="synchronous", **kwargs:dict) -> Line2D|pd.DataFrame:
         self._init_class()
-        class_spectrum = self.classObj(redshift)
+        class_spectrum = self.classObj(redshift, gauge)
         class_line = Line2D(class_spectrum[0], class_spectrum[1], label="CLASS", ls=":", **kwargs)
-        return class_line
+        return class_line if not self.return_pd else pd.DataFrame({"k": class_spectrum[0], "pk": class_spectrum[1]})
     
-    def add_averages(self, pk_type:str, redshift:float, seed_range:Union[list, np.ndarray, tuple], **kwargs:dict) -> tuple:
+    def add_averages(self, pk_type:str, redshift:float, seed_range:list|np.ndarray|tuple, keep_background_lines:bool=False, **kwargs:dict) -> tuple:
         """
             Add the average power spectrum to the plot.
             Args:
@@ -277,28 +280,58 @@ class AddPowerSpectraComponents:
         print(f"Averaging over a total of {len(seed_range)} seeds ranging over: [{seed_range[0]} - {seed_range[-1]}] in incriments of {seed_range[1]-seed_range[0]}.")
 
         #Get the first power spectra 
-        gr_avg = ps.PowerSpectra(self._path_to_different_seed(seed_range[0])+"gr")
-        newton_avg = ps.PowerSpectra(self._path_to_different_seed(seed_range[0])+"newton")
+        gr_avg = ps.PowerSpectra(paths.get_dir_with_seed(seed_range[0]) / "gr")
+        newton_avg = ps.PowerSpectra(paths.get_dir_with_seed(seed_range[0]) / "newton")
         gr_avg = gr_avg.get_power_spectrum(pk_type, redshift)
         newton_avg = newton_avg.get_power_spectrum(pk_type, redshift)
 
+        # Make list of background lines if necessary
+        if keep_background_lines:
+            ALPHA = 0.4
+            LW = 0.1
+
+            background_lines_gr = []
+            background_lines_newton = []
+            if self.return_pd:
+                background_lines_gr.append(gr_avg)
+                background_lines_newton.append(newton_avg)
+            else:
+                background_lines_gr.append(Line2D(gr_avg["k"], gr_avg["pk"], lw=LW, alpha=ALPHA, color="blue"))
+                background_lines_newton.append(Line2D(newton_avg["k"], newton_avg["pk"], lw=LW, alpha=ALPHA, color="red"))
+
         # Loop over remaining seeds and add them to the average
-        for seed in seed_range:
+        for seed in seed_range[1:]:
             # Create local instances of the power spectra
-            local_gr = ps.PowerSpectra(self._path_to_different_seed(seed)+"gr")
-            local_newton = ps.PowerSpectra(self._path_to_different_seed(seed)+"newton")
+            local_gr = ps.PowerSpectra(paths.get_dir_with_seed(seed) / "gr")
+            local_newton = ps.PowerSpectra(paths.get_dir_with_seed(seed) / "newton")
+
             # Get the power spectra and add them to the average
-            gr_avg["pk"] += local_gr.get_power_spectrum(pk_type, redshift)["pk"]
-            newton_avg["pk"] += local_newton.get_power_spectrum(pk_type, redshift)["pk"]
+            local_gr_spectra = local_gr.get_power_spectrum(pk_type, redshift)
+            local_newton_spectra = local_newton.get_power_spectrum(pk_type, redshift)
+            gr_avg["pk"] += local_gr_spectra["pk"]
+            newton_avg["pk"] += local_newton_spectra["pk"]
+
+            # Add the background lines if necessary
+            if keep_background_lines:
+                if self.return_pd:
+                    background_lines_gr.append(local_gr_spectra)
+                    background_lines_newton.append(local_newton_spectra)
+                else:
+                    background_lines_gr.append(Line2D(local_gr_spectra["k"], local_gr_spectra["pk"],  lw=LW, alpha=ALPHA, color="blue"))
+                    background_lines_newton.append(Line2D(local_newton_spectra["k"], local_newton_spectra["pk"], lw=LW, alpha=ALPHA, color="red"))
 
         # Divide by the number of seeds to get the true average
         gr_avg["pk"] /= len(seed_range)
         newton_avg["pk"] /= len(seed_range)
 
         # Plot the average power spectra
-        gr_avg_line = Line2D(gr_avg["k"], gr_avg["pk"], label="Avg.", **kwargs)
-        newton_avg_line = Line2D(newton_avg["k"], newton_avg["pk"], ls="--", **kwargs)
-        return (gr_avg_line, newton_avg_line)
+        gr_avg_line = Line2D(gr_avg["k"], gr_avg["pk"], label="Avg.", color="blue", **kwargs)
+        newton_avg_line = Line2D(newton_avg["k"], newton_avg["pk"], color="red", **kwargs)
+
+        if self.return_pd:
+            return (gr_avg, newton_avg) if not keep_background_lines else (gr_avg, newton_avg, background_lines_gr, background_lines_newton)
+        else:
+            return (gr_avg_line, newton_avg_line) if not keep_background_lines else (gr_avg_line, newton_avg_line, background_lines_gr, background_lines_newton)
     
     def add_cube_spectra(self, redshift:float, **kwargs:dict) -> tuple:
         """
@@ -376,8 +409,8 @@ if __name__=="__main__":
 
     path = datapath 
     obj = MakeFigures(path)
-    # obj.plot_ps(seeds=[0000,1234,1999], pk_type=pktype, redshift=redshift)
+    obj.plot_ps(seeds=[0000,1234,1999], pk_type=pktype, redshift=redshift)
     # obj.compare_camb_class(seeds=[0000,1234,1999], redshift=redshift)
     # obj.plot_average_ps(seeds=[0000, 1234, 1999], pk_type=pktype, redshift=redshift, seed_range=np.arange(0,2000, 20, dtype=int))
-    obj.plot_cube_ps(seeds=[0000, 1234, 1999], redshift=redshift)
+    # obj.plot_cube_ps(seeds=[0000, 1234, 1999], redshift=redshift)
 
