@@ -2346,10 +2346,18 @@
     <bcf:datasource type="file" datatype="bibtex" glob="false">references/books.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">adamek_gevolution_2016</bcf:citekey>
-    <bcf:citekey order="2">falck_effect_2017</bcf:citekey>
+    <bcf:citekey order="1">dodelson2020modern</bcf:citekey>
+    <bcf:citekey order="2">weinberg2008cosmology</bcf:citekey>
     <bcf:citekey order="3">adamek_gevolution_2016</bcf:citekey>
     <bcf:citekey order="4">falck_effect_2017</bcf:citekey>
+    <bcf:citekey order="5">Goodfellow-et-al-2016</bcf:citekey>
+    <bcf:citekey order="6">hastie2009elements</bcf:citekey>
+    <bcf:citekey order="7">dodelson2020modern</bcf:citekey>
+    <bcf:citekey order="8">weinberg2008cosmology</bcf:citekey>
+    <bcf:citekey order="9">adamek_gevolution_2016</bcf:citekey>
+    <bcf:citekey order="10">falck_effect_2017</bcf:citekey>
+    <bcf:citekey order="11">Goodfellow-et-al-2016</bcf:citekey>
+    <bcf:citekey order="12">hastie2009elements</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

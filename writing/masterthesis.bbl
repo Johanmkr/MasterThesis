@@ -95,6 +95,46 @@
       \endverb
       \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics,General Relativity and Quantum Cosmology,Physics - Computational Physics}
     \endentry
+    \entry{dodelson2020modern}{book}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=0a04b7b0eff3c29233106933e5934c3d}{%
+           family={Dodelson},
+           familyi={D\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0127454c0c43fce484064ba71e8f9bbd}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={F.},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Elsevier Science}%
+      }
+      \strng{namehash}{d8eeffef32dbf31b3ae225290a3acbb6}
+      \strng{fullhash}{d8eeffef32dbf31b3ae225290a3acbb6}
+      \strng{bibnamehash}{d8eeffef32dbf31b3ae225290a3acbb6}
+      \strng{authorbibnamehash}{d8eeffef32dbf31b3ae225290a3acbb6}
+      \strng{authornamehash}{d8eeffef32dbf31b3ae225290a3acbb6}
+      \strng{authorfullhash}{d8eeffef32dbf31b3ae225290a3acbb6}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9780128159484}
+      \field{title}{Modern Cosmology}
+      \field{year}{2020}
+      \verb{urlraw}
+      \verb https://books.google.no/books?id=GGjfywEACAAJ
+      \endverb
+      \verb{url}
+      \verb https://books.google.no/books?id=GGjfywEACAAJ
+      \endverb
+    \endentry
     \entry{falck_effect_2017}{article}{}
       \name{author}{5}{}{%
         {{un=0,uniquepart=base,hash=538ad3d04da89449af3b53fae95aa974}{%
@@ -175,6 +215,128 @@
       \verb http://arxiv.org/abs/1610.04862
       \endverb
       \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics}
+    \endentry
+    \entry{Goodfellow-et-al-2016}{book}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=5d2585c11210cf1d4512e6e0a03ec315}{%
+           family={Goodfellow},
+           familyi={G\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=40a8e4774982146adc2688546f54efb2}{%
+           family={Bengio},
+           familyi={B\bibinitperiod},
+           given={Yoshua},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ccec1ccd2e1aa86960eb2e872c6b7020}{%
+           family={Courville},
+           familyi={C\bibinitperiod},
+           given={Aaron},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {MIT Press}%
+      }
+      \strng{namehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{fullhash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{bibnamehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{authorbibnamehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{authornamehash}{3ae53fe582e8a815b118d26947eaa326}
+      \strng{authorfullhash}{3ae53fe582e8a815b118d26947eaa326}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{note}{\url{http://www.deeplearningbook.org}}
+      \field{title}{Deep Learning}
+      \field{year}{2016}
+    \endentry
+    \entry{hastie2009elements}{book}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=e1440a33ef594fbe1375568d9288cc69}{%
+           family={Hastie},
+           familyi={H\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=21780bd4ff9a4cecd018c6cfdbd80280}{%
+           family={Tibshirani},
+           familyi={T\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0494232aeadd283368e83b2e84094d67}{%
+           family={Friedman},
+           familyi={F\bibinitperiod},
+           given={J.H.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{2569fe6422a9e1972acc6a4d038badfe}
+      \strng{fullhash}{2569fe6422a9e1972acc6a4d038badfe}
+      \strng{bibnamehash}{2569fe6422a9e1972acc6a4d038badfe}
+      \strng{authorbibnamehash}{2569fe6422a9e1972acc6a4d038badfe}
+      \strng{authornamehash}{2569fe6422a9e1972acc6a4d038badfe}
+      \strng{authorfullhash}{2569fe6422a9e1972acc6a4d038badfe}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9780387848846}
+      \field{series}{Springer series in statistics}
+      \field{title}{The Elements of Statistical Learning: Data Mining, Inference, and Prediction}
+      \field{year}{2009}
+      \verb{urlraw}
+      \verb https://books.google.no/books?id=eBSgoAEACAAJ
+      \endverb
+      \verb{url}
+      \verb https://books.google.no/books?id=eBSgoAEACAAJ
+      \endverb
+    \endentry
+    \entry{weinberg2008cosmology}{book}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3ff9fe28dd4b3b6688bd17fbcc3632da}{%
+           family={Weinberg},
+           familyi={W\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {OUP Oxford}%
+      }
+      \strng{namehash}{3ff9fe28dd4b3b6688bd17fbcc3632da}
+      \strng{fullhash}{3ff9fe28dd4b3b6688bd17fbcc3632da}
+      \strng{bibnamehash}{3ff9fe28dd4b3b6688bd17fbcc3632da}
+      \strng{authorbibnamehash}{3ff9fe28dd4b3b6688bd17fbcc3632da}
+      \strng{authornamehash}{3ff9fe28dd4b3b6688bd17fbcc3632da}
+      \strng{authorfullhash}{3ff9fe28dd4b3b6688bd17fbcc3632da}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9780191523601}
+      \field{series}{Cosmology}
+      \field{title}{Cosmology}
+      \field{year}{2008}
+      \verb{urlraw}
+      \verb https://books.google.no/books?id=nqQZdg020fsC
+      \endverb
+      \verb{url}
+      \verb https://books.google.no/books?id=nqQZdg020fsC
+      \endverb
     \endentry
   \enddatalist
 \endrefsection
