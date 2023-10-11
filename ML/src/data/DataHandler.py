@@ -9,7 +9,6 @@ class TestCubes(Dataset):
         self.halflength = int(self.length/2.)
         self.transform = transform
         self.additionalInfo = additionalInfo
-
     def __len__(self):
         newtonShape = self.newtonCube.shape
         grShape = self.grCube.shape

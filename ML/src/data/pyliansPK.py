@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 import Pk_library as PKL
 import cube 
-from typing import Union
 import pandas as pd
 
 # For testing

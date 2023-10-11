@@ -6,7 +6,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
-import paths
+from ..paths import paths
 
 from IPython import embed
 
@@ -43,7 +43,7 @@ class CustomFigure:
         self.lines = {"main": []} if not isinstance(self.ax, np.ndarray) else [{f"ax{i}": []} for i in range(len(self.ax.flatten()))]
         if settings is not None:
             self.set_settings(settings)
-
+            
     def __call__(self) -> tuple:
         return self.fig, self.ax
     

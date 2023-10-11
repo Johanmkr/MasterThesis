@@ -13,7 +13,6 @@ class CubeHandler:
 
     def _Extracth5Data(self) -> list:
         """Extracts the data from all .h5 files in the directory provided to the constructor
-
         Returns:
             list[np.ndarray]: Data from each file, as element in list
         """

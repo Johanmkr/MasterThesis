@@ -1,0 +1,8 @@
+# Test1
+
+seed: 1234
+redshift: 1.0
+
+k_res: 25 # number of points in k-array
+theta_res: 25 # number of points in theta-array
+threads: 64 # number of threads to use

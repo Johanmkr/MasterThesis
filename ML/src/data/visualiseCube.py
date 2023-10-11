@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import cube
+import paths
 
 
 from IPython import embed
@@ -68,8 +69,8 @@ class VisualiseDifference(VisualiseCube):
         self.show = show
         self.name = f"Difference for seed: {self.seed}, Redshift: {self.redshift}: GR - Newton"
         
-        self.GRcube = cube.Cube(f"/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/seed{self.seed:04d}/gr/gr_{cube.redshift_to_snap[self.redshift]}_phi.h5", normalise=True)
-        self.Newtoncube = cube.Cube(f"/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/seed{self.seed:04d}/newton/newton_{cube.redshift_to_snap[self.redshift]}_phi.h5", normalise=True)
+        self.GRcube = cube.Cube(paths.get_cube_path(self.seed, "gr", self.redshift), normalise=False)
+        self.Newtoncube = cube.Cube(paths.get_cube_path(self.seed, "newton", self.redshift), normalise=False)
         self.data = (self.GRcube.data - self.Newtoncube.data)
 
         percentile1 = np.percentile(self.data, 1)
@@ -91,8 +92,10 @@ if __name__=="__main__":
         seed_nr = 1234
         gravity = "newton"
         redshift = 1
-        axis=0
-    path = datapath + f"seed{seed_nr:04d}/" + gravity + f"/{gravity}_{cube.redshift_to_snap[redshift]}_phi.h5"
+        axis=0 
+
+
+    path = paths.get_cube_path(seed_nr, gravity, redshift)
 
     # obj = cube.Cube(path)
     # vis = VisualiseCube(obj, axis=axis)

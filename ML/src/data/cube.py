@@ -2,6 +2,7 @@ import numpy as np
 import os
 import h5py
 from typing import Union
+import pathlib as pl
 
 # Used for testing only
 from IPython import embed
@@ -45,17 +46,19 @@ redshift_to_snap = {
 
 
 class Cube:
-    def __init__(self, cube_path:str, normalise:bool=False) -> None:
+    def __init__(self, cube_path:pl.Path, normalise:bool=False) -> None:
         """
             Initialise the Cube object. 
             Args:
-                cube_path (str): Path to the h5 file containing the cube.
+                cube_path (pl.Path): Path to the h5 file containing the cube.
         """
         self.cubePath = cube_path
-        self.gr = "gr_snap" in self.cubePath
-        self.seed = int(self.cubePath[-25:-21] if self.gr else self.cubePath[-33:-29]) # Will be 0000, 0001, etc.
-        self.snapID = self.cubePath[-14:-7] # Will be snap000, snap001, etc.
+        self.gr = "gr_snap" in self.cubePath.name
+        self.gravity = 'gr' if self.gr else 'newton'
+        self.seed = int(str(self.cubePath)[-25:-21] if self.gr else str(self.cubePath)[-33:-29]) # Will be 0000, 0001, etc.
+        self.snapID = self.cubePath.name[-14:-7] # Will be snap000, snap001, etc.
         self.redshift = snap_to_redshift[self.snapID]
+        # embed()
 
         self._read_cube()
         if normalise:
@@ -125,7 +128,7 @@ class Cube:
         RT += f"Shape: {self.data.shape}\n"
         RT += f"Seed: {self.seed}\n"
         RT += f"Redshift: {self.redshift}\n"
-        RT += f"Gravity: {'gr' if self.gr else 'newton'}\n"
+        RT += f"Gravity: {self.gravity}\n"
         RT += "----------------------------\n"
         return RT
     

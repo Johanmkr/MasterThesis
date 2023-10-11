@@ -13,7 +13,6 @@
 """
 
 
-
 import numpy as np
 import matplotlib.pyplot as plt
 from plotPS import AddPowerSpectraComponents
@@ -129,4 +128,3 @@ def average_power_spectrum(redshift:int=1, pk_type:str="delta"):
 if __name__=="__main__":
     matter_power_spectra()
     average_power_spectrum()
-
