@@ -1,0 +1,18 @@
+[0] Config.pm:307> INFO - This is Biber 2.17
+[0] Config.pm:310> INFO - Logfile is 'masterthesis.blg'
+[82] biber:340> INFO - === Tue Oct 10, 2023, 18:31:00
+[100] Biber.pm:418> INFO - Reading 'masterthesis.bcf'
+[200] Biber.pm:972> INFO - Found 6 citekeys in bib section 0
+[220] Biber.pm:4383> INFO - Processing section 0
+[231] Biber.pm:4574> INFO - Looking for bibtex file 'references/project_description.bib' for section 0
+[236] bibtex.pm:1713> INFO - LaTeX decoding ...
+[311] bibtex.pm:1518> INFO - Found BibTeX data source 'references/project_description.bib'
+[360] Biber.pm:4574> INFO - Looking for bibtex file 'references/books.bib' for section 0
+[360] bibtex.pm:1713> INFO - LaTeX decoding ...
+[368] bibtex.pm:1518> INFO - Found BibTeX data source 'references/books.bib'
+[433] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
+[433] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[433] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
+[434] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-UK'
+[446] bbl.pm:654> INFO - Writing 'masterthesis.bbl' with encoding 'UTF-8'
+[451] bbl.pm:757> INFO - Output to masterthesis.bbl

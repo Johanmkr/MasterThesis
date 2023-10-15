@@ -1,0 +1,72 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Math commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\d}{\mathrm{d}}
+
+\newcommand{\unitC}{ $^\circ$C}
+\newcommand{\degs}{$^\circ$}
+\newcommand{\pwr}[1]{$^{#1}$} %power
+\newcommand{\idx}[1]{$_{#1}$} %index
+\newcommand{\stdf}[1]{$\cdot 10^{#1}$} %standard form
+\newcommand{\unit}[1]{\text{ {#1}}}
+\newcommand{\about}{$\sim$}
+\newcommand{\ds}{\text{d}}
+
+\renewcommand{\vec}{\mathbf}
+\newcommand{\svec}{\boldsymbol}
+\newcommand{\expe}[1]{e^{#1}}
+
+% \renewcommand{\phi}{\varphi}
+% \renewcommand{\epsilon}{\varepsilon}
+% \renewcommand{\kappa}{\varkappa}
+% \renewcommand{\rho}{\varrho}
+
+\newcommand{\FF}{\mathscr{F}} %Fourier
+\newcommand{\Sun}{_\odot} %Sun mark
+
+\newcommand{\hatx}{ \vec{\hat{e}_x} } %unit vec x
+\newcommand{\haty}{ \vec{\hat{e}_y} } %unit vec y
+\newcommand{\hatz}{ \vec{\hat{e}_z} } %unit vec z
+
+\newcommand{\lap}{\nabla^2 } %Laplacian
+\newcommand{\dal}{\Box } %d'Alembertian
+\newcommand{\bnabla}{\boldsymbol{\nabla}} %bold gradient, idk what is correct
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Machine learning commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\RR}[1][]{\mathbb{R}^{#1}} %real numbers
+\newcommand{\II}[1][]{\mathbb{1}_{#1}} %identity matrix
+\newcommand{\lnorm}[1][2]{$\ell^{#1}$-norm} % l1/l2 norm, default l2
+\newcommand{\EE}[1]{\mathbb{E}\big[#1\big]}  %expectation value
+\newcommand{\VVar}[1]{\text{Var}\big[#1\big]} %variance
+
+\newcommand{\estm}{\svec{\hat{\theta}}_m} %estimator of theta
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Cosmology commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\renewcommand{\O}{\Omega}                       % Omega
+\newcommand{\cdm}{\text{CDM}}                   % CDM
+\newcommand{\Hp}{\mathcal{H}}                   % Conformal Hubble parameter
+\newcommand{\munu}{{\mu\nu}}                    % mu nu
+\newcommand{\TT}[1]{\Theta_{#1}}                % Temperature multipoles
+\newcommand{\T}{\Theta}                         % Big theta
+\newcommand{\To}{\Theta^\mathrm{Obs}}           % Observed temperature multipoles
+\newcommand{\kv}{\vec{k}}                       % k vector
+\newcommand{\pifac}{(2\pi)^{3/2}}               % (2pi)^3/2
+\newcommand{\hv}[1]{{\hat{\vec{#1}}}}           % unit vector
+\newcommand{\xv}{\vec{x}}                       % x vector
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%	Misc
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\TODO}[1]{\textcolor{blue}{TODO: }\textcolor{blue}{#1}}
+\newcommand{\FIXME}[1]{\textcolor{red}{FIXME: }\textcolor{red}{#1}}
+\newcommand{\XXX}[1][XXX]{\textcolor{purple}{#1}}
