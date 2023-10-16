@@ -4,10 +4,12 @@
 import pathlib as pl
 import os
 
-from .data import cube
+from ..data import cube
 
-# print(os.getcwd())
-# from ..data import cube
+
+################
+# Input paths
+################
 
 datapath: pl.Path = pl.Path("/mn/stornext/d10/data/johanmkr/simulations")
 
@@ -19,6 +21,28 @@ class_output: pl.Path = pl.Path(
     "/uio/hume/student-u00/johanmkr/Documents/NbodySimulation/class_public/output/"
 )
 
+BFast_path: pl.Path = pl.Path("/uio/hume/student-u00/johanmkr/Documents/BFast")
+
+
+################
+# Output paths
+################
+
+dataframe_path_high_res = analysis_path / "bispectra_dataframes_high_res"
+dataframe_path_low_res = analysis_path / "bispectra_dataframes_low_res"
+
+figure_path: pl.Path = pl.Path(
+    "/uio/hume/student-u00/johanmkr/Documents/thesis/masterthesis/writing/figures"
+)
+
+main_figure_path: pl.PosixPath = figure_path / "main"
+temp_figure_path: pl.PosixPath = figure_path / "temp"
+
+
+################
+# Functions
+################
+
 
 def get_cube_path(seed: int, gravity: str, redshift: int) -> pl.Path:
     return (
@@ -27,13 +51,21 @@ def get_cube_path(seed: int, gravity: str, redshift: int) -> pl.Path:
     )
 
 
-def get_pickle_path(
+def get_high_res_bispectrum(
     seed: int, gravity: str, redshift: int, k_res: int, theta_res: int, tag: str
 ) -> pl.PosixPath:
     return (
-        analysis_path
-        / "bispectra_dataframes"
+        dataframe_path_high_res
         / f"bispectrum_{gravity}_s{seed:04d}_z{redshift}_k{k_res}_t{theta_res}_tag_{tag}.pkl"
+    )
+
+
+def get_low_res_bispectrum(
+    seed: int, gravity: str, redshift: int, type: str = "equilateral"
+) -> pl.PosixPath:
+    return (
+        dataframe_path_low_res
+        / f"{type}_bispectrum_{gravity}_s{seed:04d}_z{redshift}.pkl"
     )
 
 
@@ -43,15 +75,3 @@ def get_power_spectra_path(seed: int, gravity: str) -> pl.Path:
 
 def get_dir_with_seed(seed: int) -> pl.Path:
     return simulation_path / f"seed{seed:04d}"
-
-
-# Output paths
-
-dataframe_path = analysis_path / "bispectra_dataframes"
-
-figure_path: pl.Path = pl.Path(
-    "/uio/hume/student-u00/johanmkr/Documents/thesis/writing/figures"
-)
-
-main_figure_path: pl.PosixPath = figure_path / "main"
-temp_figure_path: pl.PosixPath = figure_path / "temp"

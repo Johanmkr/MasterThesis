@@ -1,13 +1,17 @@
 #!/bin/bash
 
 # Directory
-root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+root_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/../"
+
+echo "Searching for TODOs in $root_dir..."
 
 # Define the output markdown file
 output_file="todos.md"
 
 # Remove the output file if it already exists
 rm -f "$output_file"
+
+
 
 # Start the markdown table
 echo "| File | Line | TODO Comment |" >> "$output_file"
