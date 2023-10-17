@@ -38,7 +38,9 @@ figure_path: pl.Path = pl.Path(
 main_figure_path: pl.PosixPath = figure_path / "main"
 temp_figure_path: pl.PosixPath = figure_path / "temp"
 
-
+pre_computed_bispectra_path: pl.PosixPath = (
+    analysis_path / "pre_computed_bispectra_bank"
+)
 ################
 # Functions
 ################
@@ -66,6 +68,15 @@ def get_low_res_bispectrum(
     return (
         dataframe_path_low_res
         / f"{type}_bispectrum_{gravity}_s{seed:04d}_z{redshift}.pkl"
+    )
+
+
+def get_pre_computed_bispectra_from_bank(
+    seed: int, gravity: str, redshift: int, type: str = "equilateral"
+) -> pl.PosixPath:
+    return (
+        pre_computed_bispectra_path
+        / f"seed{seed:04d}_{gravity}_{type}_rs{redshift:04d}.csv"
     )
 
 

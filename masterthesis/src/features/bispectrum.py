@@ -81,13 +81,22 @@ class CubeBispectrum(cube.Cube):
         theta = 19 / 20 * np.pi
         B = np.zeros(len(k_range))
         Q = np.zeros(len(k_range))
-        for i, k in enumerate(k_range):
-            # theta = np.arccos(1/2*(self.kN/k)**2 - 1)
-            BBk = PKL.Bk(
-                self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs
-            )
-            B[i] = BBk.B
-            Q[i] = BBk.Q
+        if verbose:
+            for i, k in enumerate(tqdm(k_range)):
+                # theta = np.arccos(1/2*(self.kN/k)**2 - 1)
+                BBk = PKL.Bk(
+                    self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs
+                )
+                B[i] = BBk.B
+                Q[i] = BBk.Q
+        else:
+            for i, k in enumerate(k_range):
+                # theta = np.arccos(1/2*(self.kN/k)**2 - 1)
+                BBk = PKL.Bk(
+                    self.data, self.boxsize, k, k, np.array([theta]), "CIC", **kwargs
+                )
+                B[i] = BBk.B
+                Q[i] = BBk.Q
         dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
         if save:
             dBk.to_pickle(
