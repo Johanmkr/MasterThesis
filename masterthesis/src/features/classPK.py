@@ -2,40 +2,91 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pathlib import Path
 import pandas as pd
+from ..utils import paths
 
+from IPython import embed
 
-class_output = "/uio/hume/student-u00/johanmkr/Documents/NbodySimulation/class_public/output/"
 
 class ClassSpectra:
-    def __init__(self, pk_path:str=class_output) -> None:
-        self.pkPath = pk_path
-        # try:
-        #     self.pkData = np.loadtxt(pk_path)
-        # except FileNotFoundError:
-        #     print("File not found")
-        #     exit(1)
+    def __init__(
+        self,
+        redshift: float = 0.0,
+        gauge: str = "synchronous",
+        dir_path: str = paths.class_output,
+        As: float = 2.215e-9,
+        ns: float = 0.9619,
+        k_pivot: float = 0.05
+        * 0.67556,  # check if units of k_pivot are correct (multiply by h?)
+    ) -> None:
+        self.dirPath = dir_path
+        self.redshift = redshift
+        self.gauge = gauge
+        self.As = As
+        self.ns = ns
+        self.k_pivot = k_pivot
 
-        
+        # Get paths to data
+        self.pkPath, self.tkPath = self._gen_path(self.redshift, self.gauge)
 
-    def __call__(self, redshift:float=0.0, gauge:str="synchronous", z2:bool=False) -> np.ndarray:
-        z1path, z2path = self._gen_path(redshift, gauge)
-        if z2:
-            self.pkData = np.loadtxt(z2path)
+        # Construct PK dataframe inferred from gravitational potential
+        self.pkData = np.loadtxt(self.pkPath)
+        self.pk_frame = pd.DataFrame(
+            data=self.pkData,
+            columns=["k", "pk"],
+        )
+
+        # Construct TK dataframe for the transfer functions of the different species
+        self.tkData = np.loadtxt(self.tkPath)
+        self.tk_frame = pd.DataFrame(
+            data=self.tkData,
+            columns=[
+                "k",
+                "d_g",
+                "d_b",
+                "d_cdm",
+                "d_ur",
+                "d_m",
+                "d_tot",
+                "phi",
+                "psi",
+                "t_g",
+                "t_b",
+                "t_ur",
+                "t_tot",
+            ],
+        )
+
+        self.d_tot_pk = self._calc_power_spectra_from_tk(type="d_tot")
+        self.phi_pk = self._calc_power_spectra_from_tk(type="phi")
+
+    def get_pk_for_type(self, type: str = "phi") -> pd.DataFrame:
+        if type == "phi":
+            return self.phi_pk
+        elif type == "d_tot":
+            return self.d_tot_pk
         else:
-            self.pkData = np.loadtxt(z1path)
-        return self.pkData.T # Return transposed data with shape (2, length)
-    
-    def _gen_path(self, redshift:float, gauge:str) -> tuple:
+            return self._calc_power_spectra_from_tk(type=type)
+
+    def _gen_path(self, redshift: float, gauge: str) -> tuple:
         redshift_w_comma_separation = f"{redshift:.1f}".replace(".", ",")
-        redshift_val = f"comparison_z_{redshift_w_comma_separation}_gauge_{gauge}"
-        z1 = redshift_val + "00_z1_pk.dat"
-        z2 = redshift_val + "00_z2_pk.dat"
-        return (self.pkPath + z1, self.pkPath + z2)
-    
-if __name__=="__main__":
+        redshift_val = f"comparison_z_{redshift_w_comma_separation}_gauge_{gauge}00"
+        return (
+            self.dirPath / (redshift_val + "_pk.dat"),
+            self.dirPath / (redshift_val + "_tk.dat"),
+        )
+
+    def _primordial_PK(self, k: np.ndarray | float):
+        return 2 * np.pi**2 * self.As / k**3 * (k / self.k_pivot) ** (self.ns - 1)
+
+    def _calc_power_spectra_from_tk(self, type: str = "phi") -> pd.DataFrame:
+        k = self.tk_frame["k"]
+        quantity = self.tk_frame[type]
+        pk = quantity**2 * self._primordial_PK(k)
+        return pd.DataFrame(data={"k": k, f"pk": pk})
+
+
+if __name__ == "__main__":
     pk = ClassSpectra()
-    plt.loglog(*pk(gauge="synchronous"), label="Synchronous") 
+    plt.loglog(*pk(gauge="synchronous"), label="Synchronous")
     plt.loglog(*pk(gauge="newtonian"), label="Newtonian")
     plt.show()
-    
-
