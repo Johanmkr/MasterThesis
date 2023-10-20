@@ -1,10 +1,10 @@
 % Figures
-\graphicspath{{/uio/hume/student-u00/johanmkr/Documents/thesis/writing/figures/}} % path to figures
+\graphicspath{{/uio/hume/student-u00/johanmkr/Documents/thesis/masterthesis/writing/figures/}} % path to figures
 
 % CHANGE BELOW BETWEEN pdf AND png TO CHANGE QUALITY OF IMAGES
 
 % \def\fileext{pdf} % default file extension for figures
-\def\fileext{pdf} % default file extension for figures
+\def\fileext{png} % default file extension for figures
 
 
 % \ifx\fileext\pdf 
@@ -19,10 +19,10 @@
 
 \newcommand{\basepath}{temp/}
 \ifthenelse{\equal{\fileext}{pdf}}{%
-    \def\basepath{main/}
+    \def\basepath{figures/main/}
 }{%
     \ifthenelse{\equal{\fileext}{png}}{%
-        \def\basepath{temp/}
+        \def\basepath{figures/temp/}
     }{%
         \def\basepath{}
     }%

@@ -95,6 +95,69 @@
       \endverb
       \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics,General Relativity and Quantum Cosmology,Physics - Computational Physics}
     \endentry
+    \entry{chisari_connection_2011}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=207128d60611a44a368daca2f75b12a2}{%
+           family={Chisari},
+           familyi={C\bibinitperiod},
+           given={Nora\bibnamedelima Elisa},
+           giveni={N\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8837ada9420e1442e7f43c8356605f48}{%
+           family={Zaldarriaga},
+           familyi={Z\bibinitperiod},
+           given={Matias},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{dc16c9546d16f441ae4e06e74dc5cb5b}
+      \strng{fullhash}{dc16c9546d16f441ae4e06e74dc5cb5b}
+      \strng{bibnamehash}{dc16c9546d16f441ae4e06e74dc5cb5b}
+      \strng{authorbibnamehash}{dc16c9546d16f441ae4e06e74dc5cb5b}
+      \strng{authornamehash}{dc16c9546d16f441ae4e06e74dc5cb5b}
+      \strng{authorfullhash}{dc16c9546d16f441ae4e06e74dc5cb5b}
+      \field{sortinit}{C}
+      \field{sortinithash}{4d103a86280481745c9c897c925753c0}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{On large-scales, comparable to the horizon, the observable clustering properties of galaxies are affected by various general relativistic effects. To calculate these effects one needs to consistently solve for the metric, densities and velocities in a specific coordinate system or gauge. The method of choice for simulating large-scale structure is numerical N-body simulations which are performed in the Newtonian limit. Even though one might worry that the use of the Newtonian approximation would make it impossible to use these simulations to compute properties on very large-scales, we show that the simulations are still solving the dynamics correctly even for long modes and we give formulas to obtain the position of particles in the conformal Newtonian gauge given the positions computed in the simulation. We also give formulas to convert from the output coordinates of N-body simulations to the observable coordinates of the particles.}
+      \field{day}{2}
+      \field{eprinttype}{arxiv}
+      \field{issn}{1550-7998, 1550-2368}
+      \field{journaltitle}{Physical Review D}
+      \field{langid}{english}
+      \field{month}{6}
+      \field{number}{12}
+      \field{shortjournal}{Phys. Rev. D}
+      \field{title}{Connection between Newtonian simulations and general relativity}
+      \field{urlday}{23}
+      \field{urlmonth}{8}
+      \field{urlyear}{2023}
+      \field{volume}{83}
+      \field{year}{2011}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{123505}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1103/PhysRevD.83.123505
+      \endverb
+      \verb{eprint}
+      \verb 1101.3555 [astro-ph, physics:gr-qc]
+      \endverb
+      \verb{file}
+      \verb Chisari and Zaldarriaga - 2011 - Connection between Newtonian simulations and gener.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/GGLKFQRX/Chisari and Zaldarriaga - 2011 - Connection between Newtonian simulations and gener.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1101.3555
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1101.3555
+      \endverb
+      \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics,General Relativity and Quantum Cosmology}
+    \endentry
     \entry{dodelson2020modern}{book}{}
       \name{author}{2}{}{%
         {{un=0,uniquepart=base,hash=0a04b7b0eff3c29233106933e5934c3d}{%
@@ -103,12 +166,12 @@
            given={S.},
            giveni={S\bibinitperiod},
            givenun=0}}%
-        {{un=0,uniquepart=base,hash=0127454c0c43fce484064ba71e8f9bbd}{%
+        {{un=2,uniquepart=given,hash=0127454c0c43fce484064ba71e8f9bbd}{%
            family={Schmidt},
            familyi={S\bibinitperiod},
            given={F.},
            giveni={F\bibinitperiod},
-           givenun=0}}%
+           givenun=2}}%
       }
       \list{publisher}{1}{%
         {Elsevier Science}%
@@ -256,6 +319,69 @@
       \field{title}{Deep Learning}
       \field{year}{2016}
     \endentry
+    \entry{green_newtonian_2012}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=d5f16e3b84cffdeeeb25485240c673d8}{%
+           family={Green},
+           familyi={G\bibinitperiod},
+           given={Stephen\bibnamedelima R.},
+           giveni={S\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4517cb47549e9e42f6bfd204ca9456a7}{%
+           family={Wald},
+           familyi={W\bibinitperiod},
+           given={Robert\bibnamedelima M.},
+           giveni={R\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8dd4ce4713ad995a8950af9201738d21}
+      \strng{fullhash}{8dd4ce4713ad995a8950af9201738d21}
+      \strng{bibnamehash}{8dd4ce4713ad995a8950af9201738d21}
+      \strng{authorbibnamehash}{8dd4ce4713ad995a8950af9201738d21}
+      \strng{authornamehash}{8dd4ce4713ad995a8950af9201738d21}
+      \strng{authorfullhash}{8dd4ce4713ad995a8950af9201738d21}
+      \field{sortinit}{G}
+      \field{sortinithash}{32d67eca0634bf53703493fb1090a2e8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Cosmological N -body simulations are now being performed using Newtonian gravity on scales larger than the Hubble radius. It is well known that a uniformly expanding, homogeneous ball of dust in Newtonian gravity satisﬁes the same equations as arise in relativistic {FLRW} cosmology, and it also is known that a correspondence between Newtonian and relativistic dust cosmologies continues to hold in linearized perturbation theory in the marginally bound/spatially ﬂat case. Nevertheless, it is far from obvious that Newtonian gravity can provide a good global description of an inhomogeneous cosmology when there is signiﬁcant nonlinear dynamical behavior at small scales. We investigate this issue in the light of a perturbative framework that we have recently developed [1], which allows for such nonlinearity at small scales. We propose a relatively straightforward “dictionary”—which is exact at the linearized level—that maps Newtonian dust cosmologies into general relativistic dust cosmologies, and we use our “ordering scheme” to determine the degree to which the resulting metric and matter distribution solve Einstein’s equation. We ﬁnd that, within our ordering scheme, Einstein’s equation fails to hold at “order 1” at small scales and at “order ǫ” at large scales. We then ﬁnd the additional corrections to the metric and matter distribution needed to satisfy Einstein’s equation to these orders. While these corrections are of some interest in their own right, our main purpose in calculating them is that their smallness should provide a criterion for the validity of the original “dictionary” (as well as simpliﬁed versions of this dictionary). We expect that, in realistic Newtonian cosmologies, these additional corrections will be very small; if so, this should provide strong justiﬁcation for the use of Newtonian simulations to describe relativistic cosmologies, even on scales larger than the Hubble radius.}
+      \field{day}{15}
+      \field{eprinttype}{arxiv}
+      \field{issn}{1550-7998, 1550-2368}
+      \field{journaltitle}{Physical Review D}
+      \field{langid}{english}
+      \field{month}{3}
+      \field{number}{6}
+      \field{shortjournal}{Phys. Rev. D}
+      \field{title}{Newtonian and Relativistic Cosmologies}
+      \field{urlday}{23}
+      \field{urlmonth}{8}
+      \field{urlyear}{2023}
+      \field{volume}{85}
+      \field{year}{2012}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{063512}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1103/PhysRevD.85.063512
+      \endverb
+      \verb{eprint}
+      \verb 1111.2997 [astro-ph, physics:gr-qc]
+      \endverb
+      \verb{file}
+      \verb Green and Wald - 2012 - Newtonian and Relativistic Cosmologies.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/BXVKVG2K/Green and Wald - 2012 - Newtonian and Relativistic Cosmologies.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1111.2997
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1111.2997
+      \endverb
+      \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics,General Relativity and Quantum Cosmology}
+    \endentry
     \entry{hastie2009elements}{book}{}
       \name{author}{3}{}{%
         {{un=0,uniquepart=base,hash=e1440a33ef594fbe1375568d9288cc69}{%
@@ -302,6 +428,75 @@
       \verb{url}
       \verb https://books.google.no/books?id=eBSgoAEACAAJ
       \endverb
+    \endentry
+    \entry{jeong_large-scale_2012}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=3326ca74c1b11350b758b6bf0ee8d82d}{%
+           family={Jeong},
+           familyi={J\bibinitperiod},
+           given={Donghui},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=2,uniquepart=given,hash=90cf806c60a0f6ee733bc817133c3960}{%
+           family={Schmidt},
+           familyi={S\bibinitperiod},
+           given={Fabian},
+           giveni={F\bibinitperiod},
+           givenun=2}}%
+        {{un=0,uniquepart=base,hash=8cc2156daeeb869a3b5c9e4018d0a78d}{%
+           family={Hirata},
+           familyi={H\bibinitperiod},
+           given={Christopher\bibnamedelima M.},
+           giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{03bf375049d1e1db92a48d69c523e9eb}
+      \strng{fullhash}{03bf375049d1e1db92a48d69c523e9eb}
+      \strng{bibnamehash}{03bf375049d1e1db92a48d69c523e9eb}
+      \strng{authorbibnamehash}{03bf375049d1e1db92a48d69c523e9eb}
+      \strng{authornamehash}{03bf375049d1e1db92a48d69c523e9eb}
+      \strng{authorfullhash}{03bf375049d1e1db92a48d69c523e9eb}
+      \field{sortinit}{J}
+      \field{sortinithash}{b2f54a9081ace9966a7cb9413811edb4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Several recent studies have shown how to properly calculate the observed clustering of galaxies in a relativistic context, and uncovered corrections to the Newtonian calculation that become significant on scales near the horizon. Here, we retrace these calculations and show that, on scales approaching the horizon, the observed galaxy power spectrum depends strongly on which gauge is assumed to relate the intrinsic fluctuations in galaxy density to matter perturbations through a linear bias relation. Starting from simple physical assumptions, we derive a gauge-invariant expression relating galaxy density perturbations to matter density perturbations on large scales, and show that it reduces to a linear bias relation in synchronous-comoving gauge, corroborating an assumption made in several recent papers. We evaluate the resulting observed galaxy power spectrum, and show that it leads to corrections similar to an effective non-Gaussian bias corresponding to a local (effective) {fNL} {<} 0.5. This number can serve as a guideline as to which surveys need to take into account relativistic effects. We also discuss the scale-dependent bias induced by primordial non-Gaussianity in the relativistic context, which again is simplest in synchronous-comoving gauge.}
+      \field{day}{4}
+      \field{eprinttype}{arxiv}
+      \field{issn}{1550-7998, 1550-2368}
+      \field{journaltitle}{Physical Review D}
+      \field{langid}{english}
+      \field{month}{1}
+      \field{number}{2}
+      \field{shortjournal}{Phys. Rev. D}
+      \field{title}{Large-scale clustering of galaxies in general relativity}
+      \field{urlday}{23}
+      \field{urlmonth}{8}
+      \field{urlyear}{2023}
+      \field{volume}{85}
+      \field{year}{2012}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{023504}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1103/PhysRevD.85.023504
+      \endverb
+      \verb{eprint}
+      \verb 1107.5427 [astro-ph]
+      \endverb
+      \verb{file}
+      \verb Jeong et al. - 2012 - Large-scale clustering of galaxies in general rela.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/NB7BL7A6/Jeong et al. - 2012 - Large-scale clustering of galaxies in general rela.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1107.5427
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1107.5427
+      \endverb
+      \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics}
     \endentry
     \entry{weinberg2008cosmology}{book}{}
       \name{author}{1}{}{%

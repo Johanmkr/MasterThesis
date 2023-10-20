@@ -3,3 +3,69 @@
 %   Work related to the simulation and generation of the dataset
 %
 %%%%%%%%%%%%%%%%%%%%%%
+
+%% TENSE: past
+
+\section{Parameters}
+
+When performing simulations, it was import to keep all parameters fixed for all the different simulations. The only thing that was changed was the random seed.
+
+    \subsection{Cosmological parameters}
+        The relevant cosmological parameters are the dimensionless Hubble factor $h$, the baryon and cold dark matter densities $\Omega_b$ and $\Omega_\mathrm{CDM}$, the Cosmic Microwave Background temperature $T_\mathrm{CMB}$ and the effective number of ultra-relativistic neutrinos $N_\mathrm{ur}$.
+
+        \begin{table}[h]\label{tab:simulations_cosmological_parameters}
+            \centering
+            \caption{Cosmological parameters}
+            \begin{tabular}{c|l|c}
+                \toprule
+                \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+                \midrule
+                $h$ & 0.67556 & -\\
+                $\Omega_b$ & 0.022032 & -\\
+                $\Omega_\mathrm{CDM}$ & 0.12038 & - \\
+                $T_\mathrm{CMB} $ & 2.7255 & K \\
+                $N_\mathrm{ur}$ & 3.046 & - \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+    \subsection{Primordial power spectrum} 
+    The primordial power spectrum, as \TODO{link to when written},contains the pivot scale $k_\mathrm{piv}$, the primordial amplitude, $\mathcal{A}_\mathrm{s}$ and the spectral index, $n_\mathrm{s}$.
+        \begin{table}[h]\label{tab:simulations_primordial_parameters}
+            \centering
+            \caption{Primordial power spectra parameters}
+            \begin{tabular}{c|l|c}
+                \toprule
+                \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+                \midrule
+                $k_\mathrm{piv}$ & 0.05 & Mpc$^{-1}$ \\
+                $\mathcal{A}_\mathrm{s}$ & $2.215\cdot 10^{-9}$ & -\\
+                $n_\mathrm{s}$ & 0.9619 & - \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+    \subsection{Box parameters}
+    The relevant box parameters were the initial redshift $z_\mathrm{ini}$ where the simulations were started from. The simulations box itself was characterised by the physical length $L$, represented on a cube grid of size $N_\mathrm{grid}^3$, resulting in a resolution of $\Delta_\mathrm{res} = L/N_\mathrm{grid}$. The courant factor \TODO{fill} and time step limit \TODO{fill}.
+        \begin{table}[h]\label{tab:simulations_box_parameters}
+            \centering
+            \caption{Box parameters}
+            \begin{tabular}{c|l|c}
+                \toprule
+                \textbf{Parameter} & \textbf{Value} & \textbf{Unit} \\
+                \midrule
+                $z_\mathrm{ini}$ & 100 &\\
+                $L$ & 5120 & Mpc\\
+                $N_\mathrm{grid}$ & 256 & px \\
+                $\Delta_\mathrm{res}$ & $20 (=L/N_\mathrm{grid})$ & Mpc px$^{-1}$\\
+                Courant factor & 48 & ? \\
+                Time step limit & 0.04 & ? \\
+                \bottomrule
+            \end{tabular}
+        \end{table}
+
+    \subsection{Seeds}
+        In order to initialise the simulations we used random seeds, one for each simulation. This ensured that analysis performed on different simulations were of different realisations of the simulated universe, essential statistical independence. The seeds, denoted as $\mathtt{S}$ ranged from 0 to 2000, and consisted of the following set:
+        \begin{equation}
+            \{\mathtt{S} \in \mathbb{Z} | 0 \leq \mathtt{S} < 2000 \}
+        \end{equation}

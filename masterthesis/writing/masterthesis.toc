@@ -66,10 +66,15 @@
 \contentsline {subsection}{\numberline {8.2.3}Dropout layers}{19}{subsection.81}%
 \contentsline {part}{III\hspace {1em}Acquiring Data}{21}{part.82}%
 \contentsline {chapter}{\numberline {9}Simulations}{23}{chapter.83}%
-\contentsline {chapter}{\numberline {10}Data Verification}{25}{chapter.84}%
-\contentsline {section}{\numberline {10.1}Slices of Datacubes}{25}{section.85}%
-\contentsline {section}{\numberline {10.2}Power spectra from Theory}{25}{section.86}%
-\contentsline {section}{\numberline {10.3}Powerspectra from Simulations}{25}{section.87}%
-\contentsline {section}{\numberline {10.4}Powerspectra from Datacubes}{25}{section.90}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{29}{chapter.91}%
+\contentsline {section}{\numberline {9.1}Parameters}{23}{section.84}%
+\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{23}{subsection.85}%
+\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{23}{subsection.87}%
+\contentsline {subsection}{\numberline {9.1.3}Box parameters}{24}{subsection.89}%
+\contentsline {subsection}{\numberline {9.1.4}Seeds}{24}{subsection.91}%
+\contentsline {chapter}{\numberline {10}Data Verification}{25}{chapter.93}%
+\contentsline {section}{\numberline {10.1}Slices of Datacubes}{25}{section.94}%
+\contentsline {section}{\numberline {10.2}Power spectra from Theory}{25}{section.95}%
+\contentsline {section}{\numberline {10.3}Powerspectra from Simulations}{25}{section.96}%
+\contentsline {section}{\numberline {10.4}Powerspectra from Datacubes}{25}{section.99}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{29}{chapter.100}%
 \contentsfinish 
