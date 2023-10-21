@@ -1350,13 +1350,14 @@ INPUT ./masterthesis.out
 INPUT masterthesis.run.xml
 OUTPUT masterthesis.run.xml
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-ec.enc
+INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-rmtt.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathsy.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathit.enc
-INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-rm.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/lm/lm-mathex.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmbx10.pfb
+INPUT /usr/share/texmf/fonts/type1/public/lm/lmbx8.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmcsc10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmex10.pfb
 INPUT /usr/share/texmf/fonts/type1/public/lm/lmmi10.pfb

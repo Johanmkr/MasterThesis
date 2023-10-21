@@ -63,9 +63,32 @@ When performing simulations, it was import to keep all parameters fixed for all 
                 \bottomrule
             \end{tabular}
         \end{table}
+        This resulted in a fundamental frequency of $k_\mathrm{F} = 2\pi/L$ and Nyquist freguency $k_\mathrm{N} = \pi/\Delta_\mathrm{res}$ \TODO{what with units?}
 
     \subsection{Seeds}
         In order to initialise the simulations we used random seeds, one for each simulation. This ensured that analysis performed on different simulations were of different realisations of the simulated universe, essential statistical independence. The seeds, denoted as $\mathtt{S}$ ranged from 0 to 2000, and consisted of the following set:
         \begin{equation}
             \{\mathtt{S} \in \mathbb{Z} | 0 \leq \mathtt{S} < 2000 \}
+        \end{equation}
+
+    \subsection{Output}
+        
+        \begin{equation}
+            z_\mathrm{d} = \{ 20, 15, 10, 5, 1, 0 \}
+        \end{equation}
+
+        \begin{equation}
+            z_\mathrm{p} = \{ 100,50,20,15,10,6,5,4,3,2,1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0 \}
+        \end{equation}
+
+        \begin{equation}
+            \mathcal{D}(\mathtt{S}, z_\mathrm{d})
+        \end{equation}
+        
+        \begin{equation}
+            \mathcal{D}_\Phi(\mathtt{S}, z_\mathrm{p})
+        \end{equation}
+
+        \begin{equation}
+            \mathcal{D}_\delta (\mathtt{S}, z_\mathrm{p})
         \end{equation}
