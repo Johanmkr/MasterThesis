@@ -1577,6 +1577,10 @@ INPUT ./figures/temp/average_matter_power_spectrum.png
 INPUT figures/temp/average_matter_power_spectrum.png
 INPUT ./figures/temp/average_matter_power_spectrum.png
 INPUT ./figures/temp/average_matter_power_spectrum.png
+INPUT ./TikZ/GR/bispectrum_angle_dependency_tikz.tex
+INPUT TikZ/GR/bispectrum_angle_dependency_tikz.tex
+INPUT ./TikZ/GR/bispectrum_angle_dependency_tikz.tex
+INPUT TikZ/GR/bispectrum_angle_dependency_tikz.tex
 INPUT ./chapters/generation_of_data/subchapters/trainable_dataset.tex
 INPUT ./chapters/generation_of_data/subchapters/trainable_dataset.tex
 INPUT ./chapters/generation_of_data/subchapters/trainable_dataset.tex

@@ -1,0 +1,48 @@
+\begin{tikzpicture}
+    \colorlet{veccol}{green!70!black}
+    \colorlet{vcol}{green!70!black}
+    \colorlet{xcol}{blue!85!black}
+    \colorlet{projcol}{xcol!60}
+    \colorlet{unitcol}{xcol!60!black!85}
+    \colorlet{myblue}{blue!70!black}
+    \colorlet{myred}{red!90!black}
+    \colorlet{mypurple}{blue!50!red!80!black!80}
+    \tikzstyle{vector}=[->,very thick,xcol]
+  
+  
+    % Define the k vector
+    \def\Kone{5}
+    \def\Ktwo{5}
+    \def\Kthree{5}
+    \def\staplelength{1}
+    \def\anglealpha{60}
+    \def\anglebeta{60}
+    \def\anglegamma{60}
+  
+    \coordinate (k1start) at (0,0);
+    \coordinate (k2start) at (\anglegamma:\Kone);
+    \coordinate (k3start) at (\Kthree,0);
+  
+    % \Draw vector
+    \draw[vector] (k1start) -- (k2start) node[midway, left=20, above=5, right=0] {$\vb{k}_1$};
+    \draw[vector] (k2start) -- (k3start) node[midway, right=20, above=5, left=0] {$\vb{k}_2$};
+    \draw[vector] (k3start) -- (k1start) node[midway, below=5] {$\vb{k}_3$};
+    
+    
+    % coordinates for the extra stapled lines
+    \coordinate (k1staplestop) at ({\Kone*cos(\anglegamma)+\staplelength*cos(\anglegamma)}, {\Kone*sin(\anglegamma)+\staplelength*sin(\anglegamma)});
+    \coordinate (k2staplestop) at ({\Kthree+\staplelength*cos(\anglebeta)}, {-\staplelength*sin(\anglebeta)});
+    \coordinate (k3staplestop) at ({-\staplelength}, 0);
+  
+    \draw[dashed] (k2start) -- (k1staplestop);
+    \draw[dashed] (k3start) -- (k2staplestop);
+    \draw[dashed] (k1start) -- (k3staplestop);
+  
+    \draw pic[-, thick, "$\alpha$", draw=black, angle radius = 25, angle eccentricity=1.3]{angle = k1start--k2start--k3start};
+    \draw pic[-, thick, "$\beta$", draw=black, angle radius = 25, angle eccentricity=1.3]{angle = k2start--k3start--k1start};
+    \draw pic[-, thick, "$\gamma$", draw=black, angle radius = 25, angle eccentricity=1.3]{angle = k3start--k1start--k2start};
+  
+    \draw pic[-, thick, "$\theta_{12}$", draw=black, angle radius = 15, angle eccentricity=1.6]{angle = k3start--k2start--k1staplestop};
+    \draw pic[-, thick, "$\theta_{23}$", draw=black, angle radius = 15, angle eccentricity=1.6]{angle = k1start--k3start--k2staplestop};
+    \draw pic[-, thick, "$\theta_{31}$", draw=black, angle radius = 15, angle eccentricity=1.6]{angle = k2start--k1start--k3staplestop};
+  \end{tikzpicture}

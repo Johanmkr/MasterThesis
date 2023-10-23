@@ -78,6 +78,6 @@
 \contentsline {section}{\numberline {10.3}Powerspectra from Simulations}{25}{section.102}%
 \contentsline {section}{\numberline {10.4}Powerspectra from Datacubes}{25}{section.105}%
 \contentsline {section}{\numberline {10.5}Analytical Bispectra}{25}{section.106}%
-\contentsline {section}{\numberline {10.6}Bispectra from Cube}{28}{section.112}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{29}{chapter.113}%
+\contentsline {section}{\numberline {10.6}Bispectra from Cube}{25}{section.113}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{29}{chapter.114}%
 \contentsfinish 
