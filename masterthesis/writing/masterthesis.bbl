@@ -85,7 +85,7 @@
       \verb 1604.06065 [astro-ph, physics:gr-qc, physics:physics]
       \endverb
       \verb{file}
-      \verb Adamek et al. - 2016 - gevolution a cosmological N-body code based on Ge.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/HKVGXXBY/Adamek et al. - 2016 - gevolution a cosmological N-body code based on Ge.pdf:application/pdf
+      \verb Adamek et al. - 2016 - gevolution a cosmological N-body code based on Ge.pdf:/home/johan/Zotero/storage/HKVGXXBY/Adamek et al. - 2016 - gevolution a cosmological N-body code based on Ge.pdf:application/pdf
       \endverb
       \verb{urlraw}
       \verb http://arxiv.org/abs/1604.06065
@@ -94,6 +94,82 @@
       \verb http://arxiv.org/abs/1604.06065
       \endverb
       \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics,General Relativity and Quantum Cosmology,Physics - Computational Physics}
+    \endentry
+    \entry{alqaraawi_evaluating_2020}{misc}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=24d2a6fe5a464cc1d4815cfe97bd2979}{%
+           family={Alqaraawi},
+           familyi={A\bibinitperiod},
+           given={Ahmed},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c852f2442f84a20d05fbbdf898697c9b}{%
+           family={Schuessler},
+           familyi={S\bibinitperiod},
+           given={Martin},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5af5673b17fc6a853ab0c985d7adde35}{%
+           family={Weiß},
+           familyi={W\bibinitperiod},
+           given={Philipp},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4543a3f60fd1b75c6f0ee25809fe9781}{%
+           family={Costanza},
+           familyi={C\bibinitperiod},
+           given={Enrico},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=872889cd4e2b9d2dd6a43dda887fc522}{%
+           family={Berthouze},
+           familyi={B\bibinitperiod},
+           given={Nadia},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {arXiv}%
+      }
+      \strng{namehash}{a64d0dbeae3efe9ce73df9912492c880}
+      \strng{fullhash}{99cec89fee9abcbb1aebfd9d25024de7}
+      \strng{bibnamehash}{a64d0dbeae3efe9ce73df9912492c880}
+      \strng{authorbibnamehash}{a64d0dbeae3efe9ce73df9912492c880}
+      \strng{authornamehash}{a64d0dbeae3efe9ce73df9912492c880}
+      \strng{authorfullhash}{99cec89fee9abcbb1aebfd9d25024de7}
+      \field{sortinit}{A}
+      \field{sortinithash}{2f401846e2029bad6b3ecc16d50031e2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{Convolutional neural networks ({CNNs}) offer great machine learning performance over a range of applications, but their operation is hard to interpret, even for experts. Various explanation algorithms have been proposed to address this issue, yet limited research effort has been reported concerning their user evaluation. In this paper, we report on an online between-group user study designed to evaluate the performance of "saliency maps" - a popular explanation algorithm for image classification applications of {CNNs}. Our results indicate that saliency maps produced by the {LRP} algorithm helped participants to learn about some specific image features the system is sensitive to. However, the maps seem to provide very limited help for participants to anticipate the network's output for new images. Drawing on our findings, we highlight implications for design and further research on explainable {AI}. In particular, we argue the {HCI} and {AI} communities should look beyond instance-level explanations.}
+      \field{day}{3}
+      \field{eprinttype}{arxiv}
+      \field{langid}{english}
+      \field{month}{2}
+      \field{number}{{arXiv}:2002.00772}
+      \field{shorttitle}{Evaluating Saliency Map Explanations for Convolutional Neural Networks}
+      \field{title}{Evaluating Saliency Map Explanations for Convolutional Neural Networks: A User Study}
+      \field{urlday}{23}
+      \field{urlmonth}{10}
+      \field{urlyear}{2023}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \verb{eprint}
+      \verb 2002.00772 [cs]
+      \endverb
+      \verb{file}
+      \verb Evaluating Saliency Map Explanations for Convolutional Neural Networks A User Study - 2002.00772.pdf:/home/johan/Downloads/Evaluating Saliency Map Explanations for Convolutional Neural Networks A User Study - 2002.00772.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/2002.00772
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/2002.00772
+      \endverb
+      \keyw{Computer Science - Human-Computer Interaction}
     \endentry
     \entry{chisari_connection_2011}{article}{}
       \name{author}{2}{}{%
@@ -148,7 +224,7 @@
       \verb 1101.3555 [astro-ph, physics:gr-qc]
       \endverb
       \verb{file}
-      \verb Chisari and Zaldarriaga - 2011 - Connection between Newtonian simulations and gener.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/GGLKFQRX/Chisari and Zaldarriaga - 2011 - Connection between Newtonian simulations and gener.pdf:application/pdf
+      \verb Chisari and Zaldarriaga - 2011 - Connection between Newtonian simulations and gener.pdf:/home/johan/Zotero/storage/GGLKFQRX/Chisari and Zaldarriaga - 2011 - Connection between Newtonian simulations and gener.pdf:application/pdf
       \endverb
       \verb{urlraw}
       \verb http://arxiv.org/abs/1101.3555
@@ -269,7 +345,7 @@
       \verb 1610.04862 [astro-ph]
       \endverb
       \verb{file}
-      \verb Falck et al. - 2017 - The Effect of Corner Modes in the Initial Conditio.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/C4456PLY/Falck et al. - 2017 - The Effect of Corner Modes in the Initial Conditio.pdf:application/pdf
+      \verb Falck et al. - 2017 - The Effect of Corner Modes in the Initial Conditio.pdf:/home/johan/Zotero/storage/C4456PLY/Falck et al. - 2017 - The Effect of Corner Modes in the Initial Conditio.pdf:application/pdf
       \endverb
       \verb{urlraw}
       \verb http://arxiv.org/abs/1610.04862
@@ -372,7 +448,7 @@
       \verb 1111.2997 [astro-ph, physics:gr-qc]
       \endverb
       \verb{file}
-      \verb Green and Wald - 2012 - Newtonian and Relativistic Cosmologies.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/BXVKVG2K/Green and Wald - 2012 - Newtonian and Relativistic Cosmologies.pdf:application/pdf
+      \verb Green and Wald - 2012 - Newtonian and Relativistic Cosmologies.pdf:/home/johan/Zotero/storage/BXVKVG2K/Green and Wald - 2012 - Newtonian and Relativistic Cosmologies.pdf:application/pdf
       \endverb
       \verb{urlraw}
       \verb http://arxiv.org/abs/1111.2997
@@ -488,7 +564,7 @@
       \verb 1107.5427 [astro-ph]
       \endverb
       \verb{file}
-      \verb Jeong et al. - 2012 - Large-scale clustering of galaxies in general rela.pdf:/uio/hume/student-u00/johanmkr/Zotero/storage/NB7BL7A6/Jeong et al. - 2012 - Large-scale clustering of galaxies in general rela.pdf:application/pdf
+      \verb Jeong et al. - 2012 - Large-scale clustering of galaxies in general rela.pdf:/home/johan/Zotero/storage/NB7BL7A6/Jeong et al. - 2012 - Large-scale clustering of galaxies in general rela.pdf:application/pdf
       \endverb
       \verb{urlraw}
       \verb http://arxiv.org/abs/1107.5427
@@ -497,6 +573,93 @@
       \verb http://arxiv.org/abs/1107.5427
       \endverb
       \keyw{Astrophysics - Cosmology and Nongalactic Astrophysics}
+    \endentry
+    \entry{selvaraju_grad-cam_2020}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=2bb65ae1ae492d8a5f0410b495e608cf}{%
+           family={Selvaraju},
+           familyi={S\bibinitperiod},
+           given={Ramprasaath\bibnamedelima R.},
+           giveni={R\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=615d55ccf6f32ec74ad65001e3a4ebbb}{%
+           family={Cogswell},
+           familyi={C\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=95fdc805087b8b7c1bb60f09d4ee2641}{%
+           family={Das},
+           familyi={D\bibinitperiod},
+           given={Abhishek},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=485265d172ca1779fa9691a5b6091cc8}{%
+           family={Vedantam},
+           familyi={V\bibinitperiod},
+           given={Ramakrishna},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d0ab7a4601951a0c59352f1dcb531afb}{%
+           family={Parikh},
+           familyi={P\bibinitperiod},
+           given={Devi},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d0a408119272ca1bd49b625e3b927d05}{%
+           family={Batra},
+           familyi={B\bibinitperiod},
+           given={Dhruv},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{44b36a9d8aed667d91631e9717a56509}
+      \strng{fullhash}{aa15df90de6a99f6dc73b935fda62089}
+      \strng{bibnamehash}{44b36a9d8aed667d91631e9717a56509}
+      \strng{authorbibnamehash}{44b36a9d8aed667d91631e9717a56509}
+      \strng{authornamehash}{44b36a9d8aed667d91631e9717a56509}
+      \strng{authorfullhash}{aa15df90de6a99f6dc73b935fda62089}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{shorttitle}
+      \field{abstract}{We propose a technique for producing ‘visual explanations’ for decisions from a large class of Convolutional Neural Network ({CNN})-based models, making them more transparent and explainable.}
+      \field{eprinttype}{arxiv}
+      \field{issn}{0920-5691, 1573-1405}
+      \field{journaltitle}{International Journal of Computer Vision}
+      \field{langid}{english}
+      \field{month}{2}
+      \field{number}{2}
+      \field{shortjournal}{Int J Comput Vis}
+      \field{shorttitle}{Grad-{CAM}}
+      \field{title}{Grad-{CAM}: Visual Explanations from Deep Networks via Gradient-based Localization}
+      \field{urlday}{23}
+      \field{urlmonth}{10}
+      \field{urlyear}{2023}
+      \field{volume}{128}
+      \field{year}{2020}
+      \field{dateera}{ce}
+      \field{urldateera}{ce}
+      \field{pages}{336\bibrangedash 359}
+      \range{pages}{24}
+      \verb{doi}
+      \verb 10.1007/s11263-019-01228-7
+      \endverb
+      \verb{eprint}
+      \verb 1610.02391 [cs]
+      \endverb
+      \verb{file}
+      \verb 1610.02391.pdf:/home/johan/Downloads/1610.02391.pdf:application/pdf
+      \endverb
+      \verb{urlraw}
+      \verb http://arxiv.org/abs/1610.02391
+      \endverb
+      \verb{url}
+      \verb http://arxiv.org/abs/1610.02391
+      \endverb
+      \keyw{Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning}
     \endentry
     \entry{weinberg2008cosmology}{book}{}
       \name{author}{1}{}{%

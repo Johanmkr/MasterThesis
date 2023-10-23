@@ -81,8 +81,10 @@
       <file>masterthesis.bcf</file>
     </requires>
     <requires type="editable">
-      <file>references/project_description.bib</file>
-      <file>references/books.bib</file>
+      <file>../references/Project.bib</file>
+      <file>../references/books.bib</file>
+      <file>../references/ML.bib</file>
+      <file>../references/GR.bib</file>
     </requires>
   </external>
 </requests>

@@ -94,9 +94,11 @@ From the rule of sines \TODO{explain more?}:
   % coordinates for the extra stapled lines
   \coordinate (k1staplestop) at ({\Kone*cos(\gamma)+\staplelength*cos(\gamma)}, {\Kone*sin(\gamma)+\staplelength*sin(\gamma)});
   \coordinate (k2staplestop) at ({\Kthree+\staplelength*cos(\beta)}, {-\staplelength*sin(\beta)});
+  \coordinate (k3staplestop) at ({-\staplelength*cos(\gamma)}, 0);
 
-  \draw[dashed] (k2start) -- (k1staplestop);
-  \draw[dashed] (k3start) -- (k2staplestop);
+  % \draw[dashed] (k2start) -- (k1staplestop);
+  % \draw[dashed] (k3start) -- (k2staplestop);
+  % \draw[dashed] (k1start) -- (k3staplestop);
 
 
   % Template
