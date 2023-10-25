@@ -53,6 +53,23 @@ class ClassSpectra:
                 "t_b",
                 "t_ur",
                 "t_tot",
+            ]
+            if gauge == "synchronous"
+            else [
+                "k",
+                "d_g",
+                "d_b",
+                "d_cdm",
+                "d_ur",
+                "d_m",
+                "d_tot",
+                "phi",
+                "psi",
+                "t_g",
+                "t_b",
+                "t_cdm",
+                "t_ur",
+                "t_tot",
             ],
         )
 
@@ -86,7 +103,4 @@ class ClassSpectra:
 
 
 if __name__ == "__main__":
-    pk = ClassSpectra()
-    plt.loglog(*pk(gauge="synchronous"), label="Synchronous")
-    plt.loglog(*pk(gauge="newtonian"), label="Newtonian")
-    plt.show()
+    pass

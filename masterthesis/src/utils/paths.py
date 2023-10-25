@@ -76,7 +76,16 @@ def get_pre_computed_bispectra_from_bank(
 ) -> pl.PosixPath:
     return (
         pre_computed_bispectra_path
-        / f"seed{seed:04d}_{gravity}_{type}_rs{redshift:04d}.csv"
+        / f"seed{seed:04d}_{gravity}_{type}_rs{int(redshift):04d}.csv"
+    )
+
+
+def get_pre_computed_bispectra_from_bank2(
+    seed: int, gravity: str, redshift: int, type: str = "equilateral"
+) -> pl.PosixPath:
+    return (
+        pre_computed_bispectra_path
+        / f"seed{seed:04d}_{gravity}_{type}_rs{int(redshift):04d}.pkl"
     )
 
 

@@ -33,11 +33,11 @@ class AnalyticalBispectrum:
         self.B_squeezed = np.zeros(len(k_range))
 
         class_obj = classPK.ClassSpectra(z)
-        phi_spline = self._splined_PS(
+        self.phi_spline = self._splined_PS(
             class_obj.phi_pk, bounds_error=False, fill_value="extrapolate"
         )
-        self._analytical_equilateral_bispectrum(phi_spline)
-        self._analytical_squeezed_bispectrum(phi_spline)
+        self._analytical_equilateral_bispectrum(self.phi_spline)
+        self._analytical_squeezed_bispectrum(self.phi_spline)
 
     def _F2_kernel(self, k1: float, k2: float, angle: float) -> float:
         return (
@@ -78,7 +78,7 @@ class AnalyticalBispectrum:
 
     def _analytical_equilateral_bispectrum(self, ps_function: callable) -> None:
         """Calculates the equilateral bispectrum analytically"""
-        F12, F23, F31, k3 = self._full_F2_output(self.k_range, np.pi / 3)
+        F12, F23, F31, k3 = self._full_F2_output(self.k_range, theta_12=2 * np.pi / 3)
         self.B_equilateral = (
             2 * F12 * ps_function(self.k_range) * ps_function(self.k_range)
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
@@ -94,21 +94,39 @@ class AnalyticalBispectrum:
 
     def _analytical_squeezed_bispectrum(self, ps_function: callable) -> None:
         """Calculates the squeezed bispectrum analytically"""
-        F12, F23, F31, k3 = self._full_F2_output(self.k_range, 24 * np.pi / 25)
-        self.B_equilateral = (
+        F12, F23, F31, k3 = self._full_F2_output(self.k_range, theta_12=19 * np.pi / 20)
+        self.B_squeezed = (
             2 * F12 * ps_function(self.k_range) * ps_function(self.k_range)
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
         # for i, k in enumerate(self.k_range):
         #     F12, F23, F31, k3 = self._full_F2_output(k, 19 * np.pi / 20)
-        #     self.B_equilateral[i] = (
+        #     self.B_squeezed[i] = (
         #         2 * F12 * ps_function(k) * ps_function(k)
         #         + 2 * F23 * ps_function(k) * ps_function(k3)
         #         + 2 * F31 * ps_function(k) * ps_function(k3)
         #     )
 
     # def _get_PS_spline()
+
+    def get_custom_bispectrum(
+        self, k_range: np.ndarray | float, theta_range: np.ndarray | float
+    ) -> np.ndarray:
+        """Calculates the bispectrum for a custom k and theta range"""
+        if isinstance(k_range, (int, float)):
+            k_range = np.array([k_range])
+        if isinstance(theta_range, (int, float)):
+            theta_range = np.array([theta_range])
+        B = np.zeros((len(k_range), len(theta_range)))
+        for j, theta in enumerate(theta_range):
+            F12, F23, F31, k3 = self._full_F2_output(k_range, theta)
+            B[:, j] = (
+                2 * F12 * self.phi_spline(k_range) * self.phi_spline(k_range)
+                + 2 * F23 * self.phi_spline(k_range) * self.phi_spline(k3)
+                + 2 * F31 * self.phi_spline(k_range) * self.phi_spline(k3)
+            )
+        return B
 
 
 if __name__ == "__main__":

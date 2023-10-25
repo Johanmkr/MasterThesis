@@ -1,56 +1,21 @@
+# Global imports
 import numpy as np
 import matplotlib.pyplot as plt
-import bispectrum as bs
-from ..data import cube
+from tqdm import tqdm
 import pandas as pd
+import pathlib as pl
+import Pk_library as PKL
+
+# Local imports
+from ..data import cube
+from ..utils import paths
+
 
 ###TODO: FIX THIS WHOLE SCRIPT
 
-seeds = np.arange(0, 2000, 50)
-redshifts = [0, 1, 5, 15]
-
-datapath = "/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs/"
-
-test_seed = 1234
-output_folder = "pre_computed_bispectra"
-
-for seed in seeds:
-    for redshift in redshifts:
-        print(
-            f"\n\n Computing bispectra for seed {seed:04d} at redshift {redshift:04d}\n\n"
-        )
-
-        grBispectrum = bs.CubeBispectrum(
-            datapath + f"seed{seed:04d}/gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5"
-        )
-        newtonBispectrum = bs.CubeBispectrum(
-            datapath
-            + f"seed{seed:04d}/newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5"
-        )
-
-        k_range = np.geomspace(grBispectrum.kF, 1e-2, 1000)
-
-        grdBkeq = grBispectrum.equilateral_bispectrum(k_range, {"threads": 24})
-        ndBkeq = newtonBispectrum.equilateral_bispectrum(k_range, {"threads": 24})
-        grdBksq = grBispectrum.squeezed_bispectrum(k_range, {"threads": 24})
-        ndBksq = newtonBispectrum.squeezed_bispectrum(k_range, {"threads": 24})
-
-        grdBkeq.to_csv(
-            f"{output_folder}/seed{seed:04d}_gr_equilateral_rs{redshift:04d}.csv"
-        )
-        ndBkeq.to_csv(
-            f"{output_folder}/seed{seed:04d}_newton_equilateral_rs{redshift:04d}.csv"
-        )
-        grdBksq.to_csv(
-            f"{output_folder}/seed{seed:04d}_gr_squeezed_rs{redshift:04d}.csv"
-        )
-        ndBksq.to_csv(
-            f"{output_folder}/seed{seed:04d}_newton_squeezed_rs{redshift:04d}.csv"
-        )
-
 
 class ProduceCubeBispectrum(cube.Cube):
-    def __init__(self, cube_path: str, tag: str = "", normalise: bool = False) -> None:
+    def __init__(self, cube_path: str, normalise: bool = False) -> None:
         """
             Initialise the CubeBispectrum object.
         Args:
@@ -59,14 +24,13 @@ class ProduceCubeBispectrum(cube.Cube):
         """
         super().__init__(cube_path, normalise)
         self.data = self.data.astype(np.float32)
-        self.tag = tag
 
     def equilateral_bispectrum(
         self,
         k_range: np.array,
         save: bool = False,
         verbose: bool = False,
-        kwargs: dict = {"threads": 10},
+        kwargs: dict = {"threads": 16},
     ) -> pd.DataFrame:
         """
         Get the equilateral bispectrum.
@@ -75,7 +39,7 @@ class ProduceCubeBispectrum(cube.Cube):
         Returns:
             tuple: The k range, bispectrum and reduced bispectrum.
         """
-        theta = 3 / 2 * np.pi  # equilateral
+        theta = 2 / 3 * np.pi  # equilateral
         B = np.zeros(len(k_range))
         Q = np.zeros(len(k_range))
         if verbose:
@@ -94,7 +58,11 @@ class ProduceCubeBispectrum(cube.Cube):
                 Q[i] = BBk.Q
         dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
         if save:
-            dBk.to_pickel(self.seed, self.gravity, self.redshift, type="equilateral")
+            dBk.to_pickle(
+                paths.get_pre_computed_bispectra_from_bank2(
+                    self.seed, self.gravity, self.redshift, "equilateral"
+                )
+            )
         return dBk
 
     def squeezed_bispectrum(
@@ -102,7 +70,7 @@ class ProduceCubeBispectrum(cube.Cube):
         k_range: np.array,
         save: bool = False,
         verbose: bool = False,
-        kwargs: dict = {"threads": 10},
+        kwargs: dict = {"threads": 16},
     ) -> pd.DataFrame:
         """
         Get the squeezed bispectrum.
@@ -133,20 +101,51 @@ class ProduceCubeBispectrum(cube.Cube):
         dBk = pd.DataFrame({"k": k_range, "B": B, "Q": Q})
         if save:
             dBk.to_pickle(
-                paths.get_low_res_bispectrum(
-                    self.seed, self.gravity, self.redshift, type="squeezed"
+                paths.get_pre_computed_bispectra_from_bank2(
+                    self.seed, self.gravity, self.redshift, "squeezed"
                 )
             )
         return dBk
 
 
-# grBispectrum = bs.CubeBispectrum(datapath + f"seed{test_seed:04d}/gr/gr_{cube.redshift_to_snap[redshifts[0]]}_phi.h5")
-# newtonBispectrum = bs.CubeBispectrum(datapath + f"seed{test_seed:04d}/newton/newton_{cube.redshift_to_snap[redshifts[0]]}_phi.h5")
+def produce_bispectra(seedfile):
+    redshifts = [0, 1, 10]
+    seeds = np.loadtxt(seedfile, dtype=int)
+    for seed in seeds:
+        for redshift in redshifts:
+            print(
+                f"\n\n Computing bispectra for seed {seed:04d} at redshift {redshift:04d}\n\n"
+            )
 
-# k_range = np.geomspace(grBispectrum.kF, 1e-2, 15)
+            # grBispectrum = bs.CubeBispectrum(
+            #     datapath + f"seed{seed:04d}/gr/gr_{cube.redshift_to_snap[redshift]}_phi.h5"
+            # )
+            # newtonBispectrum = bs.CubeBispectrum(
+            #     datapath
+            #     + f"seed{seed:04d}/newton/newton_{cube.redshift_to_snap[redshift]}_phi.h5"
+            # )
 
-# grdBk = grBispectrum.equilateral_bispectrum(k_range)
-# ndBk = newtonBispectrum.equilateral_bispectrum(k_range)
+            grBispectrum = ProduceCubeBispectrum(
+                paths.get_cube_path(seed, "gr", redshift)
+            )
 
-# grdBk.to_csv(f"{output_folder}/seed{test_seed:04d}_gr_equilateral_rs{redshifts[0]:04d}.csv")
-# ndBk.to_csv(f"{output_folder}/seed{test_seed:04d}_newton_equilateral_rs{redshifts[0]:04d}.csv")
+            newtonBispectrum = ProduceCubeBispectrum(
+                paths.get_cube_path(seed, "newton", redshift)
+            )
+
+            k_range = np.geomspace(grBispectrum.kF, grBispectrum.kN, 1000)
+
+            grdBkeq = grBispectrum.equilateral_bispectrum(
+                k_range, save=True, verbose=True
+            )
+            ndBkeq = newtonBispectrum.equilateral_bispectrum(
+                k_range, save=True, verbose=True
+            )
+            grdBksq = grBispectrum.squeezed_bispectrum(k_range, save=True, verbose=True)
+            ndBksq = newtonBispectrum.squeezed_bispectrum(
+                k_range, save=True, verbose=True
+            )
+
+
+if __name__ == "__main__":
+    pass

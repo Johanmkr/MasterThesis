@@ -17,19 +17,20 @@ from IPython import embed
 
 
 class CubeBispectrum:
-    def __init__(self, seed: int, gravity: str, redshift: float) -> None:
+    def __init__(
+        self, seed: int, gravity: str, redshift: float, initial_rebin: bool = True
+    ) -> None:
         self.B_equilateral = self._read_bispectrum(
-            seed, gravity, redshift, type="equilateral"
+            seed, gravity, redshift, "equilateral"
         )
-        self.B_squeezed = self._read_bispectrum(
-            seed, gravity, redshift, type="squeezed"
-        )
+        self.B_squeezed = self._read_bispectrum(seed, gravity, redshift, "squeezed")
 
         # Take abs value
         self._make_abs_value_of_B()
 
         # rebin
-        self._rebin()
+        if initial_rebin:
+            self.rebin()
 
     def _read_bispectrum(self, *args) -> pd.DataFrame:
         """
@@ -48,16 +49,29 @@ class CubeBispectrum:
         self.B_equilateral["Q"] = np.abs(self.B_equilateral["Q"])
         self.B_squeezed["Q"] = np.abs(self.B_squeezed["Q"])
 
-    def _naive_rebin_function(self, frame: pd.DataFrame, bin_stride: int = 5):
-        k = frame["k"]
-        B = frame["B"]
-        Q = frame["Q"]
+    # def _naive_rebin_function(self, frame: pd.DataFrame, bin_stride: int = 5):
+    #     k = frame["k"]
+    #     B = frame["B"]
+    #     Q = frame["Q"]
+    #     k_new = np.mean(k.reshape(-1, bin_stride), axis=1)
+    #     B_new = np.mean(B.reshape(-1, bin_stride), axis=1)
+    #     Q_new = np.mean(Q.reshape(-1, bin_stride), axis=1)
+    #     return pd.DataFrame({"k": k_new, "B": B_new, "Q": Q_new})
+
+    def _naive_rebin_function(
+        self, frame: pd.DataFrame, bin_stride: int = 5
+    ) -> pd.DataFrame:
+        k = frame["k"].to_numpy()  # Convert the "k" Series to a NumPy array
+        B = frame["B"].to_numpy()  # Convert the "B" Series to a NumPy array
+        Q = frame["Q"].to_numpy()  # Convert the "Q" Series to a NumPy array
+
         k_new = np.mean(k.reshape(-1, bin_stride), axis=1)
         B_new = np.mean(B.reshape(-1, bin_stride), axis=1)
         Q_new = np.mean(Q.reshape(-1, bin_stride), axis=1)
+
         return pd.DataFrame({"k": k_new, "B": B_new, "Q": Q_new})
 
-    def _rebin(self, bin_stride: int = 5):
+    def rebin(self, bin_stride: int = 5):
         self.B_equilateral = self._naive_rebin_function(self.B_equilateral, bin_stride)
         self.B_squeezed = self._naive_rebin_function(self.B_squeezed, bin_stride)
 

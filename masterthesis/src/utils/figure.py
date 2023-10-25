@@ -10,7 +10,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
 
 # Local imports
-import paths
+from . import paths
 
 # Temporary imports
 from IPython import embed
