@@ -17,6 +17,8 @@ simulation_path: pl.PosixPath = datapath / "gevolution_first_runs"
 
 analysis_path: pl.PosixPath = datapath / "data_analysis"
 
+average_power_spectra_path: pl.PosixPath = analysis_path / "average_power_spectra"
+
 class_output: pl.Path = pl.Path(
     "/uio/hume/student-u00/johanmkr/Documents/NbodySimulation/class_public/output/"
 )

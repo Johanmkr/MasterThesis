@@ -21,7 +21,7 @@ import pandas as pd
 # from .plotPS import AddPowerSpectraComponents
 from ..utils import paths
 from ..utils.figure import CustomFigure, SaveShow
-from ..features import classPK
+from ..features import classPK, avg_powerspectra
 
 # Temporary imports
 from IPython import embed
@@ -39,35 +39,215 @@ kF = 2 * np.pi / boxsize
 three_seeds: list = [1001, 1045, 1956]
 three_redshifts: list = [0, 1, 5]
 
-power_spectrum_settings: dict = {
+matter_power_spectrum_settings: dict = {
     "xscale": "log",
     "yscale": "log",
     "xlim": (kF, kN),
     "ylim": (1e0, 1e5),
 }
 
+potential_power_spectrum_settings: dict = {
+    "xscale": "log",
+    "yscale": "log",
+    "xlim": (kF, kN),
+    "ylim": (1e-8, 5e1),
+}
 
-def class_matter_power_spectra():
-    classFig = CustomFigure(ncols=1, nrows=1, figsize=(15, 15))
-    ax = classFig.axes[0]
-    ax.set(**power_spectrum_settings)
-    redshifts = [0, 1, 5]
-    colors = ["red", "blue", "green"]
-    for i, z in enumerate(redshifts):
+
+def average_matter_power_spectra():
+    averageFig = CustomFigure(
+        ncols=2,
+        nrows=3,
+        figsize=(10, 15),
+        sharex=True,
+        sharey=True,
+        gridspec_kw={"hspace": 0, "wspace": 0},
+    )
+    for i, z in enumerate(three_redshifts):
+        # Calculate and find stuff
+        # Class spectra
         pk_synchronous = classPK.ClassSpectra(z, "synchronous")
         pk_newtonian = classPK.ClassSpectra(z, "newtonian")
         synch_frame = pk_synchronous.d_tot_pk
         newt_frame = pk_newtonian.d_tot_pk
-        ax.loglog(newt_frame["k"], newt_frame["pk"], color=colors[i], label=f"z={z}")
-        ax.loglog(synch_frame["k"], synch_frame["pk"], color=colors[i], ls="--")
-    ax.set_xlabel(r"$k\;[h/Mpc]$")
-    ax.set_ylabel(r"$P(k)\;[Mpc/h]^{-3}$")
-    ax.legend()
-    plt.show()
+
+        # Average matter spectra
+        avg_spectra = avg_powerspectra.AVG_powerspectra(z=z)
+        avg_newton = avg_spectra.get_mean_std(gravity="newton")
+        avg_gr = avg_spectra.get_mean_std(gravity="gr")
+
+        # Generate plot for newtonian case
+        ax1 = averageFig.axes[i][0]
+        ax1.set(**matter_power_spectrum_settings)
+        ax1.set_ylabel(r"$P(k)\;[Mpc/h]^{-3}$")
+        # ax1.set_title(f"z={z}")
+        # Set lines and stuff
+        mean_newton = ax1.loglog(
+            avg_newton["k"], avg_newton["mean"], color="red", label="Newtonian"
+        )
+        std_newton = ax1.fill_between(
+            avg_newton["k"],
+            avg_newton["mean"] - avg_newton["std"],
+            avg_newton["mean"] + avg_newton["std"],
+            alpha=0.2,
+            color="red",
+        )
+
+        # ax1.legend()
+
+        # Generate plot for GR case
+        ax2 = averageFig.axes[i][1]
+        ax2.set(**matter_power_spectrum_settings)
+        # ax2.set_title(f"z={z}")
+        # ax2.set_ylabel(r"$P(k)\;[Mpc/h]^{-3}$")
+        ax2twin = ax2.twinx()
+        # remove tick from ax2twin
+        ax2twin.yaxis.set_ticks([])
+        ax2twin.set_ylabel(
+            f"z={z}",
+            fontdict={
+                "family": ax2.title.get_fontfamily()[0],
+                "size": ax2.title.get_fontsize(),
+                "weight": ax2.title.get_fontweight(),
+            },
+        )
+
+        if i == 0:
+            ax1.set_title("Newtonian")
+            ax2.set_title("GR")
+
+        if i == 2:
+            ax1.set_xlabel(r"$k\;[h/Mpc]$")
+            ax2.set_xlabel(r"$k\;[h/Mpc]$")
+
+        # Set lines and stuff
+        mean_gr = ax2.loglog(avg_gr["k"], avg_gr["mean"], color="blue", label="GR")
+        std_gr = ax2.fill_between(
+            avg_gr["k"],
+            avg_gr["mean"] - avg_gr["std"],
+            avg_gr["mean"] + avg_gr["std"],
+            alpha=0.2,
+            color="blue",
+        )
+
+        # ax2.legend()
+
+        ### TODO IS THIS CORRECT GUAUGE
+        analytical_newton = ax2.loglog(
+            newt_frame["k"], newt_frame["pk"], color="black", ls="--", label="CLASS"
+        )
+        analytical_gr = ax1.loglog(
+            synch_frame["k"], synch_frame["pk"], color="black", ls="--", label="CLASS"
+        )
+    averageFig.fig.tight_layout()
+    averageFig.fig.suptitle(
+        r"Average matter powerspectrum $P_{\delta}^{\mathrm{gev}}(k)$"
+    )
+    SaveShow(
+        averageFig,
+        save_name="average_matter_power_spectra",
+        save=True,
+        show=True,
+        tight_layout=True,
+    )
 
 
-def average_matter_power_spectra():
-    averageFig = CustomFigure(ncols=2, nrows=1, figsize=(15, 10))
+def average_potential_power_spectra():
+    averageFig = CustomFigure(
+        ncols=2,
+        nrows=3,
+        figsize=(10, 15),
+        sharex=True,
+        sharey=True,
+        gridspec_kw={"hspace": 0, "wspace": 0},
+    )
+    for i, z in enumerate(three_redshifts):
+        # Calculate and find stuff
+        # Class spectra
+        pk_synchronous = classPK.ClassSpectra(z, "synchronous")
+        pk_newtonian = classPK.ClassSpectra(z, "newtonian")
+        synch_frame = pk_synchronous.phi_pk
+        newt_frame = pk_newtonian.phi_pk
+
+        # Average matter spectra
+        avg_spectra = avg_powerspectra.AVG_powerspectra(pk_type="phi", z=z)
+        avg_newton = avg_spectra.get_mean_std(gravity="newton")
+        avg_gr = avg_spectra.get_mean_std(gravity="gr")
+
+        # Generate plot for newtonian case
+        ax1 = averageFig.axes[i][0]
+        ax1.set(**potential_power_spectrum_settings)
+        ax1.set_ylabel(r"$P(k)\;[Mpc/h]^{-3}$")
+        # ax1.set_title(f"z={z}")
+        # Set lines and stuff
+        mean_newton = ax1.loglog(
+            avg_newton["k"], avg_newton["mean"], color="red", label="Newtonian"
+        )
+        std_newton = ax1.fill_between(
+            avg_newton["k"],
+            avg_newton["mean"] - avg_newton["std"],
+            avg_newton["mean"] + avg_newton["std"],
+            alpha=0.2,
+            color="red",
+        )
+
+        # ax1.legend()
+
+        # Generate plot for GR case
+        ax2 = averageFig.axes[i][1]
+        ax2.set(**potential_power_spectrum_settings)
+        # ax2.set_title(f"z={z}")
+        # ax2.set_ylabel(r"$P(k)\;[Mpc/h]^{-3}$")
+        ax2twin = ax2.twinx()
+        # remove tick from ax2twin
+        ax2twin.yaxis.set_ticks([])
+        ax2twin.set_ylabel(
+            f"z={z}",
+            fontdict={
+                "family": ax2.title.get_fontfamily()[0],
+                "size": ax2.title.get_fontsize(),
+                "weight": ax2.title.get_fontweight(),
+            },
+        )
+
+        if i == 0:
+            ax1.set_title("Newtonian")
+            ax2.set_title("GR")
+
+        if i == 2:
+            ax1.set_xlabel(r"$k\;[h/Mpc]$")
+            ax2.set_xlabel(r"$k\;[h/Mpc]$")
+
+        # Set lines and stuff
+        mean_gr = ax2.loglog(avg_gr["k"], avg_gr["mean"], color="blue", label="GR")
+        std_gr = ax2.fill_between(
+            avg_gr["k"],
+            avg_gr["mean"] - avg_gr["std"],
+            avg_gr["mean"] + avg_gr["std"],
+            alpha=0.2,
+            color="blue",
+        )
+
+        # ax2.legend()
+
+        ### TODO IS THIS CORRECT GUAUGE
+        analytical_newton = ax2.loglog(
+            newt_frame["k"], newt_frame["pk"], color="black", ls="--", label="CLASS"
+        )
+        analytical_gr = ax1.loglog(
+            synch_frame["k"], synch_frame["pk"], color="black", ls="--", label="CLASS"
+        )
+    averageFig.fig.tight_layout()
+    averageFig.fig.suptitle(
+        r"Average potential powerspectrum $P_{\Phi}^{\mathrm{gev}}(k)$"
+    )
+    SaveShow(
+        averageFig,
+        save_name="average_potential_power_spectra",
+        save=True,
+        show=True,
+        tight_layout=True,
+    )
 
 
 # def matter_power_spectra():
