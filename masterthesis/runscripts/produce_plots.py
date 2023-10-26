@@ -17,4 +17,6 @@ from src.visualization import PLOT_power_spectra as pps
 
 
 # Plot matter power spectra from CLASS
-pps.class_matter_power_spectra()
+# pps.class_matter_power_spectra()
+pps.average_matter_power_spectra()
+pps.average_potential_power_spectra()
