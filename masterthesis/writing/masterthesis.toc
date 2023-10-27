@@ -74,10 +74,11 @@
 \contentsline {subsection}{\numberline {9.1.5}Output}{24}{subsection.93}%
 \contentsline {chapter}{\numberline {10}Data Verification}{25}{chapter.99}%
 \contentsline {section}{\numberline {10.1}Slices of Datacubes}{25}{section.100}%
-\contentsline {section}{\numberline {10.2}Power spectra from Theory}{25}{section.101}%
-\contentsline {section}{\numberline {10.3}Powerspectra from Simulations}{25}{section.102}%
-\contentsline {section}{\numberline {10.4}Powerspectra from Datacubes}{25}{section.105}%
-\contentsline {section}{\numberline {10.5}Analytical Bispectra}{25}{section.106}%
-\contentsline {section}{\numberline {10.6}Bispectra from Cube}{25}{section.113}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{29}{chapter.114}%
+\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{25}{section.102}%
+\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{25}{section.105}%
+\contentsline {section}{\numberline {10.4}Analytical Bispectra}{25}{section.106}%
+\contentsline {section}{\numberline {10.5}Bispectra from Cube}{25}{section.114}%
+\contentsline {subsection}{\numberline {10.5.1}Binning}{25}{subsection.115}%
+\contentsline {subsection}{\numberline {10.5.2}Bispectra}{25}{subsection.117}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{33}{chapter.119}%
 \contentsfinish 
