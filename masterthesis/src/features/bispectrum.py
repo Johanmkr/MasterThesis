@@ -40,8 +40,8 @@ class CubeBispectrum:
         Returns:
             pd.DataFrame: The bispectrum.
         """
-        path = paths.get_pre_computed_bispectra_from_bank(*args)
-        return pd.read_csv(path)
+        path = paths.get_pre_computed_bispectra_from_bank2(*args)
+        return pd.read_pickle(path)
 
     def _make_abs_value_of_B(self) -> None:
         self.B_equilateral["B"] = np.abs(self.B_equilateral["B"])
@@ -65,6 +65,7 @@ class CubeBispectrum:
         B = frame["B"].to_numpy()  # Convert the "B" Series to a NumPy array
         Q = frame["Q"].to_numpy()  # Convert the "Q" Series to a NumPy array
 
+        ### TODO Explain this
         k_new = np.mean(k.reshape(-1, bin_stride), axis=1)
         B_new = np.mean(B.reshape(-1, bin_stride), axis=1)
         Q_new = np.mean(Q.reshape(-1, bin_stride), axis=1)

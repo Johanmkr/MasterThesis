@@ -84,6 +84,7 @@ class AnalyticalBispectrum:
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
+        self.B_equilateral /= self.k_range
         # for i, k in enumerate(self.k_range):
         #     F12, F23, F31, k3 = self._full_F2_output(k, np.pi / 3)
         #     self.B_equilateral[i] = (
@@ -100,6 +101,7 @@ class AnalyticalBispectrum:
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
+        self.B_squeezed /= self.k_range
         # for i, k in enumerate(self.k_range):
         #     F12, F23, F31, k3 = self._full_F2_output(k, 19 * np.pi / 20)
         #     self.B_squeezed[i] = (
@@ -126,6 +128,7 @@ class AnalyticalBispectrum:
                 + 2 * F23 * self.phi_spline(k_range) * self.phi_spline(k3)
                 + 2 * F31 * self.phi_spline(k_range) * self.phi_spline(k3)
             )
+            B[:, j] /= k_range
         return B
 
 

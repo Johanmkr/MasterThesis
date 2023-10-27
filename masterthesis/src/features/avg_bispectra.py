@@ -17,7 +17,7 @@ from IPython import embed
 
 
 class AVG_bispectrum:
-    def __init__(self, seeds: np.ndarray = np.arange(0, 1501, 50), z: float = 1.0):
+    def __init__(self, seeds: np.ndarray = np.arange(0, 2000, 50), z: float = 1.0):
         self.seeds = seeds
         self.z = z
 
@@ -34,17 +34,17 @@ class AVG_bispectrum:
         for seed in tqdm(self.seeds):
             # Newtonian
             newtonBispectrum = bispectrum.CubeBispectrum(
-                seed, "newton", self.z, initial_rebin=False
+                seed, "newton", self.z, initial_rebin=True
             )
-            newtonBispectrum.rebin(bin_stride=10)
+            # newtonBispectrum.rebin(bin_stride=10)
             B_newton_equilateral_list.append(newtonBispectrum.B_equilateral)
             B_newton_squeezed_list.append(newtonBispectrum.B_squeezed)
 
             # GR
             grBispectrum = bispectrum.CubeBispectrum(
-                seed, "gr", self.z, initial_rebin=False
+                seed, "gr", self.z, initial_rebin=True
             )
-            grBispectrum.rebin(bin_stride=10)
+            # grBispectrum.rebin(bin_stride=10)
             B_gr_equilateral_list.append(grBispectrum.B_equilateral)
             B_gr_squeezed_list.append(grBispectrum.B_squeezed)
 
