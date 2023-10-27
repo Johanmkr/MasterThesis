@@ -157,7 +157,7 @@ def testing_average_bispectrum(redshift: float = 1.0):
             )
 
             # twin y axis and plot the relative difference between newton and gr
-            ax2 = ax.twinx()
+            ax2 = ax.inset_axes([0, 1, 1, 0.5])
             ax2.semilogx(
                 statistic_newton.index,
                 np.abs((statistic_gr["mean"] - statistic_newton["mean"]))
@@ -165,6 +165,8 @@ def testing_average_bispectrum(redshift: float = 1.0):
                 label="relative difference",
                 color="green",
             )
+
+            ax2.set_ylim(0, 0.035)
 
             ax.legend()
             ax2.legend(loc="lower left")

@@ -10,6 +10,7 @@ sys.path.append(parent_dir)
 
 from src.visualization import PLOT_cube_slice as pcs
 from src.visualization import PLOT_power_spectra as pps
+from src.visualization import PLOT_bispectra as pbs
 
 
 # Make cube slices plot
@@ -18,5 +19,10 @@ from src.visualization import PLOT_power_spectra as pps
 
 # Plot matter power spectra from CLASS
 # pps.class_matter_power_spectra()
-pps.average_matter_power_spectra()
-pps.average_potential_power_spectra()
+# pps.average_matter_power_spectra()
+# pps.average_potential_power_spectra()
+
+# Plot bispectrum stuff
+# pbs.analytical_bispectra()
+# pbs.binning_example()
+pbs.average_bispectra()
