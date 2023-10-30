@@ -1,7 +1,6 @@
 import numpy as np
 import os
 import h5py
-from typing import Union
 import pathlib as pl
 
 # Used for testing only
