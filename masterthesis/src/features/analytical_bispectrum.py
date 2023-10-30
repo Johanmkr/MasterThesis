@@ -46,6 +46,9 @@ class AnalyticalBispectrum:
             + 2.0 / 7 * (np.cos(angle)) ** 2
         )
 
+    def _F2_prime_kernel(self, k1: float, k2: float, angle: float) -> float:
+        return k1**2 * k2**2 * self._F2_kernel(k1, k2, angle)
+
     def _full_F2_output(self, k: float, theta_12: float) -> tuple:
         """The F2 kernel for equilateral and squeezed triangles where k1=k2"""
         alpha = np.pi - theta_12
@@ -84,7 +87,7 @@ class AnalyticalBispectrum:
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
-        self.B_equilateral /= self.k_range
+        # self.B_equilateral /= self.k_range
         # for i, k in enumerate(self.k_range):
         #     F12, F23, F31, k3 = self._full_F2_output(k, np.pi / 3)
         #     self.B_equilateral[i] = (
@@ -101,7 +104,7 @@ class AnalyticalBispectrum:
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
-        self.B_squeezed /= self.k_range
+        # self.B_squeezed /= self.k_range
         # for i, k in enumerate(self.k_range):
         #     F12, F23, F31, k3 = self._full_F2_output(k, 19 * np.pi / 20)
         #     self.B_squeezed[i] = (
