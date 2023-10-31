@@ -1395,6 +1395,9 @@ INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/t
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmr8.tfm
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmr6.tfm
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmbx10.tfm
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmbx8.tfm
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmbx6.tfm
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/adobe/helvetic/phvr8t.tfm
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/vf/adobe/helvetic/phvb8t.vf
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/adobe/helvetic/phvb8r.tfm
@@ -1473,9 +1476,6 @@ INPUT chapters/cosmological_structure_formation/subchapters/perturbation_theory.
 INPUT ./chapters/cosmological_structure_formation/subchapters/perturbation_theory.tex
 INPUT ./chapters/cosmological_structure_formation/subchapters/perturbation_theory.tex
 INPUT chapters/cosmological_structure_formation/subchapters/perturbation_theory.tex
-INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmbx10.tfm
-INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmbx8.tfm
-INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmbx6.tfm
 INPUT ./chapters/cosmological_structure_formation/subchapters/simulations.tex
 INPUT ./chapters/cosmological_structure_formation/subchapters/simulations.tex
 INPUT ./chapters/cosmological_structure_formation/subchapters/simulations.tex
