@@ -2,6 +2,7 @@
 import numpy as np
 import torch
 from torchvision import transforms
+from tqdm import tqdm
 
 # Local imports
 from ..utils import paths
@@ -14,14 +15,26 @@ class Normalise(object):
             redshifts = [redshifts]
 
         self.redshifts = redshifts
-        self._get_mean()
-        self._get_var_std()
+
+        try:
+            mean_std_var = np.load(f"redshifts_{self.redshifts}_mean_std_var.npy", "r")
+            self.mean = mean_std_var[0]
+            self.std = mean_std_var[1]
+            self.variance = mean_std_var[2]
+        except FileNotFoundError:
+            print("Calculating mean")
+            self._get_mean()
+            print("Calculating standard deviation and variance")
+            self._get_var_std()
+            mean_std_var = np.array([self.mean, self.std, self.variance])
+            np.save(f"redshifts_{self.redshifts}_mean_std_var.npy", mean_std_var)
 
     def _get_mean(self) -> float:
         self.mean = 0.0
         cubes_used = 0
         for z in self.redshifts:
-            for seed in np.arange(0, 2000, 1):
+            print(f"Average over seed and gravity theory for redshift z = {z}")
+            for seed in tqdm(np.arange(0, 2000, 1)):
                 cube_path_gr = paths.get_cube_path(seed, "GR", z)
                 cube_path_newton = paths.get_cube_path(seed, "Newton", z)
                 cube_data_gr = cube.Cube(cube_path_gr)
@@ -35,7 +48,8 @@ class Normalise(object):
         self.variance = 0.0
         cubes_used = 0
         for z in self.redshifts:
-            for seed in np.arange(0, 2000, 1):
+            print(f"Average over seed and gravity theory for redshift z = {z}")
+            for seed in tqdm(np.arange(0, 2000, 1)):
                 cube_path_gr = paths.get_cube_path(seed, "GR", z)
                 cube_path_newton = paths.get_cube_path(seed, "Newton", z)
                 cube_data_gr = cube.Cube(cube_path_gr)
