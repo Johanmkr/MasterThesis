@@ -51,7 +51,7 @@ pre_computed_bispectra_path: pl.PosixPath = (
 def get_cube_path(seed: int, gravity: str, redshift: int) -> pl.Path:
     return (
         simulation_path
-        / f"seed{seed:04d}/{gravity}/{gravity}_{cube.redshift_to_snap[int(redshift)]}_phi.h5"
+        / f"seed{seed:04d}/{gravity.lower()}/{gravity.lower()}_{cube.redshift_to_snap[int(redshift)]}_phi.h5"
     )
 
 
