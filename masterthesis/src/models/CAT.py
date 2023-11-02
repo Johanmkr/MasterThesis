@@ -12,11 +12,11 @@ class CAT(pl.LightningModule):
         self.num_class = num_class
         self.ngrid = 256
 
-        # LAYER 1 - Convolutional (input_channels, 256, 256) -> (128, 256, 256)
+        # LAYER 1 - Convolutional layer with large kernel (input_channels, 256, 256) -> (128, 256, 256)
         self.layer1 = nn.Sequential(
             # (input_channels, 256, 256) -> (128, 256, 256)
             nn.Conv2d(
-                self.input_channels, 128, kernel_size=(3, 3), stride=1, padding=1
+                self.input_channels, 128, kernel_size=(11, 11), stride=1, padding=10
             ),
             nn.ReLU(),
             nn.Dropout(0.10),
