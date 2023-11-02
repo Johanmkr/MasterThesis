@@ -9,6 +9,8 @@ from . import cube
 from . import transforms
 from ..utils import paths
 
+from IPython import embed
+
 
 # Global information about dataset
 GRAVITY_THEORIES = ["Newton", "GR"]
@@ -50,6 +52,7 @@ class CustomDataset(Dataset):
         self.images_per_axis = self.ngrid // self.stride
         self.images_per_cube = self.images_per_axis * self.nr_axes
         self.nr_cubes = self.nr_gravity_theories * self.nr_redshifts * self.nr_seeds
+        self.nr_cubes_per_gravity_theory = self.nr_redshifts * self.nr_seeds
 
         # Get total number of images
         self.nr_images = self.nr_cubes * self.images_per_cube
@@ -59,9 +62,11 @@ class CustomDataset(Dataset):
 
     def __getitem__(self, idx):
         cube = self._get_cube_from_index(idx)
-        axis_idx = idx % self.nr_axes
+
+        index_within_cube = idx % self.images_per_cube
+        axis_idx = index_within_cube // self.images_per_axis
         axis = self.axes[axis_idx]
-        slice_idx = idx % self.images_per_axis
+        slice_idx = index_within_cube % self.images_per_axis
 
         # Set label: 1.0 for GR, 0.0 for Newton
         label = (
@@ -113,16 +118,21 @@ class CustomDataset(Dataset):
         self, cube: cube.Cube, axis: int, slice_idx: int
     ) -> np.ndarray:
         slices = [slice(None)] * cube.data.ndim
-        if stride == 1:
+        if self.stride == 1:
             slices[axis] = slice_idx
         else:
             slices[axis] = slice(slice_idx * self.stride, (slice_idx + 1) * self.stride)
-        return cube.data[slices]
+        return cube.data[tuple(slices)]
 
     def _get_cube_from_index(self, idx: int) -> cube.Cube:
-        gravity_theory_idx = idx // (self.nr_redshifts * self.nr_seeds)
-        redshift_idx = (idx // self.nr_seeds) % self.nr_redshifts
-        seed_idx = idx % self.nr_seeds
+        # Convert to cube index
+        cube_idx = idx // self.images_per_cube
+
+        gravity_theory_idx = cube_idx // self.nr_cubes_per_gravity_theory
+        redshift_seed_idx = cube_idx % self.nr_cubes_per_gravity_theory
+        redshift_idx = redshift_seed_idx // self.nr_seeds
+        seed_idx = redshift_seed_idx % self.nr_seeds
+
         gravity_theory = self.gravity_theories[gravity_theory_idx]
         redshift = self.redshifts[redshift_idx]
         seed = self.seeds[seed_idx]

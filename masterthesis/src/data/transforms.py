@@ -8,6 +8,8 @@ from tqdm import tqdm
 from ..utils import paths
 from ..data import cube
 
+from IPython import embed
+
 
 class Normalise(object):
     def __init__(self, redshifts: float | list | tuple) -> None:
@@ -42,6 +44,7 @@ class Normalise(object):
                 self.mean += np.mean(cube_data_gr.data)
                 self.mean += np.mean(cube_data_newton.data)
                 cubes_used += 2
+                # embed()
         self.mean /= cubes_used
 
     def _get_var_std(self) -> float:
@@ -54,8 +57,8 @@ class Normalise(object):
                 cube_path_newton = paths.get_cube_path(seed, "Newton", z)
                 cube_data_gr = cube.Cube(cube_path_gr)
                 cube_data_newton = cube.Cube(cube_path_newton)
-                self.variance += (cube_data_gr.data - self.mean) ** 2
-                self.variance += (cube_data_newton.data - self.mean) ** 2
+                self.variance += np.sum((cube_data_gr.data - self.mean) ** 2)
+                self.variance += np.sum((cube_data_newton.data - self.mean) ** 2)
                 cubes_used += 2
         self.variance /= cubes_used
         self.std = np.sqrt(self.variance)
