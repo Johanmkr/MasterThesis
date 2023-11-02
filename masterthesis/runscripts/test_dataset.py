@@ -13,7 +13,7 @@ from src.data import transforms, custom_dataset
 from IPython import embed
 
 
-# norm = transforms.Normalise(redshifts=[1.0])
-ds = custom_dataset.CustomDataset(transform=None, additional_info=True)
+norm = transforms.Normalise(redshifts=[1.0])
+# ds = custom_dataset.CustomDataset(transform=None, additional_info=True)
 
 # embed()
