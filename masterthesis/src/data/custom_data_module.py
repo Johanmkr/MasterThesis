@@ -26,6 +26,7 @@ class CustomDataModule(LightningDataModule):
         self.redshifts = redshifts
         self.seeds = seeds
         self.axes = axes
+        self.stride = stride
         self.transform = transform
         self.additional_info = additional_info
         assert sum(train_val_split) == 1, "train_val_split must sum to 1"

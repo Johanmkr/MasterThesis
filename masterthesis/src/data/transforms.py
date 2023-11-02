@@ -15,6 +15,7 @@ class Normalise(object):
     def __init__(self, redshifts: float | list | tuple) -> None:
         if not isinstance(redshifts, (list, tuple)):
             redshifts = [redshifts]
+        self.ngrid = 256
 
         self.redshifts = redshifts
 
@@ -23,6 +24,7 @@ class Normalise(object):
             self.mean = mean_std_var[0]
             self.std = mean_std_var[1]
             self.variance = mean_std_var[2]
+            embed()
         except FileNotFoundError:
             print("Calculating mean")
             self._get_mean()
@@ -60,7 +62,7 @@ class Normalise(object):
                 self.variance += np.sum((cube_data_gr.data - self.mean) ** 2)
                 self.variance += np.sum((cube_data_newton.data - self.mean) ** 2)
                 cubes_used += 2
-        self.variance /= cubes_used
+        self.variance /= cubes_used * self.ngrid**3
         self.std = np.sqrt(self.variance)
 
     def __call__(self, sample: dict) -> dict:
