@@ -23,6 +23,6 @@ from src.visualization import PLOT_bispectra as pbs
 # pps.average_potential_power_spectra()
 
 # Plot bispectrum stuff
-# pbs.analytical_bispectra()
-# pbs.binning_example()
+pbs.analytical_bispectra()
+pbs.binning_example()
 pbs.average_bispectra()
