@@ -84,4 +84,5 @@
 \contentsline {subsection}{\numberline {10.5.1}Binning}{25}{subsection.127}%
 \contentsline {subsection}{\numberline {10.5.2}Bispectra}{25}{subsection.129}%
 \contentsline {chapter}{\numberline {11}Trainable Dataset}{33}{chapter.131}%
+\contentsline {section}{\numberline {11.1}Dataset}{33}{section.132}%
 \contentsfinish 

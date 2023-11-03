@@ -1603,6 +1603,10 @@ INPUT chapters/generation_of_data/subchapters/trainable_dataset.tex
 INPUT ./chapters/generation_of_data/subchapters/trainable_dataset.tex
 INPUT ./chapters/generation_of_data/subchapters/trainable_dataset.tex
 INPUT chapters/generation_of_data/subchapters/trainable_dataset.tex
+INPUT ./TikZ/Data/illustration_of_dataset.tex
+INPUT TikZ/Data/illustration_of_dataset.tex
+INPUT ./TikZ/Data/illustration_of_dataset.tex
+INPUT TikZ/Data/illustration_of_dataset.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmcsc10.tfm
 INPUT masterthesis.aux
 INPUT ./masterthesis.out
