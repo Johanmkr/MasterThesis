@@ -9,15 +9,78 @@
 \section{Transfer Functions}
 
 \section{Power Spectra}
+    
+
+\section{Linear Evolution}
 
 \section{Non-linear Evolution} 
 
 \section{Bispectra}
 
-The bispectra are powerful tools for studying the non-linear evolution of the density field. The bispectrum is defined as the Fourier transform of the three-point correlation function, and is given by:
+    The bispectra are powerful tools for studying the non-linear evolution of the density field. The bispectrum is defined as the Fourier transform of the three-point correlation function, and is given by:
 
-\begin{equation}
-    \langle \delta(\vec{k}_1) \delta(\mathbf{k}_2) \delta(\mathbf{k}_3) \rangle = (2\pi)^3 \delta_D(\mathbf{k}_1 + \mathbf{k}_2 + \mathbf{k}_3) B(\mathbf{k}_1, \mathbf{k}_2, \mathbf{k}_3)
-\end{equation}
+    \begin{equation}
+        \langle \delta(\vec{k}_1) \delta(\mathbf{k}_2) \delta(\mathbf{k}_3) \rangle = (2\pi)^3 \delta_D\left(\sum_i\vec{k}_i\right) B(\mathbf{k}_1, \mathbf{k}_2, \mathbf{k}_3)
+    \end{equation}
 
-Well this is rather awkward. \cite{adamek_gevolution_2016} or \autocite{falck_effect_2017}
+
+    \subsection{Analytical Bispectum}
+        \begin{equation}
+            B^{(3)}_\delta(\vec{k}_1,\vec{k}_2,\vec{k}_3) = 2\mathcal{P}_\delta(k_1)\mathcal{P}_\delta(k_2)F_2(\vec{k}_1, \vec{k}_2) + \mathrm{cyc}
+        \end{equation}
+
+        \begin{equation}
+            F_2(\vec{k}_1,\vec{k}_2) = \frac{5}{7} + \frac{x}{2}\left(\frac{k_1}{k_2}+\frac{k_2}{k_1}\right) + \frac{2}{7}x^2,
+        \end{equation}
+        where $x = \hat{\vec{k}}_1 \cdot \hat{\vec{k}}_2 = \cos{\theta_{12}}$, where $\theta_{12}$ is the angle spanned by $\vec{k}_1$ and $\vec{k}_2$. We could thus consequently write: $F_2(\vec{k}_1,\vec{k_2}) = F_2(k_1,k_2,\theta_{12})$ \TODO{keep this here?}
+
+        \paragraph{Bispectrum of potential}
+            Turn this into the bispectrum of the potential, and then use the Poisson equation to get the bispectrum of the density field. Start with the Poisson equation (at late times), valid for all scales as long as $\delta_\mathrm{m}$ is given in synchronous gauge:
+            \begin{equation}
+                \begin{split}
+                    k^2\Phi(\vec{k},a) &= 4\pi G a^2 \rho_\mathrm{m}(a) \delta_\mathrm{m}(\vec{k},a)\\
+                    \Phi(\vec{k}, a) &= \frac{3}{2}\Omega_\mathrm{m} H_0^2 \frac{\delta_\mathrm{m}(\vec{k},a)}{ak^2} \equiv \frac{\mathcal{C}(a)}{k^2}\delta_\mathrm{m}(\vec{k},a)
+                \end{split}
+            \end{equation}
+            where in the last step I used that $\rho_\mathrm{m}(a) = \Omega_\mathrm{m} \rho_\mathrm{crit} a^{-3}$ and $8\pi G \rho_\mathrm{crit} = 3H_0^2$. I also defined $\mathcal{C}(a) \equiv 3\Omega_\mathrm{m}H_0^2/(2a)$. 
+
+            \begin{equation}
+                \begin{split}
+                    \langle \Phi(\vec{k}_1,a) \Phi(\vec{k}_2,a) \Phi(\vec{k}_3,a) \rangle &= \frac{\mathcal{C}(a)^3}{k_1^2k_2^2k_3^2} \langle \delta_\mathrm{m}(\vec{k}_1,a) \delta_\mathrm{m}(\vec{k}_2,a) \delta_\mathrm{m}(\vec{k}_3,a) \rangle\\
+                    (2\pi)^3 \delta_D\left(\sum_i\vec{k}_i\right) B_\Phi(\vec{k}_1,\vec{k}_2,\vec{k}_3)&= \frac{\mathcal{C}(a)^3}{k_1^2k_2^2k_3^2} (2\pi)^3 \delta_D\left(\sum_i\vec{k}_i\right) B_\delta(\vec{k}_1,\vec{k}_2,\vec{k}_3)\\
+                    B_\Phi(\vec{k}_1,\vec{k}_2,\vec{k}_3) &= \frac{\mathcal{C}(a)^3}{k_1^2k_2^2k_3^2} B_\delta(\vec{k}_1,\vec{k}_2,\vec{k}_3)
+                \end{split}
+            \end{equation}
+            \TODO{fix some stuff with $a$ above}
+            Which leads to:
+
+            \begin{equation}
+                B^{(3)}_\Phi(\vec{k}_1,\vec{k}_2,\vec{k}_3) = \frac{\mathcal{C}(a)^3}{k_1^2k_2^2k_3^2} \left[2\mathcal{P}_\delta(k_1)\mathcal{P}_\delta(k_2)F_2(\vec{k}_1, \vec{k}_2) + \mathrm{cyc}\right]
+            \end{equation}
+
+            Using the same logic I find a relation between the power spectrum of the gravitational potential and the matter contrast:
+            \begin{equation}
+                \mathcal{P}_\Phi(k,a) = \frac{\mathcal{C}(a)^2}{k^4} \mathcal{P}_\delta(k,a) \Longleftrightarrow \mathcal{P}_\delta(k,a) = \frac{k^4}{\mathcal{C}(a)^2} \mathcal{P}_\Phi(k,a)
+            \end{equation}
+
+            enables me to write:
+
+            \begin{equation}
+                \mathcal{P}_\delta(k_1)\mathcal{P}_\delta(k_2) = \frac{k_1^4k_2^4}{\mathcal{C}(a)^4} \mathcal{P}_\Phi(k_1)\mathcal{P}_\Phi(k_2)
+            \end{equation}
+
+            This again leads to the following:
+
+            \begin{equation}
+                B^{(3)}_\Phi(\vec{k}_1,\vec{k}_2,\vec{k}_3) = \frac{\mathcal{C}(a)^{-1}}{k_1^2k_2^2k_3^2} \left[2\mathcal{P}_\Phi(k_1)\mathcal{P}_\Phi(k_2)\tilde{F}_2(\vec{k}_1, \vec{k}_2) + \mathrm{cyc}\right]
+            \end{equation}
+
+            where the modified $F_2$-kerner is given by:
+
+            \begin{equation}
+                \tilde{F}_2(\vec{k}_1, \vec{k}_2) \equiv k_1^4k_2^4\left[\frac{5}{7} + \frac{x}{2}\left(\frac{k_1}{k_2}+\frac{k_2}{k_1}\right) + \frac{2}{7}x^2 + \frac{2}{7}x^2\right]
+            \end{equation}
+
+
+
+
