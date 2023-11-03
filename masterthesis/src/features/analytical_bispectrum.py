@@ -31,6 +31,7 @@ class AnalyticalBispectrum:
         self.k_range = k_range
         self.B_equilateral = np.zeros(len(k_range))
         self.B_squeezed = np.zeros(len(k_range))
+        self.z = z
 
         class_obj = classPK.ClassSpectra(z)
         self.phi_spline = self._splined_PS(
@@ -46,8 +47,8 @@ class AnalyticalBispectrum:
             + 2.0 / 7 * (np.cos(angle)) ** 2
         )
 
-    def _F2_prime_kernel(self, k1: float, k2: float, angle: float) -> float:
-        return k1**2 * k2**2 * self._F2_kernel(k1, k2, angle)
+    def _F2_tilde_kernel(self, k1: float, k2: float, angle: float) -> float:
+        return k1**4 * k2**4 * self._F2_kernel(k1, k2, angle)
 
     def _full_F2_output(self, k: float, theta_12: float) -> tuple:
         """The F2 kernel for equilateral and squeezed triangles where k1=k2"""
@@ -68,9 +69,9 @@ class AnalyticalBispectrum:
         theta_13 = np.pi - gamma
 
         # Permutations
-        F12 = self._F2_kernel(k1, k2, theta_12)
-        F23 = self._F2_kernel(k2, k3, theta_23)
-        F31 = self._F2_kernel(k3, k1, theta_13)
+        F12 = self._F2_tilde_kernel(k1, k2, theta_12)
+        F23 = self._F2_tilde_kernel(k2, k3, theta_23)
+        F31 = self._F2_tilde_kernel(k3, k1, theta_13)
 
         return F12, F23, F31, k3
 
@@ -78,6 +79,13 @@ class AnalyticalBispectrum:
         """Returns a spline interpolation of the power spectra"""
         f = interp1d(PS.k, PS.pk, kind=kind, **kwargs)
         return f
+
+    def _C(self, z: float) -> float:
+        """Calculates the C parameter"""
+        H0 = 67.556
+        OmegaM = 0.022032 + 0.12038
+        a = 1.0 / (1.0 + z)
+        return 3 * OmegaM * H0**2 / (2 * a)
 
     def _analytical_equilateral_bispectrum(self, ps_function: callable) -> None:
         """Calculates the equilateral bispectrum analytically"""
@@ -87,14 +95,9 @@ class AnalyticalBispectrum:
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
-        # self.B_equilateral /= self.k_range
-        # for i, k in enumerate(self.k_range):
-        #     F12, F23, F31, k3 = self._full_F2_output(k, np.pi / 3)
-        #     self.B_equilateral[i] = (
-        #         2 * F12 * ps_function(k) * ps_function(k)
-        #         + 2 * F23 * ps_function(k) * ps_function(k3)
-        #         + 2 * F31 * ps_function(k) * ps_function(k3)
-        #     )
+        self.B_equilateral *= 1 / (
+            self._C(self.z) * self.k_range**2 * self.k_range**2 * k3**2
+        )
 
     def _analytical_squeezed_bispectrum(self, ps_function: callable) -> None:
         """Calculates the squeezed bispectrum analytically"""
@@ -104,16 +107,10 @@ class AnalyticalBispectrum:
             + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
             + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
         )
-        # self.B_squeezed /= self.k_range
-        # for i, k in enumerate(self.k_range):
-        #     F12, F23, F31, k3 = self._full_F2_output(k, 19 * np.pi / 20)
-        #     self.B_squeezed[i] = (
-        #         2 * F12 * ps_function(k) * ps_function(k)
-        #         + 2 * F23 * ps_function(k) * ps_function(k3)
-        #         + 2 * F31 * ps_function(k) * ps_function(k3)
-        #     )
 
-    # def _get_PS_spline()
+        self.B_squeezed *= 1 / (
+            self._C(self.z) * self.k_range**2 * self.k_range**2 * k3**2
+        )
 
     def get_custom_bispectrum(
         self, k_range: np.ndarray | float, theta_range: np.ndarray | float
@@ -131,7 +128,9 @@ class AnalyticalBispectrum:
                 + 2 * F23 * self.phi_spline(k_range) * self.phi_spline(k3)
                 + 2 * F31 * self.phi_spline(k_range) * self.phi_spline(k3)
             )
-            B[:, j] /= k_range
+            B[:, j] *= 1 / (
+                self._C(self.z) * self.k_range**2 * self.k_range**2 * k3**2
+            )
         return B
 
 
