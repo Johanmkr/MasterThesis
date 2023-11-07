@@ -1,0 +1,20 @@
+# CONFIGURATION FILE FOR TESTING
+
+# Data parameters
+NGRID = 256
+STRIDE = 2
+NUM_WORKERS = 4
+
+#Training hyperparameters
+BATCH_SIZE = 32
+EPOCHS = 10
+LEARNING_RATE = 0.001
+MOMENTUM = 0.9
+WEIGHT_DECAY = 0.0005
+
+# Compute related
+ACCELERATOR = "gpu"
+DEVICES = [0]
+PRECISION = 32
+
+
