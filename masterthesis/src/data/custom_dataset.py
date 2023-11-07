@@ -122,7 +122,7 @@ class CustomDataset(Dataset):
             slices[axis] = slice_idx
         else:
             slices[axis] = slice(slice_idx * self.stride, (slice_idx + 1) * self.stride)
-        return cube.data[tuple(slices)]
+        return cube.data[tuple(slices)].reshape(self.stride, self.ngrid, self.ngrid)
 
     def _get_cube_from_index(self, idx: int) -> cube.Cube:
         # Convert to cube index

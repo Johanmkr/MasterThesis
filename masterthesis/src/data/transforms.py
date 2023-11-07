@@ -3,6 +3,7 @@ import numpy as np
 import torch
 from torchvision import transforms
 from tqdm import tqdm
+import os
 
 # Local imports
 from ..utils import paths
@@ -10,28 +11,34 @@ from ..data import cube
 
 from IPython import embed
 
+dirname = os.path.dirname(__file__)
+
 
 class Normalise(object):
-    def __init__(self, redshifts: float | list | tuple) -> None:
+    def __init__(self, redshifts: float | list | tuple = 1.0) -> None:
         if not isinstance(redshifts, (list, tuple)):
             redshifts = [redshifts]
         self.ngrid = 256
 
         self.redshifts = redshifts
-
+        # embed()
         try:
-            mean_std_var = np.load(f"redshifts_{self.redshifts}_mean_std_var.npy", "r")
+            mean_std_var = np.load(
+                f"{dirname}/redshifts_{self.redshifts}_mean_std_var.npy", "r"
+            )
             self.mean = mean_std_var[0]
             self.std = mean_std_var[1]
             self.variance = mean_std_var[2]
-            embed()
+            # embed()
         except FileNotFoundError:
             print("Calculating mean")
             self._get_mean()
             print("Calculating standard deviation and variance")
             self._get_var_std()
             mean_std_var = np.array([self.mean, self.std, self.variance])
-            np.save(f"redshifts_{self.redshifts}_mean_std_var.npy", mean_std_var)
+            np.save(
+                f"{dirname}/redshifts_{self.redshifts}_mean_std_var.npy", mean_std_var
+            )
 
     def _get_mean(self) -> float:
         self.mean = 0.0
@@ -72,3 +79,7 @@ class Normalise(object):
     def revert(self, sample: dict) -> dict:
         image, label = sample["image"], sample["label"]
         return image * self.std + self.mean
+
+
+if __name__ == "__main__":
+    pass
