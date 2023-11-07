@@ -24,7 +24,7 @@ class MOUSE(pl.LightningModule):
 
         # LAYER - fully connected layer
         self.fc1 = nn.Sequential(
-            nn.flatten(),
+            nn.Flatten(),
             nn.Linear(self.input_channels * self.ngrid * self.ngrid, 256),
             nn.ReLU(),
             nn.Dropout(0.25),
@@ -52,6 +52,7 @@ class MOUSE(pl.LightningModule):
         return x
 
     def _common_step(self, batch, batch_idx):
+        embed()
         X, y = batch
         y_hat = self.forward(X)
         loss = self.loss_fn(y_hat, y)
