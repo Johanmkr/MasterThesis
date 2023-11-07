@@ -45,10 +45,10 @@ class CustomDataModule(LightningDataModule):
             additional_info=self.additional_info,
         )
 
-    def setup(self, stage=None):
+    def setup(self, stage):
         train_size = int(self.train_test_val_split[0] * len(self.dataset))
         test_size = int(self.train_test_val_split[1] * len(self.dataset))
-        val_size = len(self.dataset) - train_size
+        val_size = len(self.dataset) - train_size - test_size
         self.train_dataset, self.test_dataset, self.val_dataset = random_split(
             self.dataset,
             [train_size, test_size, val_size],
