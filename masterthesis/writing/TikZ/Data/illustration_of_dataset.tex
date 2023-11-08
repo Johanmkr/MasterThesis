@@ -1,5 +1,5 @@
 
-\begin{tikzpicture}
+\begin{tikzpicture}    
     % Index 
     \node (Index) at (2.5, 5) {Index};
 
@@ -97,5 +97,26 @@
     \draw[->, thick, blue] (s2.south) -- (ax1);
     \draw[->, thick, blue] (ax1.south) -- (rend);
     \draw[->, thick, blue] (rend.south) -- (Image);
+
+
+    % Large vertical curly brace
+    \draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt]
+    (8,4) -- (8,-4) node [black,midway,xshift=1cm] 
+    {Cube};
+    \draw [decorate,decoration={brace,amplitude=10pt},xshift=-4pt,yshift=0pt]
+    (8,-5) -- (8,-10) node [black,midway,xshift=1cm] 
+    {Slice};
+
+
+    % Layer/level texts
+
+    \node (gravitytheory) at (-4, 3) {Gravity theory};
+    \node (gravitytheory) at (-4, 0) {Redshift};
+    \node (gravitytheory) at (-4, -3) {Seed};
+    \node (gravitytheory) at (-4, -6) {Axis};
+    \node (gravitytheory) at (-4, -9) {Slice};
+
+
+
 
 \end{tikzpicture}

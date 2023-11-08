@@ -1095,6 +1095,10 @@ INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/gen
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryangles.code.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryquotes.code.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryquotes.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathreplacing.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarydecorations.pathreplacing.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathreplacing.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/libraries/decorations/pgflibrarydecorations.pathreplacing.code.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
