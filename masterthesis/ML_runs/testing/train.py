@@ -17,6 +17,10 @@ from src.data.custom_data_module import CustomDataModule
 from src.data.transforms import Normalise
 from src.models.MOUSE import MOUSE
 
+# from src.utils import yamlconfig
+
+# cfg = yamlconfig.YamlConfig("config.yaml")
+
 
 torch.set_float32_matmul_precision("medium")
 
@@ -61,7 +65,7 @@ if __name__ == "__main__":
     trainer = pl.Trainer(
         accelerator=cfg.ACCELERATOR,
         min_epochs=1,
-        max_epochs=cfg.EPOCHS,
+        max_epochs=cfg.NUM_EPOCHS,
         logger=logger,
         profiler=profiler,
         precision=cfg.PRECISION,

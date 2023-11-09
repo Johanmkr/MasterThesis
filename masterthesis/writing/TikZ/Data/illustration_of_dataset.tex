@@ -63,7 +63,7 @@
     \tdplotsetmaincoords{70}{110}
     \pgfmathsetmacro{\Nlength}{4}
     \pgfmathsetmacro{\stride}{1}
-    \pgfmathsetmacro{\waybelow}{-17}
+    \pgfmathsetmacro{\waybelow}{-16}
 
     % Draw 3d square
     \draw[dashed] (0,\waybelow,0) -- (\Nlength, \waybelow, 0);
@@ -77,7 +77,7 @@
     \draw[thick] (\Nlength,\waybelow+\Nlength,0) -- (\Nlength,\waybelow+\Nlength, \stride);
     \draw[thick] (0,\waybelow+\Nlength,0) -- (0,\waybelow+\Nlength, \stride);
 
-    \node (Image) at (2, -12.5) {Image};
+    \node (Image) at (2, -11.5) {Image};
 
     \foreach \slice in {r1, r2, r3, r4, r5, rend}{
         \draw[->, thick] (\slice.south) -- (Image);

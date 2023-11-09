@@ -3,10 +3,23 @@
 %   Work related to the trainable dataset
 %
 %%%%%%%%%%%%%%%%%%%%%%
+The raw data are the set of cubes generated for each random seed $\mathtt{S}$, at each redshift $z_\mathrm{d}$ for both gravity theories. This need to be converted into a trainable dataset for use with a machine learning algorithm. One possibility is to pass the whole cube as input data into an algorithm. However, for algorithms like CNNs this is not a good idea as it would involve three-dimensional convolutional kernels which greatly increase the training time of the network \TODO{source?}. Instead, I will use a method similar to the one used by \TODO{find source for this} where they used a two-dimensional slice of the three-dimensional cube as input data. I will refer to one such slice as an \textit{image}.  Following this, I extract slices from each datacube, along all axes with a stride $s$. This will result in a total of $N_\mathrm{image}=N_\mathrm{axes}N_\mathrm{grid}/s$ images per cube, with dimensions $(s, N_\mathrm{grid}, N_\mathrm{grid})$. The whole dataset will then consist of $N_\mathrm{cubes}N_\mathrm{axes}N_\mathrm{grid}/s$ images.
+\section{Gathering the cubes}
+    Since the output from each redshift
 
-\section{Dataset}
+\section{Find image from index}
+    Given an index $i$ of an image in the dataset, I need to find the corresponding cube, redshift and slice. This is done by the following algorithm:
+    \begin{algorithm}
+        \caption{Find slice from index}\label{algo:data:find_slice_from_index}
+        \begin{algorithmic}
+            \State some
+        \end{algorithmic}
+    \end{algorithm}
 
-\begin{figure}
-    \centering
-    \input{TikZ/Data/illustration_of_dataset.tex}
-\end{figure}
+
+
+    \begin{figure}\label{fig:data:illustration_of_dataset}
+        \centering
+        \input{TikZ/Data/illustration_of_dataset.tex}
+        \caption{Outline of data structure.}
+    \end{figure}

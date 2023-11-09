@@ -52,8 +52,8 @@ class MOUSE(pl.LightningModule):
         return x
 
     def _common_step(self, batch, batch_idx):
-        embed()
-        X, y = batch
+        # embed()
+        X, y = batch["image"], batch["label"]
         y_hat = self.forward(X)
         loss = self.loss_fn(y_hat, y)
         return loss, y_hat, y
@@ -82,8 +82,7 @@ class MOUSE(pl.LightningModule):
         return loss
 
     def predict_step(self, batch, batch_idx, dataloader_idx=None):
-        X, y = batch
-        y_hat = self.forward(X)
+        loss, y_hat, y = self._common_step(batch, batch_idx)
         return y_hat
 
     def configure_optimizers(self):

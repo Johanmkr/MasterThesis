@@ -74,11 +74,13 @@ class Normalise(object):
 
     def __call__(self, sample: dict) -> dict:
         image, label = sample["image"], sample["label"]
-        return (image - self.mean) / self.std
+        sample["image"] = (image - self.mean) / self.std
+        return sample
 
     def revert(self, sample: dict) -> dict:
         image, label = sample["image"], sample["label"]
-        return image * self.std + self.mean
+        sample["image"] = image * self.std + self.mean
+        return sample
 
 
 if __name__ == "__main__":

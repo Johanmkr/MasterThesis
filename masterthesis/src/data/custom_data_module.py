@@ -35,6 +35,8 @@ class CustomDataModule(LightningDataModule):
         self.train_test_val_split = train_test_val_split
         self.split_seed = split_seed
 
+        self.prepare_data()
+
     def prepare_data(self):
         self.dataset = custom_dataset.CustomDataset(
             stride=self.stride,
@@ -78,3 +80,9 @@ class CustomDataModule(LightningDataModule):
             num_workers=self.num_workers,
             shuffle=False,
         )
+
+    def __str__(self):
+        return self.dataset.__str__()
+
+    def print_image(self, idx):
+        return self.dataset.print_image(idx)

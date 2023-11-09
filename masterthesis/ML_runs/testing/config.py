@@ -14,7 +14,7 @@ AXES = [0]
 
 # Training hyperparameters
 BATCH_SIZE = 32
-EPOCHS = 10
+NUM_EPOCHS = 10
 LEARNING_RATE = 0.001
 # MOMENTUM = 0.9
 # WEIGHT_DECAY = 0.0005
@@ -22,7 +22,7 @@ TRAIN_TEST_VAL_SPLIT = (0.6, 0.2, 0.2)
 SPLIT_SEED = 42
 
 # Compute related
-ACCELERATOR = "cpu"
+ACCELERATOR = "gpu"
 DEVICES = [0]
 PRECISION = 32
 
