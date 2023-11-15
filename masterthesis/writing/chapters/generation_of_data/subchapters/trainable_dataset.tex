@@ -3,16 +3,28 @@
 %   Work related to the trainable dataset
 %
 %%%%%%%%%%%%%%%%%%%%%%
-The raw data are the set of cubes generated for each random seed $\mathtt{S}$, at each redshift $z_\mathrm{d}$ for both gravity theories. This need to be converted into a trainable dataset for use with a machine learning algorithm. One possibility is to pass the whole cube as input data into an algorithm. However, for algorithms like CNNs this is not a good idea as it would involve three-dimensional convolutional kernels which greatly increase the training time of the network \TODO{source?}. Instead, I will use a method similar to the one used by \TODO{find source for this} where they used a two-dimensional slice of the three-dimensional cube as input data. I will refer to one such slice as an \textit{image}.  Following this, I extract slices from each datacube, along all axes with a stride $s$. This will result in a total of $N_\mathrm{image}=N_\mathrm{axes}N_\mathrm{grid}/s$ images per cube, with dimensions $(s, N_\mathrm{grid}, N_\mathrm{grid})$. The whole dataset will then consist of $N_\mathrm{cubes}N_\mathrm{axes}N_\mathrm{grid}/s$ images.
+The raw data are the set of cubes generated for each random seed $\mathtt{S}$, at each redshift $z_\mathrm{d}$ for both gravity theories. This need to be converted into a trainable dataset for use with a machine learning algorithm. One possibility is to pass the whole cube as input data into an algorithm. However, for algorithms like CNNs this is not a good idea as it would involve three-dimensional convolutional kernels which greatly increase the training time of the network \TODO{source?}. Instead, I will use a method similar to the one used by \TODO{find source for this} where they used a two-dimensional slice of the three-dimensional cube as input data. I will refer to one such slice as an \textit{image}.  Following this, I extract slices from each datacube, along all axes with a stride $\mathcal{S}$. This will result in a total of $\mathcal{I}_\mathrm{cube}=N_\mathrm{axes}N_\mathrm{grid}/\mathcal{S}$ images per cube, with dimensions $(\mathcal{S}, N_\mathrm{grid}, N_\mathrm{grid})$. The whole dataset will then consist of $\mathcal{I}_\mathrm{tot} = \mathcal{I}_\mathrm{cube}N_\mathrm{cube}$ images.
 \section{Gathering the cubes}
     Since the output from each redshift
 
 \section{Find image from index}
-    Given an index $i$ of an image in the dataset, I need to find the corresponding cube, redshift and slice. This is done by the following algorithm:
+    Given an index $i$ of an image in the dataset, I need to find the corresponding cube, redshift and slice. This is done by the following algorithm, where $i\in[0, \mathcal{I}_\mathrm{tot})$: The algorithm is explained in detail in ~\cref{algo:data:find_slice_from_index}. In the first procedure I find the datacube from the index $i$, and in the second I find the index of the slice corresponding to the desired image for a given datacube. This logic is illustrated in ~\cref{fig:data:illustration_of_dataset}, where I highlight two possible ``paths'' from an index to the desired image. For the red path, the datacube is a result of the Newtonian simulation and will be labeled accordingly. It also corresponds to some arbitrary redshift, but has seed 4. The desired image is the first second slice along the first axis. Comparable logic for the blue path, but this time the image comes from a GR simulation. 
     \begin{algorithm}
-        \caption{Find slice from index}\label{algo:data:find_slice_from_index}
+        \caption{Extract image from a given index $i$}\label{algo:data:find_slice_from_index}
         \begin{algorithmic}
-            \State some
+            \Procedure{FindCubeFromIndex}{$i$}
+                \State $i_\mathrm{cube} \gets \left\lfloor\frac{i}{\mathcal{I}_\mathrm{cube}}\right\rfloor$ \Comment{Convert to one index per cube}
+                \State $i_\mathrm{gravity} \gets \left\lfloor\frac{i_\mathrm{cube}}{N_zN_\mathtt{S}}\right\rfloor$ \Comment{Gravity index: 0 for Newton, 1 for GR}
+                \State $i_z \gets \left\lfloor\frac{i_\mathrm{cube}}{N_\mathtt{S}}\right\rfloor \mod N_z$ \Comment{Redshift index}
+                \State $i_\mathtt{S} \gets i_\mathrm{cube}\mod N_\mathtt{S}$ \Comment{Index of seed}
+                \State $\mathbf{return}\; \mathrm{Cube}(i_\mathrm{gravity}, i_z, i_\mathtt{S}$) \Comment{Array of shape $(N_\mathrm{grid}, N_\mathrm{grid}, N_\mathrm{grid})$}
+            \EndProcedure
+            \Procedure{FindSliceFromCube}{$i$}
+                \State $\mathrm{Cube} \gets$ \Call{FindCubeFromIndex}{$i$}
+                \State $i_\mathrm{axis} \gets \left\lfloor\frac{i \mod \mathcal{I}_\mathrm{cube}}{\mathcal{I}_\mathrm{cube}/N_\mathrm{axis}}\right\rfloor$ \Comment{Index of axis}
+                \State $i_\mathrm{slice} \gets (i \mod \mathcal{I}_\mathrm{cube}) \mod (\mathcal{I}_\mathrm{cube}/N_\mathrm{axis})$ \Comment{Index of slice along given axis}
+                \State $\mathbf{return}\; \mathrm{Cube}[i_\mathrm{axis}, i_\mathrm{slice}]$ \Comment{Array of size $(\mathcal{S}, N_\mathrm{grid}, N_\mathrm{grid})$}
+            \EndProcedure
         \end{algorithmic}
     \end{algorithm}
 

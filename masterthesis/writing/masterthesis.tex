@@ -2,7 +2,7 @@
 \usepackage{old_el_paso/overhead}
 \usepackage{newcommands}
 
-% \includeonly{chapters/cosmological_structure_formation/cosmological_structure_formation}
+\includeonly{chapters/generation_of_data/data_generation, chapters/cosmological_structure_formation/cosmological_structure_formation}
 
 \input{settings_and_stuff}
 
@@ -54,25 +54,17 @@ techniques}         %% ... if any
 \mainmatter{}
 
 % Introduction
-\input{chapters/introduction}
-
-% \includeimage[width=\textwidth]{test}
-\begin{figure}
-  \centering
-  % \includegraphics[width=\linewidth]{main/test.pdf}
-  \includeimage[width=\linewidth]{test}
-\end{figure}
-
+\include{chapters/introduction}
 
 % PART: Cosmological Structure Formation
-\input{chapters/cosmological_structure_formation/cosmological_structure_formation}
+\include{chapters/cosmological_structure_formation/cosmological_structure_formation}
 
 % PART: Machine Learning
-\input{chapters/machine_learning/machine_learning}
+\include{chapters/machine_learning/machine_learning}
 
 
 % PART: Simulation and Data Verification
-\input{chapters/generation_of_data/data_generation}
+\include{chapters/generation_of_data/data_generation}
 
 % \part{Conclusion}                     %% ... or ??
 % \chapter{Results}                     %% ... or ??

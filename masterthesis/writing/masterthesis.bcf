@@ -2356,8 +2356,6 @@
     <bcf:citekey order="6">selvaraju_grad-cam_2020</bcf:citekey>
     <bcf:citekey order="7">dodelson2020modern</bcf:citekey>
     <bcf:citekey order="8">weinberg2008cosmology</bcf:citekey>
-    <bcf:citekey order="9">Goodfellow-et-al-2016</bcf:citekey>
-    <bcf:citekey order="10">hastie2009elements</bcf:citekey>
     <bcf:citekey order="11">jeong_large-scale_2012</bcf:citekey>
     <bcf:citekey order="12">chisari_connection_2011</bcf:citekey>
     <bcf:citekey order="13">green_newtonian_2012</bcf:citekey>
@@ -2366,8 +2364,6 @@
     <bcf:citekey order="16">selvaraju_grad-cam_2020</bcf:citekey>
     <bcf:citekey order="17">dodelson2020modern</bcf:citekey>
     <bcf:citekey order="18">weinberg2008cosmology</bcf:citekey>
-    <bcf:citekey order="19">Goodfellow-et-al-2016</bcf:citekey>
-    <bcf:citekey order="20">hastie2009elements</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">

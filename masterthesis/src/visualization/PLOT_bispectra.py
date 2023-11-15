@@ -251,6 +251,7 @@ def average_bispectra():
 
             if i == 2:
                 labelax = ax.twinx()
+                labelax.set_position(pos2)
                 labelax.set_yticks([])
                 labelax.set_ylabel(
                     f"{b_type.capitalize()}",

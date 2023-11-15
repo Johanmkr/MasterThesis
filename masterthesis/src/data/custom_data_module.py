@@ -1,4 +1,4 @@
-from pytorch_lightning.utilities.types import EVAL_DATALOADERS
+# from pytorch_lightning.utilities.types import EVAL_DATALOADERS
 import torch
 from torch.utils.data import DataLoader, random_split
 from torchvision import transforms

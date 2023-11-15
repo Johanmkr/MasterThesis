@@ -13,7 +13,7 @@ REDSHIFTS = 1.0
 AXES = [0]
 
 # Training hyperparameters
-BATCH_SIZE = 32
+BATCH_SIZE = 16
 NUM_EPOCHS = 10
 LEARNING_RATE = 0.001
 # MOMENTUM = 0.9
@@ -23,7 +23,7 @@ SPLIT_SEED = 42
 
 # Compute related
 ACCELERATOR = "gpu"
-DEVICES = [0]
+DEVICES = [0]  # -1 for all available GPUs, 0 for CPU
 PRECISION = 32
 
 # Logging

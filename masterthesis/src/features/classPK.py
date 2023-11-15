@@ -16,7 +16,7 @@ class ClassSpectra:
         As: float = 2.215e-9,
         ns: float = 0.9619,
         k_pivot: float = 0.05
-        * 0.67556,  # check if units of k_pivot are correct (multiply by h?)
+        / 0.67556,  # check if units of k_pivot are correct (multiply by h?)
     ) -> None:
         self.dirPath = dir_path
         self.redshift = redshift

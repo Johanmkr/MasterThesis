@@ -65,30 +65,75 @@ When performing simulations, it was import to keep all parameters fixed for all 
         \end{table}
         This resulted in a fundamental frequency of $k_\mathrm{F} = 2\pi/L$ and Nyquist freguency $k_\mathrm{N} = \pi/\Delta_\mathrm{res}$ \TODO{what with units?}
 
-    \subsection{Seeds}
+    \subsection{Seeds and gravity theories}
+        One simulation consisted of two runs, one for each gravity theory, $\mathtt{T}$:
+        \begin{equation}
+            \mathtt{T} = \{\mathrm{Newton}, \mathrm{GR}\}
+        \end{equation}
         In order to initialise the simulations we used random seeds, one for each simulation. This ensured that analysis performed on different simulations were of different realisations of the simulated universe, essential statistical independence. The seeds, denoted as $\mathtt{S}$ ranged from 0 to 2000, and consisted of the following set:
         \begin{equation}
             \{\mathtt{S} \in \mathbb{Z} | 0 \leq \mathtt{S} < 2000 \}
         \end{equation}
 
-    \subsection{Output}
-        
+    \section{Output}
+    \subsection{Datacubes}
+        The output of interest was the density field of the gravitational potential, $\Phi$. This field was outputted at the following redshifts:
         \begin{equation}
             z_\mathrm{d} = \{ 20, 15, 10, 5, 1, 0 \}
         \end{equation}
+        One datacube was outputted for each redshift, for each seed, for each gravity theory and denoted $\mathcal{D}_{tzs}$, where $t\in\mathtt{T}$ is the gravity theory, $z\in z_\mathrm{d}$ is the redshift and $s\in\mathtt{S}$ is the seed. This resulted in a total of $N_\mathcal{D}=N_\mathtt{S}N_{z_\mathrm{d}}N_\mathtt{T}=24000$ datacubes, each of size $N_\mathrm{grid}^3$. Each dimension of the datacube can be indexed such that $i,j,k\in[1, N_\mathrm{grid}]$. In this manner, one single data point corresponds to $\mathcal{D}_{tzs}^{ijk}$.
 
+    \subsection{Redshift problem}
+        There is however one issue with the redshift, the datacubes produced with the same seed for the same theory, but at different redshifts are highly dependent on each other. This is because they are the same realisations of the universe evolved with the same gravity theory, just evaluated at different times.
+        In order to have a fully independent set of datacube, I consider only one redshift at a time, and denote the set of datacubes for a given redshift as $\mathcal{D}_z^\mathrm{ind}$. This set consists of $N_\mathcal{D}^\mathrm{ind}=N_\mathcal{D}/N_{z_\mathrm{d}}=4000$ datacubes.
+    
+    \subsection{Statistics of dataset}
+        The statistics of the dataset is evaluated for each independent dataset, i.e. for each redshift.
+        The mean of one single datacube is therefore explicitly given by:
         \begin{equation}
-            z_\mathrm{p} = \{ 100,50,20,15,10,6,5,4,3,2,1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0 \}
+            \bar{\mathcal{D}}_{tzs} = \frac{1}{N_\mathrm{grid}^3}\sum_{i=1}^{N_\mathrm{grid}}\sum_{j=1}^{N_\mathrm{grid}}\sum_{k=1}^{N_\mathrm{grid}}\mathcal{D}_{tzs}^{ijk},
+        \end{equation}
+        and the mean of the independent dataset is given by:
+        \begin{equation}
+            \mu_z = \frac{1}{N_\mathcal{D}^\mathrm{ind}}\sum_{t\in\mathtt{T}}\sum_{s\in\mathtt{S}}\bar{\mathcal{D}}_{tzs}.
+        \end{equation}
+        The variance of the independence dataset is thus given by:
+        \begin{equation}
+            \mathrm{Var}_z = \frac{1}{N_\mathcal{D}^\mathrm{ind}N_\mathrm{grid}^3}\sum_{t\in\mathtt{T}}\sum_{s\in\mathtt{S}}\sum_i\sum_j\sum_k\left(\mathcal{D}_{tzs}^{ijk} - \mu_z\right)^2,
+        \end{equation}
+        and the corresponding standard deviation: 
+        \begin{equation}
+            \sigma_z = \sqrt{\mathrm{Var}_z}.
         \end{equation}
 
+        % The skewness is given by:
+        % \begin{equation}
+        %     \mathrm{Skew}_z = \frac{1}{N_\mathcal{D}^\mathrm{ind}N_\mathrm{grid}^3}\sum_{t\in\mathtt{T}}\sum_{s\in\mathtt{S}}\sum_i\sum_j\sum_k\left(\frac{\mathcal{D}_{tzs}^{ijk} - \mu_z}{\sigma_z}\right)^3,
+        % \end{equation}
+
+        \Question{Include actual numerical values?}\\
+        \Question{Include some figure?}
+
+    \subsection{Normalisation}
+        Each independent set of datacubes may then be normalised by subtracting the mean and dividing by the standard deviation. This ensures a zero mean and unit variance across the set, without loosing the monopole and dipole of the data. The normalised datacubes are denoted $\mathcal{D}_z^\mathrm{norm}$ and are given by:
         \begin{equation}
-            \mathcal{D}(\mathtt{S}, z_\mathrm{d})
+            \mathcal{D}_z^\mathrm{norm} = \frac{\mathcal{D}_z^\mathrm{ind} - \mu_z}{\sigma_z},
         \end{equation}
+        which will be the set(s) used for training and testing the machine learning algorithms.
+
+
+        % \begin{equation}
+        %     z_\mathrm{p} = \{ 100,50,20,15,10,6,5,4,3,2,1,0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1,0 \}
+        % \end{equation}
+
+        % \begin{equation}
+        %     \mathcal{D}(\mathtt{S}, z_\mathrm{d})
+        % \end{equation}
         
-        \begin{equation}
-            \mathcal{D}_\Phi(\mathtt{S}, z_\mathrm{p})
-        \end{equation}
+        % \begin{equation}
+        %     \mathcal{D}_\Phi(\mathtt{S}, z_\mathrm{p})
+        % \end{equation}
 
-        \begin{equation}
-            \mathcal{D}_\delta (\mathtt{S}, z_\mathrm{p})
-        \end{equation}
+        % \begin{equation}
+        %     \mathcal{D}_\delta (\mathtt{S}, z_\mathrm{p})
+        % \end{equation}

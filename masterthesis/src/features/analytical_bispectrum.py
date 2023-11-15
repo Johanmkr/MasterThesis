@@ -66,12 +66,12 @@ class AnalyticalBispectrum:
 
         # Find remaining thetas
         theta_23 = np.pi - beta
-        theta_13 = np.pi - gamma
+        theta_31 = np.pi - gamma
 
         # Permutations
-        F12 = self._F2_tilde_kernel(k1, k2, theta_12)
-        F23 = self._F2_tilde_kernel(k2, k3, theta_23)
-        F31 = self._F2_tilde_kernel(k3, k1, theta_13)
+        F12 = self._F2_kernel(k1, k2, theta_12)
+        F23 = self._F2_kernel(k2, k3, theta_23)
+        F31 = self._F2_kernel(k3, k1, theta_31)
 
         return F12, F23, F31, k3
 
@@ -80,36 +80,58 @@ class AnalyticalBispectrum:
         f = interp1d(PS.k, PS.pk, kind=kind, **kwargs)
         return f
 
-    def _C(self, z: float) -> float:
+    def _C(self, z: float, k: float) -> float:
         """Calculates the C parameter"""
-        H0 = 67.556
+        H0k = 1.0 / (2997.13 * k)
         OmegaM = 0.022032 + 0.12038
         a = 1.0 / (1.0 + z)
-        return 3 * OmegaM * H0**2 / (2 * a)
+        return 3 * OmegaM * H0k**2 / (2 * a)
+
+    def _calc_cycle(self, F12, F23, F31, k3, ps_function: callable) -> None:
+        """Calculates the bispectrum for a given cycle"""
+        cyclic = (
+            2
+            * F12
+            * ps_function(self.k_range)
+            * ps_function(self.k_range)
+            / self._C(self.z, self.k_range) ** 2
+            / self._C(self.z, self.k_range) ** 2
+            + 2
+            * F23
+            * ps_function(self.k_range)
+            * ps_function(k3)
+            / self._C(self.z, self.k_range) ** 2
+            / self._C(self.z, k3) ** 2
+            + 2
+            * F31
+            * ps_function(self.k_range)
+            * ps_function(k3)
+            / self._C(self.z, self.k_range) ** 2
+            / self._C(self.z, k3) ** 2
+        )
+        return cyclic
+
+    def _calc_prefactor(self, k3: float, k_range: np.ndarray | float = None):
+        """Calculates the prefactor for the bispectrum"""
+        if k_range is None:
+            k_range = self.k_range
+        prefactor = (
+            self._C(self.z, k_range) * self._C(self.z, k_range) * self._C(self.z, k3)
+        )
+        return prefactor
 
     def _analytical_equilateral_bispectrum(self, ps_function: callable) -> None:
         """Calculates the equilateral bispectrum analytically"""
         F12, F23, F31, k3 = self._full_F2_output(self.k_range, theta_12=2 * np.pi / 3)
-        self.B_equilateral = (
-            2 * F12 * ps_function(self.k_range) * ps_function(self.k_range)
-            + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
-            + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
-        )
-        self.B_equilateral *= 1 / (
-            self._C(self.z) * self.k_range**2 * self.k_range**2 * k3**2
+        self.B_equilateral = self._calc_prefactor(k3) * self._calc_cycle(
+            F12, F23, F31, k3, ps_function
         )
 
     def _analytical_squeezed_bispectrum(self, ps_function: callable) -> None:
         """Calculates the squeezed bispectrum analytically"""
         F12, F23, F31, k3 = self._full_F2_output(self.k_range, theta_12=19 * np.pi / 20)
-        self.B_squeezed = (
-            2 * F12 * ps_function(self.k_range) * ps_function(self.k_range)
-            + 2 * F23 * ps_function(self.k_range) * ps_function(k3)
-            + 2 * F31 * ps_function(self.k_range) * ps_function(k3)
-        )
-
-        self.B_squeezed *= 1 / (
-            self._C(self.z) * self.k_range**2 * self.k_range**2 * k3**2
+        self.B_squeezed = self._calc_prefactor(k3) * self._calc_cycle(
+            F12, F23, F31, k3, ps_function
         )
 
     def get_custom_bispectrum(
@@ -123,13 +145,8 @@ class AnalyticalBispectrum:
         B = np.zeros((len(k_range), len(theta_range)))
         for j, theta in enumerate(theta_range):
             F12, F23, F31, k3 = self._full_F2_output(k_range, theta)
-            B[:, j] = (
-                2 * F12 * self.phi_spline(k_range) * self.phi_spline(k_range)
-                + 2 * F23 * self.phi_spline(k_range) * self.phi_spline(k3)
-                + 2 * F31 * self.phi_spline(k_range) * self.phi_spline(k3)
-            )
-            B[:, j] *= 1 / (
-                self._C(self.z) * self.k_range**2 * self.k_range**2 * k3**2
+            B[:, j] = self._calc_prefactor(k3, k_range) * self._calc_cycle(
+                F12, F23, F31, k3, self.phi_spline
             )
         return B
 

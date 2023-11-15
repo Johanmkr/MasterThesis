@@ -68,13 +68,14 @@ if __name__ == "__main__":
         max_epochs=cfg.NUM_EPOCHS,
         logger=logger,
         profiler=profiler,
-        precision=cfg.PRECISION,
+        # precision=cfg.PRECISION,
         # limit_train_batches=0.1,
         # limit_val_batches=0.1,
         # limit_test_batches=0.1,
         # limit_predict_batches=0.1,
         # auto_lr_find=True,
     )
+    # trainer = pl.Trainer()
 
     # Train the model
     trainer.fit(model, dm)

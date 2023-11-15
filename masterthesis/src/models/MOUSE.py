@@ -25,19 +25,19 @@ class MOUSE(pl.LightningModule):
         # LAYER - fully connected layer
         self.fc1 = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(self.input_channels * self.ngrid * self.ngrid, 256),
+            nn.Linear(self.input_channels * self.ngrid * self.ngrid, 16),
             nn.ReLU(),
             nn.Dropout(0.25),
         )
         self.layers.append(self.fc1)
 
         # LAYER - fully connected layer
-        self.fc2 = nn.Sequential(
-            nn.Linear(256, 16),
-            nn.ReLU(),
-            nn.Dropout(0.25),
-        )
-        self.layers.append(self.fc2)
+        # self.fc2 = nn.Sequential(
+        #     nn.Linear(256, 16),
+        #     nn.ReLU(),
+        #     nn.Dropout(0.25),
+        # )
+        # self.layers.append(self.fc2)
 
         # LAYER - output layer
         self.output = nn.Sequential(

@@ -63,10 +63,9 @@ class CustomDataset(Dataset):
     def __getitem__(self, idx):
         cube = self._get_cube_from_index(idx)
 
-        index_within_cube = idx % self.images_per_cube
-        axis_idx = index_within_cube // self.images_per_axis
+        axis_idx = (idx % self.images_per_cube) // self.images_per_axis
         axis = self.axes[axis_idx]
-        slice_idx = index_within_cube % self.images_per_axis
+        slice_idx = (idx % self.images_per_cube) % self.images_per_axis
 
         # Set label: 1.0 for GR, 0.0 for Newton
         label = (
@@ -102,12 +101,13 @@ class CustomDataset(Dataset):
         )
         returnString += f"  Redshifts: {[redshift for redshift in self.redshifts]}\n"
         returnString += f"  Stride: {self.stride}\n"
+        returnString += f"  Length: {self.nr_images}\n"
         return returnString
 
     def print_image(self, idx):
         returnString = ""
         sample = self.__getitem__(idx)
-        returnString += f"Image info (Newton:0, GR:1):\n"
+        returnString += f"Image info for seed: {idx} where (Newton:0, GR:1):\n"
         for key, val in sample.items():
             if key != "image":
                 returnString += f"  {key}: {val}\n"
@@ -129,10 +129,8 @@ class CustomDataset(Dataset):
         cube_idx = idx // self.images_per_cube
 
         gravity_theory_idx = cube_idx // self.nr_cubes_per_gravity_theory
-        redshift_seed_idx = cube_idx % self.nr_cubes_per_gravity_theory
-        redshift_idx = redshift_seed_idx // self.nr_seeds
-        seed_idx = redshift_seed_idx % self.nr_seeds
-
+        redshift_idx = (cube_idx // self.nr_seeds) % self.nr_redshifts
+        seed_idx = cube_idx % self.nr_seeds
         gravity_theory = self.gravity_theories[gravity_theory_idx]
         redshift = self.redshifts[redshift_idx]
         seed = self.seeds[seed_idx]
