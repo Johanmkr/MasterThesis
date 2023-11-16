@@ -2,7 +2,9 @@
 import numpy as np
 import os
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data.dataset import Dataset
+from torch.utils.data import DataLoader
+import random
 
 # Local imports
 from . import cube
@@ -136,6 +138,92 @@ class CustomDataset(Dataset):
         seed = self.seeds[seed_idx]
         cube_path = paths.get_cube_path(seed, gravity_theory, redshift)
         return cube.Cube(cube_path)
+
+
+def make_dataset(
+    train_test_val_split: tuple = (0.8, 0.1, 0.1),
+    batch_size: int = 32,
+    num_workers: int = 4,
+    stride: int = 2,
+    redshifts: int | float | list | tuple = 1.0,
+    transform: callable = transforms.Normalise(),
+    additional_info: bool = False,
+    total_seeds: np.array = np.arange(0, 2000, 1),
+    random_seed: int = 42,
+) -> tuple:
+    """Create the dataset and dataloaders.
+
+    Args:
+        train_test_val_split (tuple): Fraction of data to use for training, testing and validation.
+        batch_size (int): Batch size.
+        num_workers (int): Number of workers.
+        stride (int): Stride to use for image slices.
+        redshifts (int, float, list, tuple): Redshifts to use. Defaults to 1.0.
+        transform (callable): Transform to use on images. Defaults to transforms.Normalise().
+        additional_info (bool): Whether to include additional info in dataset. Defaults to False.
+        total_seeds (np.array): Total seeds to use. Defaults to np.arange(0, 2000, 1).
+        random_seed (int): Random seed. Defaults to 42.
+
+    Returns:
+        tuple: Train, test and validation dataloaders.
+    """
+    random.seed(random_seed)
+    random.shuffle(total_seeds)
+
+    # Split seeds into train, test and validation sets
+    array_size = len(total_seeds)
+
+    # Check if train_test_val_split is valid
+    assert (
+        sum(train_test_val_split) == 1.0
+    ), "Train, test and validation split must sum to 1.0"
+
+    train_size = int(array_size * train_test_val_split[0])
+    test_size = int(array_size * train_test_val_split[1])
+    val_size = int(array_size * train_test_val_split[2])
+
+    train_seeds = total_seeds[:train_size]
+    test_seeds = total_seeds[train_size : train_size + test_size]
+    val_seeds = total_seeds[train_size + test_size :]
+
+    assert (
+        len(train_seeds) + len(test_seeds) + len(val_seeds) == array_size
+    ), "Train, test and validation sets must sum to total number of seeds"
+
+    # Create datasets
+    train_dataset = CustomDataset(
+        stride=stride,
+        redshifts=redshifts,
+        seeds=train_seeds,
+        transform=transform,
+        additional_info=additional_info,
+    )
+    test_dataset = CustomDataset(
+        stride=stride,
+        redshifts=redshifts,
+        seeds=test_seeds,
+        transform=transform,
+        additional_info=additional_info,
+    )
+    val_dataset = CustomDataset(
+        stride=stride,
+        redshifts=redshifts,
+        seeds=val_seeds,
+        transform=transform,
+        additional_info=additional_info,
+    )
+
+    # Crate dataloaders
+    train_dataloader = DataLoader(
+        train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    )
+    test_dataloader = DataLoader(
+        test_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    )
+    val_dataloader = DataLoader(
+        val_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+    )
+    return train_dataloader, test_dataloader, val_dataloader
 
 
 if __name__ == "__main__":
