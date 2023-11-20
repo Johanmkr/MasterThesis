@@ -1,21 +1,21 @@
 [0] Config.pm:307> INFO - This is Biber 2.17
 [0] Config.pm:310> INFO - Logfile is 'masterthesis.blg'
-[85] biber:340> INFO - === Wed Nov 15, 2023, 16:17:37
-[101] Biber.pm:418> INFO - Reading 'masterthesis.bcf'
-[205] Biber.pm:972> INFO - Found 8 citekeys in bib section 0
-[225] Biber.pm:4383> INFO - Processing section 0
-[235] Biber.pm:4574> INFO - Looking for bibtex file '../references/Project.bib' for section 0
-[237] bibtex.pm:1713> INFO - LaTeX decoding ...
-[252] bibtex.pm:1518> INFO - Found BibTeX data source '../references/Project.bib'
-[308] Biber.pm:4574> INFO - Looking for bibtex file '../references/books.bib' for section 0
-[309] bibtex.pm:1713> INFO - LaTeX decoding ...
-[317] bibtex.pm:1518> INFO - Found BibTeX data source '../references/books.bib'
-[348] Biber.pm:4574> INFO - Looking for bibtex file '../references/ML.bib' for section 0
-[349] bibtex.pm:1713> INFO - LaTeX decoding ...
-[357] bibtex.pm:1518> INFO - Found BibTeX data source '../references/ML.bib'
-[404] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
-[404] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[404] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
-[405] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-UK'
-[420] bbl.pm:654> INFO - Writing 'masterthesis.bbl' with encoding 'UTF-8'
-[429] bbl.pm:757> INFO - Output to masterthesis.bbl
+[96] biber:340> INFO - === Fri Nov 17, 2023, 14:20:16
+[114] Biber.pm:418> INFO - Reading 'masterthesis.bcf'
+[210] Biber.pm:972> INFO - Found 8 citekeys in bib section 0
+[241] Biber.pm:4383> INFO - Processing section 0
+[255] Biber.pm:4574> INFO - Looking for bibtex file '../references/Project.bib' for section 0
+[261] bibtex.pm:1713> INFO - LaTeX decoding ...
+[277] bibtex.pm:1518> INFO - Found BibTeX data source '../references/Project.bib'
+[341] Biber.pm:4574> INFO - Looking for bibtex file '../references/books.bib' for section 0
+[342] bibtex.pm:1713> INFO - LaTeX decoding ...
+[352] bibtex.pm:1518> INFO - Found BibTeX data source '../references/books.bib'
+[388] Biber.pm:4574> INFO - Looking for bibtex file '../references/ML.bib' for section 0
+[389] bibtex.pm:1713> INFO - LaTeX decoding ...
+[397] bibtex.pm:1518> INFO - Found BibTeX data source '../references/ML.bib'
+[449] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'variable = shifted' with 'variable = non-ignorable'
+[449] UCollate.pm:68> INFO - Overriding locale 'en-UK' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[449] Biber.pm:4203> INFO - Sorting list 'nyt/global//global/global' of type 'entry' with template 'nyt' and locale 'en-UK'
+[450] Biber.pm:4209> INFO - No sort tailoring available for locale 'en-UK'
+[467] bbl.pm:654> INFO - Writing 'masterthesis.bbl' with encoding 'UTF-8'
+[476] bbl.pm:757> INFO - Output to masterthesis.bbl

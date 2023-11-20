@@ -27,15 +27,16 @@
 \contentsline {section}{\numberline {4.5}Non-linear Evolution}{9}{section.34}%
 \contentsline {section}{\numberline {4.6}Bispectra}{9}{section.35}%
 \contentsline {subsection}{\numberline {4.6.1}Analytical Bispectum}{9}{subsection.37}%
-\contentsline {paragraph}{Bispectrum of potential}{9}{paragraph*.40}%
-\contentsline {chapter}{\numberline {5}Simulation theory}{11}{chapter.47}%
-\contentsline {section}{\numberline {5.1}N-body simulations}{11}{section.48}%
-\contentsline {subsection}{\numberline {5.1.1}Describing a box of particles}{11}{subsection.49}%
-\contentsline {subsection}{\numberline {5.1.2}Forces and Fields}{11}{subsection.50}%
-\contentsline {subsection}{\numberline {5.1.3}Mass Assignment Schemes}{11}{subsection.51}%
-\contentsline {subsection}{\numberline {5.1.4}Validity of Box}{11}{subsection.52}%
-\contentsline {section}{\numberline {5.2}Newtonian Approach}{11}{section.53}%
-\contentsline {section}{\numberline {5.3}General Relativistic Approach}{11}{section.54}%
+\contentsline {paragraph}{Work with kernel}{9}{paragraph*.40}%
+\contentsline {paragraph}{Bispectrum of potential}{10}{paragraph*.45}%
+\contentsline {chapter}{\numberline {5}Simulation theory}{13}{chapter.52}%
+\contentsline {section}{\numberline {5.1}N-body simulations}{13}{section.53}%
+\contentsline {subsection}{\numberline {5.1.1}Describing a box of particles}{13}{subsection.54}%
+\contentsline {subsection}{\numberline {5.1.2}Forces and Fields}{13}{subsection.55}%
+\contentsline {subsection}{\numberline {5.1.3}Mass Assignment Schemes}{13}{subsection.56}%
+\contentsline {subsection}{\numberline {5.1.4}Validity of Box}{13}{subsection.57}%
+\contentsline {section}{\numberline {5.2}Newtonian Approach}{13}{section.58}%
+\contentsline {section}{\numberline {5.3}General Relativistic Approach}{13}{section.59}%
 \contentsline {part}{II\hspace {1em}Machine Learning}{13}{part.61}%
 \contentsline {chapter}{\numberline {6}Fundamental Elements of Machine Learning}{15}{chapter.62}%
 \contentsline {section}{\numberline {6.1}Introduction}{15}{section.63}%
@@ -67,27 +68,27 @@
 \contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{19}{subsection.90}%
 \contentsline {subsection}{\numberline {8.2.2}Pooling layers}{19}{subsection.91}%
 \contentsline {subsection}{\numberline {8.2.3}Dropout layers}{19}{subsection.92}%
-\contentsline {part}{III\hspace {1em}Acquiring Data}{21}{part.55}%
-\contentsline {chapter}{\numberline {9}Simulations}{23}{chapter.56}%
-\contentsline {section}{\numberline {9.1}Parameters}{23}{section.57}%
-\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{23}{subsection.58}%
-\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{23}{subsection.60}%
-\contentsline {subsection}{\numberline {9.1.3}Box parameters}{24}{subsection.62}%
-\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{24}{subsection.64}%
-\contentsline {section}{\numberline {9.2}Output}{24}{section.67}%
-\contentsline {subsection}{\numberline {9.2.1}Datacubes}{24}{subsection.68}%
-\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{25}{subsection.70}%
-\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{25}{subsection.71}%
-\contentsline {subsection}{\numberline {9.2.4}Normalisation}{25}{subsection.76}%
-\contentsline {chapter}{\numberline {10}Data Verification}{27}{chapter.78}%
-\contentsline {section}{\numberline {10.1}Slices of Datacubes}{27}{section.79}%
-\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{27}{section.81}%
-\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{27}{section.84}%
-\contentsline {section}{\numberline {10.4}Analytical Bispectra}{27}{section.85}%
-\contentsline {section}{\numberline {10.5}Bispectra from Cube}{27}{section.93}%
-\contentsline {subsection}{\numberline {10.5.1}Binning}{27}{subsection.94}%
-\contentsline {subsection}{\numberline {10.5.2}Bispectra}{27}{subsection.96}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{35}{chapter.98}%
-\contentsline {section}{\numberline {11.1}Gathering the cubes}{35}{section.99}%
-\contentsline {section}{\numberline {11.2}Find image from index}{35}{section.100}%
+\contentsline {part}{III\hspace {1em}Acquiring Data}{21}{part.60}%
+\contentsline {chapter}{\numberline {9}Simulations}{23}{chapter.61}%
+\contentsline {section}{\numberline {9.1}Parameters}{23}{section.62}%
+\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{23}{subsection.63}%
+\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{23}{subsection.65}%
+\contentsline {subsection}{\numberline {9.1.3}Box parameters}{24}{subsection.67}%
+\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{24}{subsection.69}%
+\contentsline {section}{\numberline {9.2}Output}{24}{section.72}%
+\contentsline {subsection}{\numberline {9.2.1}Datacubes}{24}{subsection.73}%
+\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{25}{subsection.75}%
+\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{25}{subsection.76}%
+\contentsline {subsection}{\numberline {9.2.4}Normalisation}{25}{subsection.81}%
+\contentsline {chapter}{\numberline {10}Data Verification}{27}{chapter.83}%
+\contentsline {section}{\numberline {10.1}Slices of Datacubes}{27}{section.84}%
+\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{27}{section.86}%
+\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{27}{section.89}%
+\contentsline {section}{\numberline {10.4}Analytical Bispectra}{27}{section.90}%
+\contentsline {section}{\numberline {10.5}Bispectra from Cube}{27}{section.92}%
+\contentsline {subsection}{\numberline {10.5.1}Binning}{27}{subsection.93}%
+\contentsline {subsection}{\numberline {10.5.2}Bispectra}{27}{subsection.95}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{35}{chapter.97}%
+\contentsline {section}{\numberline {11.1}Gathering the cubes}{35}{section.98}%
+\contentsline {section}{\numberline {11.2}Find image from index}{35}{section.99}%
 \contentsfinish 
