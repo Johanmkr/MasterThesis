@@ -59,42 +59,16 @@ class CustomDataset(Dataset):
         # Get total number of images
         self.nr_images = self.nr_cubes * self.images_per_cube
 
+        # XXX TESTING full data load
+        # self.samples = []
+        # for idx in range(self.nr_images):
+        #     self.samples.append(self._get_sample(idx))
+
     def __len__(self):
         return self.nr_images
 
     def __getitem__(self, idx):
-        cube = self._get_cube_from_index(idx)
-
-        axis_idx = (idx % self.images_per_cube) // self.images_per_axis
-        axis = self.axes[axis_idx]
-        slice_idx = (idx % self.images_per_cube) % self.images_per_axis
-
-        # Set label: 1.0 for GR, 0.0 for Newton
-        label = (
-            torch.tensor([1.0], dtype=torch.float32)
-            if cube.gr
-            else torch.tensor([0.0], dtype=torch.float32)
-        )
-
-        # Get slice and image
-        slice = self._get_slice_from_cube(cube, axis, slice_idx)
-        image = torch.tensor(slice, dtype=torch.float32)
-
-        # Create sample
-        sample = {"image": image, "label": label}
-
-        if self.additional_info:
-            sample["gravity_theory"] = cube.gravity
-            sample["redshift"] = cube.redshift
-            sample["seed"] = cube.seed
-            sample["axis"] = axis
-            sample["slice_idx"] = slice_idx
-
-        # Apply transform
-        if self.transform is not None:
-            sample = self.transform(sample)
-
-        return sample
+        return self._get_sample(idx)
 
     def __str__(self):
         returnString = "Dataset info:\n----------------------\n"
@@ -139,6 +113,40 @@ class CustomDataset(Dataset):
         cube_path = paths.get_cube_path(seed, gravity_theory, redshift)
         return cube.Cube(cube_path)
 
+    def _get_sample(self, idx):
+        cube = self._get_cube_from_index(idx)
+
+        axis_idx = (idx % self.images_per_cube) // self.images_per_axis
+        axis = self.axes[axis_idx]
+        slice_idx = (idx % self.images_per_cube) % self.images_per_axis
+
+        # Set label: 1.0 for GR, 0.0 for Newton
+        label = (
+            torch.tensor([1.0], dtype=torch.float32)
+            if cube.gr
+            else torch.tensor([0.0], dtype=torch.float32)
+        )
+
+        # Get slice and image
+        slice = self._get_slice_from_cube(cube, axis, slice_idx)
+        image = torch.tensor(slice, dtype=torch.float32)
+
+        # Create sample
+        sample = {"image": image, "label": label}
+
+        if self.additional_info:
+            sample["gravity_theory"] = cube.gravity
+            sample["redshift"] = cube.redshift
+            sample["seed"] = cube.seed
+            sample["axis"] = axis
+            sample["slice_idx"] = slice_idx
+
+        # Apply transform
+        if self.transform is not None:
+            sample = self.transform(sample)
+
+        return sample
+
 
 def make_dataset(
     train_test_val_split: tuple = (0.8, 0.1, 0.1),
@@ -150,6 +158,7 @@ def make_dataset(
     additional_info: bool = False,
     total_seeds: np.array = np.arange(0, 2000, 1),
     random_seed: int = 42,
+    prefetch_factor: int = 2,
 ) -> tuple:
     """Create the dataset and dataloaders.
 
@@ -215,13 +224,25 @@ def make_dataset(
 
     # Crate dataloaders
     train_dataloader = DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+        train_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        prefetch_factor=prefetch_factor,
     )
     test_dataloader = DataLoader(
-        test_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+        test_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        prefetch_factor=prefetch_factor,
     )
     val_dataloader = DataLoader(
-        val_dataset, batch_size=batch_size, shuffle=True, num_workers=num_workers
+        val_dataset,
+        batch_size=batch_size,
+        shuffle=True,
+        num_workers=num_workers,
+        prefetch_factor=prefetch_factor,
     )
     return train_dataloader, test_dataloader, val_dataloader
 

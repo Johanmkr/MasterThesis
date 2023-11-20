@@ -22,22 +22,38 @@ class MOTH(nn.Module):
         )
         self.layers.append(self.conv1)
 
-        # Layer - convolutional layer (layer_param, 64, 64) -> (4*layer_param, 16, 16)
+        # Layer - convolutional layer (layer_param, 64, 64) -> (2*layer_param, 16, 16)
         self.conv2 = nn.Sequential(
             nn.Conv2d(
-                layer_param, layer_param * 4, kernel_size=(4, 4), stride=2, padding=1
+                layer_param, layer_param * 2, kernel_size=(4, 4), stride=2, padding=1
             ),
             nn.MaxPool2d(kernel_size=(2, 2)),
-            nn.BatchNorm2d(layer_param * 4),
+            nn.BatchNorm2d(layer_param * 2),
             nn.ReLU(),
             nn.Dropout(0.25),
         )
         self.layers.append(self.conv2)
 
-        # Layer - convolutional layer (4*layer_param, 16, 16) -> (16*layer_param, 4, 4)
+        # Layer - convolutional layer (2*layer_param, 16, 16) -> (8*layer_param, 4, 4)
         self.conv3 = nn.Sequential(
             nn.Conv2d(
-                layer_param * 4,
+                layer_param * 2,
+                layer_param * 8,
+                kernel_size=(4, 4),
+                stride=2,
+                padding=1,
+            ),
+            nn.MaxPool2d(kernel_size=(2, 2)),
+            nn.BatchNorm2d(layer_param * 8),
+            nn.ReLU(),
+            nn.Dropout(0.25),
+        )
+        self.layers.append(self.conv3)
+
+        # Layer - convolutional layer (8*layer_param, 4, 4) -> (16*layer_param, 1, 1)
+        self.conv4 = nn.Sequential(
+            nn.Conv2d(
+                layer_param * 8,
                 layer_param * 16,
                 kernel_size=(4, 4),
                 stride=2,
@@ -48,36 +64,20 @@ class MOTH(nn.Module):
             nn.ReLU(),
             nn.Dropout(0.25),
         )
-        self.layers.append(self.conv3)
-
-        # Layer - convolutional layer (16*layer_param, 4, 4) -> (64*layer_param, 1, 1)
-        self.conv4 = nn.Sequential(
-            nn.Conv2d(
-                layer_param * 16,
-                layer_param * 64,
-                kernel_size=(4, 4),
-                stride=2,
-                padding=1,
-            ),
-            nn.MaxPool2d(kernel_size=(2, 2)),
-            nn.BatchNorm2d(layer_param * 64),
-            nn.ReLU(),
-            nn.Dropout(0.25),
-        )
         self.layers.append(self.conv4)
 
-        # Layer - fully connected layer (64*layer_param) -> (16*layer_param)
+        # Layer - fully connected layer (16*layer_param) -> (8*layer_param)
         self.fc1 = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(layer_param * 64, layer_param * 16),
+            nn.Linear(layer_param * 16, layer_param * 8),
             nn.ReLU(),
             nn.Dropout(0.25),
         )
         self.layers.append(self.fc1)
 
-        # Layer - fully connected layer (16*layer_param) -> (layer_param)
+        # Layer - fully connected layer (8*layer_param) -> (layer_param)
         self.fc2 = nn.Sequential(
-            nn.Linear(layer_param * 16, layer_param),
+            nn.Linear(layer_param * 8, layer_param),
             nn.ReLU(),
             nn.Dropout(0.25),
         )
@@ -86,7 +86,7 @@ class MOTH(nn.Module):
         # Layer - output layer (layer_param) -> (1)
         self.output = nn.Sequential(
             nn.Linear(layer_param, 1),
-            nn.Tanh(),
+            nn.Sigmoid(),
         )
 
     def forward(self, X):
