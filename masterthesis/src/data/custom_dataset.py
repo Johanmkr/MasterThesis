@@ -223,27 +223,20 @@ class CustomDatasetFAST(Dataset):
         print(returnString)
 
     def _initialise_strings_and_slices(self):
-        for i in trange(self.nr_cubes):
-            self._find_strings_to_cubes(i)
+        self._find_strings_to_cubes()
         for i in range(self.images_per_cube):
             self._find_slices(i)
 
-    def _find_strings_to_cubes(self, cube_idx: int):
-        gravity_theory_idx = cube_idx // self.nr_cubes_per_gravity_theory
-        redshift_idx = (cube_idx // self.nr_seeds) % self.nr_redshifts
-        seed_idx = cube_idx % self.nr_seeds
-        gravity_theory = self.gravity_theories[gravity_theory_idx]
-        redshift = self.redshifts[redshift_idx]
-        seed = self.seeds[seed_idx]
-        cube_path = paths.get_cube_path(seed, gravity_theory, redshift)
-        self.cubes[cube_idx] = cube_path
-
-        # If store the entire dataset
-        # h5File = h5py.File(cube_path, "r")
-        # h5Data = h5File["data"]
-        # data = h5Data[()]
-        # h5File.close()
-        # self.cubes[cube_idx] = data
+    def _find_strings_to_cubes(self):
+        cube_idx = 0
+        for i, gravity_theory in enumerate(self.gravity_theories):
+            for j, redshift in enumerate(self.redshifts):
+                for k, seed in enumerate(self.seeds):
+                    cube_path = paths.get_cube_path(seed, gravity_theory, redshift)
+                    # print(cube_path)
+                    self.cubes[cube_idx] = cube_path
+                    cube_idx += 1
+        assert cube_idx == self.nr_cubes, "Cube index does not match number of cubes."
 
     def _find_slices(self, slice_idx: int):
         slices = [slice(None)] * self.nr_axes
@@ -259,7 +252,7 @@ class CustomDatasetFAST(Dataset):
         cube_idx = idx // self.images_per_cube
         slice_idx = idx % self.images_per_cube
         sample_path = self.cubes[cube_idx]
-        # data = self.cubes[cube_idx]
+
         sample_slice = self.slices[slice_idx]
 
         # Read in data from disk
@@ -347,21 +340,22 @@ def make_dataset(
     ), "Train, test and validation sets must sum to total number of seeds"
 
     # Create datasets
-    train_dataset = CustomDataset(
+    train_dataset = CustomDatasetFAST(
         stride=stride,
         redshifts=redshifts,
         seeds=train_seeds,
         transform=transform,
         additional_info=additional_info,
     )
-    test_dataset = CustomDataset(
+    embed()
+    test_dataset = CustomDatasetFAST(
         stride=stride,
         redshifts=redshifts,
         seeds=test_seeds,
         transform=transform,
         additional_info=additional_info,
     )
-    val_dataset = CustomDataset(
+    val_dataset = CustomDatasetFAST(
         stride=stride,
         redshifts=redshifts,
         seeds=val_seeds,
