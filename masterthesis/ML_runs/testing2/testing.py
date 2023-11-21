@@ -44,7 +44,7 @@ def test_loader():
         images, labels = batch["image"], batch["label"]
 
         # some stuff happens here
-        time.sleep(1)
+        time.sleep(0.5)
 
         end_time = time.time()
         batch_time = end_time - set_time
@@ -58,16 +58,17 @@ def test_loader():
     print(f"Total time: {total_time:.4f} seconds.")
 
 
-def test_load_of_cubes(nr_cubes: int = 10):
-    accepted_params = inspect.signature(CustomDatasetFAST.__init__).parameters.keys()
+def test_load_of_cubes(nr_cubes: int = 50):
+    accepted_params = inspect.signature(CustomDataset.__init__).parameters.keys()
     mod_dict = {
         key: value for key, value in cfg.DATA_PARAMS.items() if key in accepted_params
     }
     # print(accepted_params)
     # print(cfg.DATA_PARAMS.keys())
-    print(mod_dict)
+    # print(mod_dict)
+    seeds = np.arange(0, 2000, 1)
     init_time_start = time.time()
-    dataset = CustomDatasetFAST(**mod_dict)
+    dataset = CustomDataset(seeds=seeds, **mod_dict)
     init_time_end = time.time()
     print(f"Time to initialize dataset: {init_time_end-init_time_start:.4f} seconds.")
 
@@ -75,7 +76,7 @@ def test_load_of_cubes(nr_cubes: int = 10):
     total_time = 0.0
     for i in np.random.randint(0, len(dataset), nr_cubes):
         # Load one cube
-        print(i)
+        # print(i)
         cube = dataset[i]
         # dataset.print_image(i)
 
@@ -137,8 +138,8 @@ def test_time_to_load_npy_file_instead_of_cube(seed=0, z=1.0, N=1000):
 
 
 if __name__ == "__main__":
-    # test_loader()
-    test_load_of_cubes()
-    # seeds = np.arange(0, 2000, 1)
+    test_loader()
+    # test_load_of_cubes()
+    # seeds = np.arange(0, 2000, 25)
     # for s in seeds:
     #     test_time_to_load_npy_file_instead_of_cube(seed=s, z=1.0, N=1)

@@ -17,14 +17,14 @@ VERBOSE = True
 DATA_PARAMS = {
     "train_test_val_split": (0.8, 0.1, 0.1),
     "batch_size": 16,
-    "num_workers": 10,
-    "stride": 4,
+    "num_workers": 32,
+    "stride": 256,
     "redshifts": 1.0,
     "transform": Normalise(),
-    "additional_info": True,
-    "total_seeds": np.arange(0, 2000, 50),
+    "additional_info": False,
+    "total_seeds": np.arange(0, 2000, 25),
     "random_seed": 42,
-    "prefetch_factor": 10,
+    "prefetch_factor": 32,
 }
 
 
