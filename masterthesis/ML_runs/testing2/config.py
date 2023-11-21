@@ -16,7 +16,7 @@ VERBOSE = True
 
 DATA_PARAMS = {
     "train_test_val_split": (0.8, 0.1, 0.1),
-    "batch_size": 128,
+    "batch_size": 16,
     "num_workers": 10,
     "stride": 4,
     "redshifts": 1.0,

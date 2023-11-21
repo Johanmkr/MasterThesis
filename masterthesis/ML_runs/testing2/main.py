@@ -83,7 +83,7 @@ loss_fn = nn.BCELoss().to(device)
 ######### TRAINING ###############################################
 running_loss = 0
 for epoch in range(1, 21):
-    model.train()  # TODO Why is this needed?
+    model.train() 
     # for i in range(11):
     for i, data in enumerate(train_loader):
         # Get the inputs
