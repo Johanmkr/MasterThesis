@@ -5,6 +5,9 @@ import torch
 from torch.utils.data.dataset import Dataset
 from torch.utils.data import DataLoader
 import random
+import h5py
+from tqdm import trange
+import time
 
 # Local imports
 from . import cube
@@ -144,6 +147,150 @@ class CustomDataset(Dataset):
         # Apply transform
         if self.transform is not None:
             sample = self.transform(sample)
+
+        return sample
+
+
+class CustomDatasetFAST(Dataset):
+    def __init__(
+        self,
+        stride: int = 2,
+        redshifts: int | float | list | tuple = 1.0,
+        seeds: np.ndarray | int | float | list | tuple = np.arange(0, 2000, 1),
+        axes: int | list | tuple = [0, 1, 2],
+        transform: callable = None,
+        additional_info=False,
+    ) -> None:
+        assert (
+            NGRID % stride == 0
+        ), f"Stride must be a factor of ngrid={self.ngrid}: [1,2,4,8,16]"
+
+        self.gravity_theories = GRAVITY_THEORIES
+        self.redshifts = (
+            redshifts if isinstance(redshifts, (list, tuple)) else [redshifts]
+        )
+        self.seeds = seeds if isinstance(seeds, (list, tuple, np.ndarray)) else [seeds]
+        self.axes = axes if isinstance(axes, (list, tuple)) else [axes]
+        self.stride = stride
+        self.ngrid = NGRID
+        self.transform = transform
+        self.additional_info = additional_info
+
+        # Get lengths
+        self.nr_gravity_theories = len(self.gravity_theories)
+        self.nr_redshifts = len(self.redshifts)
+        self.nr_seeds = len(self.seeds)
+        self.nr_axes = len(self.axes)
+
+        # Calculate some useful quantities
+        self.images_per_axis = self.ngrid // self.stride
+        self.images_per_cube = self.images_per_axis * self.nr_axes
+        self.nr_cubes = self.nr_gravity_theories * self.nr_redshifts * self.nr_seeds
+        self.nr_cubes_per_gravity_theory = self.nr_redshifts * self.nr_seeds
+
+        # Get total number of images
+        self.nr_images = self.nr_cubes * self.images_per_cube
+
+        # Initialise the dictionary with strings and slices
+        self.cubes = {}
+        self.slices = {}
+        self._initialise_strings_and_slices()
+
+    def __len__(self):
+        return self.nr_images
+
+    def __getitem__(self, idx):
+        return self._get_sample(idx)
+
+    def __str__(self):
+        returnString = "Dataset info:\n----------------------\n"
+        returnString += (
+            f"  Gravity theories: {[theory for theory in self.gravity_theories]}\n"
+        )
+        returnString += f"  Redshifts: {[redshift for redshift in self.redshifts]}\n"
+        returnString += f"  Stride: {self.stride}\n"
+        returnString += f"  Length: {self.nr_images}\n"
+        return returnString
+
+    def print_image(self, idx):
+        returnString = ""
+        sample = self.__getitem__(idx)
+        returnString += f"Image info for seed: {idx} where (Newton:0, GR:1):\n"
+        for key, val in sample.items():
+            if key != "image":
+                returnString += f"  {key}: {val}\n"
+        returnString += "\n"
+        print(returnString)
+
+    def _initialise_strings_and_slices(self):
+        for i in trange(self.nr_cubes):
+            self._find_strings_to_cubes(i)
+        for i in range(self.images_per_cube):
+            self._find_slices(i)
+
+    def _find_strings_to_cubes(self, cube_idx: int):
+        gravity_theory_idx = cube_idx // self.nr_cubes_per_gravity_theory
+        redshift_idx = (cube_idx // self.nr_seeds) % self.nr_redshifts
+        seed_idx = cube_idx % self.nr_seeds
+        gravity_theory = self.gravity_theories[gravity_theory_idx]
+        redshift = self.redshifts[redshift_idx]
+        seed = self.seeds[seed_idx]
+        cube_path = paths.get_cube_path(seed, gravity_theory, redshift)
+        self.cubes[cube_idx] = cube_path
+
+        # If store the entire dataset
+        # h5File = h5py.File(cube_path, "r")
+        # h5Data = h5File["data"]
+        # data = h5Data[()]
+        # h5File.close()
+        # self.cubes[cube_idx] = data
+
+    def _find_slices(self, slice_idx: int):
+        slices = [slice(None)] * self.nr_axes
+        axis = slice_idx // self.images_per_axis
+        idx_on_slice = slice_idx % self.images_per_axis
+        slices[axis] = slice(
+            idx_on_slice * self.stride, (idx_on_slice + 1) * self.stride
+        )
+        self.slices[slice_idx] = tuple(slices)
+
+    def _get_sample(self, idx):
+        # Access indices and slices
+        cube_idx = idx // self.images_per_cube
+        slice_idx = idx % self.images_per_cube
+        sample_path = self.cubes[cube_idx]
+        # data = self.cubes[cube_idx]
+        sample_slice = self.slices[slice_idx]
+
+        # Read in data from disk
+        start = time.time()
+        # H5py
+        # h5File = h5py.File(sample_path, "r")
+        # h5Data = h5File["data"]
+        # data = h5Data[()]
+        # h5File.close()
+
+        # Numpy
+        data = np.load(str(sample_path).replace(".h5", ".npy"))
+        stop = time.time()
+        print(f"Time to read from disk: {stop-start:.4f} seconds.")
+
+        # Create image
+        slice = data[sample_slice].reshape(self.stride, self.ngrid, self.ngrid)
+        image = torch.tensor(slice, dtype=torch.float32)
+
+        # Set label: 1.0 for GR, 0.0 for Newton
+        label = (
+            torch.tensor([1.0], dtype=torch.float32)
+            if "gr" in str(sample_path).lower()
+            else torch.tensor([0.0], dtype=torch.float32)
+        )
+
+        # Create sample
+        sample = {"image": image, "label": label}
+
+        # Apply transform
+        sample = self.transform(sample)
 
         return sample
 
