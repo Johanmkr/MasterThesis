@@ -8,9 +8,15 @@ class MOTH(nn.Module):
         super().__init__()
         self.layers = []
         self.input_size = input_size
-        depth = input_size[0]
-        width = input_size[1]
-        height = input_size[2]
+        try:
+            num_channels = input_size[0]
+            depth = input_size[1]
+            width = input_size[2]
+            height = input_size[3]
+        except IndexError:
+            depth = input_size[0]
+            width = input_size[1]
+            height = input_size[2]
 
         # LAYER - convolutional layer (depth, 256, 256) -> (layer_param, 64, 64)
         self.conv1 = nn.Sequential(
