@@ -340,22 +340,22 @@ def make_dataset(
     ), "Train, test and validation sets must sum to total number of seeds"
 
     # Create datasets
-    train_dataset = CustomDatasetFAST(
+    train_dataset = CustomDataset(
         stride=stride,
         redshifts=redshifts,
         seeds=train_seeds,
         transform=transform,
         additional_info=additional_info,
     )
-    embed()
-    test_dataset = CustomDatasetFAST(
+    # embed()
+    test_dataset = CustomDataset(
         stride=stride,
         redshifts=redshifts,
         seeds=test_seeds,
         transform=transform,
         additional_info=additional_info,
     )
-    val_dataset = CustomDatasetFAST(
+    val_dataset = CustomDataset(
         stride=stride,
         redshifts=redshifts,
         seeds=val_seeds,
