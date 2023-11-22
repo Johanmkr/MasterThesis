@@ -29,8 +29,12 @@ DATA_PARAMS = {
 
 
 MODEL_PARAMS = {
-    "input_size": (2, 256, 256),
+    "input_size": (DATA_PARAMS["stride"], 256, 256),
     "layer_param": 16,
+    "activation": nn.LeakyReLU(),
+    "output_activation": nn.Sigmoid(),
+    "bias": False,
+    "dropout": 0.25,
 }
 
 

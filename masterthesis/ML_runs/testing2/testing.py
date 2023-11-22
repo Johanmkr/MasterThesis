@@ -31,7 +31,6 @@ from src.models.MOTH import MOTH  # Dummy model of convolutional network
 import config as cfg
 from src.utils import paths
 
-
 def test_loader():
     train_loader, test_loader, val_loader = make_dataset(**cfg.DATA_PARAMS)
 

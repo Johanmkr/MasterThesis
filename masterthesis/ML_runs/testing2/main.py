@@ -20,8 +20,9 @@ from IPython import embed
 # Local imports
 from src.data.custom_dataset import CustomDataset, make_dataset
 from src.models.MOTH import MOTH  # Dummy model of convolutional network
+from src.models.SLOTH import SLOTH  # Model of 3D conv network
 
-verbose = False
+verbose = True
 
 ######### GPU STUFF #############################################
 if verbose:
@@ -42,12 +43,14 @@ if verbose:
     print("Loading data...")
 train_loader, test_loader, val_loader = make_dataset(
     train_test_val_split=(0.8, 0.1, 0.1),
-    batch_size=64,
-    num_workers=35,
-    stride=4,
+    batch_size=8,
+    num_workers=64,
+    stride=256,
     redshifts=1.0,
-    additional_info=True,
-    total_seeds=np.arange(0, 2000, 50),
+    additional_info=False,
+    total_seeds=np.arange(0, 500, 1),
+    random_seed=42,
+    prefetch_factor=64,
 )
 if verbose:
     print("Data loaded.\n\n")
@@ -56,8 +59,8 @@ if verbose:
 ######### MODEL ###############################################
 if verbose:
     print("Loading model...")
-model = MOTH(
-    input_size=(4, 256, 256),
+model = SLOTH(
+    input_size=(256, 256, 256),
     layer_param=16,
 ).to(device)
 # model = parallel.DistributedDataParallel(
@@ -75,26 +78,28 @@ if verbose and GPU:
 
 ######### OPTIMIZER ###############################################
 optimizer = optim.Adam(
-    model.parameters(), lr=1e-4, betas=(0.5, 0.999), weight_decay=1e-11
+    model.parameters(), lr=1e-1, betas=(0.5, 0.999), weight_decay=1e-5
 )
 loss_fn = nn.BCELoss().to(device)
 # data = next(iter(train_loader))
 
 ######### TRAINING ###############################################
+tot_len = len(train_loader)
 running_loss = 0
 for epoch in range(1, 21):
-    model.train() 
+    model.train()
     # for i in range(11):
     for i, data in enumerate(train_loader):
         # Get the inputs
-        print(f"Epoch: {epoch}, Batch: {i}")
+        print(f"Epoch: {epoch}, Batch: [{i+1}/{tot_len}]")
         images, labels = data["image"], data["label"]
-        # image, label = sample["image"], sample["label"]
         images = images.to(device)
         labels = labels.to(device)
 
         # Zero the parameter gradients
         optimizer.zero_grad()
+
+        # embed()
 
         # Forward + backward + optimize
         # optimizer.zero_grad()
