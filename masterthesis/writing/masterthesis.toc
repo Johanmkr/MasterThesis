@@ -4,91 +4,93 @@
 \contentsline {section}{\numberline {1.2}Outline}{1}{section.7}%
 \contentsline {section}{\numberline {1.3}Aim}{1}{section.8}%
 \contentsline {section}{\numberline {1.4}Nomenclature}{1}{section.9}%
-\contentsline {part}{I\hspace {1em}Cosmological Structure Formation}{3}{part.5}%
-\contentsline {chapter}{\numberline {2}Preliminaries}{5}{chapter.6}%
-\contentsline {section}{\numberline {2.1}General Relativity}{5}{section.7}%
-\contentsline {subsection}{\numberline {2.1.1}Einstein's Field Equations}{5}{subsection.8}%
-\contentsline {subsection}{\numberline {2.1.2}Riemann Connection and Covariant Derivatives}{5}{subsection.13}%
-\contentsline {subsection}{\numberline {2.1.3}Geodesic Equation}{5}{subsection.16}%
-\contentsline {subsection}{\numberline {2.1.4}The Stress-Energy Tensor}{5}{subsection.18}%
-\contentsline {section}{\numberline {2.2}Useful Relations}{5}{section.20}%
-\contentsline {chapter}{\numberline {3}Background Cosmology}{7}{chapter.21}%
-\contentsline {section}{\numberline {3.1}The homogeneous Universe}{7}{section.22}%
-\contentsline {subsection}{\numberline {3.1.1}The Cosmological Principle}{7}{subsection.23}%
-\contentsline {subsection}{\numberline {3.1.2}The Robertson-Walker Metric}{7}{subsection.24}%
-\contentsline {subsection}{\numberline {3.1.3}The Friedmann Equations}{7}{subsection.26}%
-\contentsline {section}{\numberline {3.2}My Universe is loaded with...}{7}{section.27}%
-\contentsline {section}{\numberline {3.3}Thermal History of the Universe}{7}{section.28}%
-\contentsline {chapter}{\numberline {4}Perturbation Theory}{9}{chapter.29}%
-\contentsline {section}{\numberline {4.1}Initial Conditions}{9}{section.30}%
-\contentsline {section}{\numberline {4.2}Transfer Functions}{9}{section.31}%
-\contentsline {section}{\numberline {4.3}Power Spectra}{9}{section.32}%
-\contentsline {section}{\numberline {4.4}Linear Evolution}{9}{section.33}%
-\contentsline {section}{\numberline {4.5}Non-linear Evolution}{9}{section.34}%
-\contentsline {section}{\numberline {4.6}Bispectra}{9}{section.35}%
-\contentsline {subsection}{\numberline {4.6.1}Analytical Bispectum}{9}{subsection.37}%
-\contentsline {paragraph}{Work with kernel}{9}{paragraph*.40}%
-\contentsline {paragraph}{Bispectrum of potential}{10}{paragraph*.45}%
-\contentsline {chapter}{\numberline {5}Simulation theory}{13}{chapter.52}%
-\contentsline {section}{\numberline {5.1}N-body simulations}{13}{section.53}%
-\contentsline {subsection}{\numberline {5.1.1}Describing a box of particles}{13}{subsection.54}%
-\contentsline {subsection}{\numberline {5.1.2}Forces and Fields}{13}{subsection.55}%
-\contentsline {subsection}{\numberline {5.1.3}Mass Assignment Schemes}{13}{subsection.56}%
-\contentsline {subsection}{\numberline {5.1.4}Validity of Box}{13}{subsection.57}%
-\contentsline {section}{\numberline {5.2}Newtonian Approach}{13}{section.58}%
-\contentsline {section}{\numberline {5.3}General Relativistic Approach}{13}{section.59}%
-\contentsline {part}{II\hspace {1em}Machine Learning}{13}{part.61}%
-\contentsline {chapter}{\numberline {6}Fundamental Elements of Machine Learning}{15}{chapter.62}%
-\contentsline {section}{\numberline {6.1}Introduction}{15}{section.63}%
-\contentsline {section}{\numberline {6.2}Linear Algebra}{15}{section.64}%
-\contentsline {section}{\numberline {6.3}Probability and Information Theory}{15}{section.65}%
-\contentsline {section}{\numberline {6.4}Basic Machine Learning}{15}{section.66}%
-\contentsline {subsection}{\numberline {6.4.1}Estimators, Bias, Variance and Error}{15}{subsection.67}%
-\contentsline {paragraph}{Estimators}{15}{paragraph*.68}%
-\contentsline {paragraph}{Function estimators}{16}{paragraph*.70}%
-\contentsline {paragraph}{Bias}{16}{paragraph*.71}%
-\contentsline {paragraph}{Variance}{16}{paragraph*.72}%
-\contentsline {paragraph}{Standard Error}{16}{paragraph*.73}%
-\contentsline {paragraph}{Mean Squared Error}{16}{paragraph*.74}%
-\contentsline {subsection}{\numberline {6.4.2}Maximum Likelihood Estimation}{16}{subsection.75}%
-\contentsline {subsection}{\numberline {6.4.3}Bayesian Statistics}{16}{subsection.76}%
-\contentsline {subsection}{\numberline {6.4.4}Supervised Learning}{16}{subsection.77}%
-\contentsline {subsection}{\numberline {6.4.5}Unsupervised Learning}{16}{subsection.78}%
-\contentsline {chapter}{\numberline {7}Neural Networks}{17}{chapter.79}%
-\contentsline {section}{\numberline {7.1}Forward pass - Prediction}{17}{section.80}%
-\contentsline {subsection}{\numberline {7.1.1}Activation functions}{17}{subsection.81}%
-\contentsline {subsection}{\numberline {7.1.2}Loss functions}{17}{subsection.82}%
-\contentsline {section}{\numberline {7.2}Backpropagation - Training}{17}{section.83}%
-\contentsline {subsection}{\numberline {7.2.1}Gradient descent}{17}{subsection.84}%
-\contentsline {subsection}{\numberline {7.2.2}Optimizers}{17}{subsection.85}%
-\contentsline {subsection}{\numberline {7.2.3}Regularization}{17}{subsection.86}%
-\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{19}{chapter.87}%
-\contentsline {section}{\numberline {8.1}Convolution}{19}{section.88}%
-\contentsline {section}{\numberline {8.2}New Layers}{19}{section.89}%
-\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{19}{subsection.90}%
-\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{19}{subsection.91}%
-\contentsline {subsection}{\numberline {8.2.3}Dropout layers}{19}{subsection.92}%
-\contentsline {part}{III\hspace {1em}Acquiring Data}{21}{part.60}%
-\contentsline {chapter}{\numberline {9}Simulations}{23}{chapter.61}%
-\contentsline {section}{\numberline {9.1}Parameters}{23}{section.62}%
-\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{23}{subsection.63}%
-\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{23}{subsection.65}%
-\contentsline {subsection}{\numberline {9.1.3}Box parameters}{24}{subsection.67}%
-\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{24}{subsection.69}%
-\contentsline {section}{\numberline {9.2}Output}{24}{section.72}%
-\contentsline {subsection}{\numberline {9.2.1}Datacubes}{24}{subsection.73}%
-\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{25}{subsection.75}%
-\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{25}{subsection.76}%
-\contentsline {subsection}{\numberline {9.2.4}Normalisation}{25}{subsection.81}%
-\contentsline {chapter}{\numberline {10}Data Verification}{27}{chapter.83}%
-\contentsline {section}{\numberline {10.1}Slices of Datacubes}{27}{section.84}%
-\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{27}{section.86}%
-\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{27}{section.89}%
-\contentsline {section}{\numberline {10.4}Analytical Bispectra}{27}{section.90}%
-\contentsline {section}{\numberline {10.5}Bispectra from Cube}{27}{section.92}%
-\contentsline {subsection}{\numberline {10.5.1}Binning}{27}{subsection.93}%
-\contentsline {subsection}{\numberline {10.5.2}Bispectra}{27}{subsection.95}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{35}{chapter.97}%
-\contentsline {section}{\numberline {11.1}Gathering the cubes}{35}{section.98}%
-\contentsline {section}{\numberline {11.2}Find image from index}{35}{section.99}%
+\contentsline {part}{I\hspace {1em}Cosmological Structure Formation}{3}{part.10}%
+\contentsline {chapter}{\numberline {2}Preliminaries}{5}{chapter.11}%
+\contentsline {section}{\numberline {2.1}General Relativity}{5}{section.12}%
+\contentsline {subsection}{\numberline {2.1.1}Einstein's Field Equations}{5}{subsection.13}%
+\contentsline {subsection}{\numberline {2.1.2}Riemann Connection and Covariant Derivatives}{5}{subsection.18}%
+\contentsline {subsection}{\numberline {2.1.3}Geodesic Equation}{5}{subsection.21}%
+\contentsline {subsection}{\numberline {2.1.4}The Stress-Energy Tensor}{5}{subsection.23}%
+\contentsline {section}{\numberline {2.2}Useful Relations}{5}{section.25}%
+\contentsline {chapter}{\numberline {3}Background Cosmology}{7}{chapter.26}%
+\contentsline {section}{\numberline {3.1}The homogeneous Universe}{7}{section.27}%
+\contentsline {subsection}{\numberline {3.1.1}The Cosmological Principle}{7}{subsection.28}%
+\contentsline {subsection}{\numberline {3.1.2}The Robertson-Walker Metric}{7}{subsection.29}%
+\contentsline {subsection}{\numberline {3.1.3}The Friedmann Equations}{7}{subsection.31}%
+\contentsline {section}{\numberline {3.2}My Universe is loaded with...}{7}{section.32}%
+\contentsline {section}{\numberline {3.3}Thermal History of the Universe}{7}{section.33}%
+\contentsline {chapter}{\numberline {4}Perturbation Theory}{9}{chapter.34}%
+\contentsline {section}{\numberline {4.1}Initial Conditions}{9}{section.35}%
+\contentsline {section}{\numberline {4.2}Transfer Functions}{9}{section.36}%
+\contentsline {section}{\numberline {4.3}Power Spectra}{9}{section.37}%
+\contentsline {section}{\numberline {4.4}Linear Evolution}{9}{section.38}%
+\contentsline {section}{\numberline {4.5}Non-linear Evolution}{9}{section.39}%
+\contentsline {section}{\numberline {4.6}Bispectra}{9}{section.40}%
+\contentsline {subsection}{\numberline {4.6.1}Analytical Bispectum}{9}{subsection.42}%
+\contentsline {paragraph}{Work with kernel}{9}{paragraph*.45}%
+\contentsline {paragraph}{Bispectrum of potential}{10}{paragraph*.50}%
+\contentsline {chapter}{\numberline {5}Simulation theory}{13}{chapter.57}%
+\contentsline {section}{\numberline {5.1}N-body simulations}{13}{section.58}%
+\contentsline {subsection}{\numberline {5.1.1}Describing a box of particles}{13}{subsection.59}%
+\contentsline {subsection}{\numberline {5.1.2}Forces and Fields}{13}{subsection.60}%
+\contentsline {subsection}{\numberline {5.1.3}Mass Assignment Schemes}{13}{subsection.61}%
+\contentsline {subsection}{\numberline {5.1.4}Validity of Box}{13}{subsection.62}%
+\contentsline {section}{\numberline {5.2}Newtonian Approach}{13}{section.63}%
+\contentsline {section}{\numberline {5.3}General Relativistic Approach}{13}{section.64}%
+\contentsline {part}{II\hspace {1em}Machine Learning}{15}{part.5}%
+\contentsline {chapter}{\numberline {6}Fundamental Elements of Machine Learning}{17}{chapter.6}%
+\contentsline {section}{\numberline {6.1}Introduction}{17}{section.7}%
+\contentsline {section}{\numberline {6.2}Linear Algebra}{17}{section.8}%
+\contentsline {section}{\numberline {6.3}Probability and Information Theory}{17}{section.9}%
+\contentsline {section}{\numberline {6.4}Basic Machine Learning}{17}{section.10}%
+\contentsline {subsection}{\numberline {6.4.1}Estimators, Bias, Variance and Error}{17}{subsection.11}%
+\contentsline {paragraph}{Estimators}{17}{paragraph*.12}%
+\contentsline {paragraph}{Function estimators}{18}{paragraph*.14}%
+\contentsline {paragraph}{Bias}{18}{paragraph*.15}%
+\contentsline {paragraph}{Variance}{18}{paragraph*.16}%
+\contentsline {paragraph}{Standard Error}{18}{paragraph*.17}%
+\contentsline {paragraph}{Mean Squared Error}{18}{paragraph*.18}%
+\contentsline {subsection}{\numberline {6.4.2}Maximum Likelihood Estimation}{18}{subsection.19}%
+\contentsline {subsection}{\numberline {6.4.3}Bayesian Statistics}{18}{subsection.20}%
+\contentsline {subsection}{\numberline {6.4.4}Supervised Learning}{18}{subsection.21}%
+\contentsline {subsection}{\numberline {6.4.5}Unsupervised Learning}{18}{subsection.22}%
+\contentsline {chapter}{\numberline {7}Neural Networks}{19}{chapter.23}%
+\contentsline {section}{\numberline {7.1}Forward pass - Prediction}{19}{section.24}%
+\contentsline {subsection}{\numberline {7.1.1}Activation functions}{19}{subsection.25}%
+\contentsline {subsection}{\numberline {7.1.2}Loss functions}{19}{subsection.26}%
+\contentsline {section}{\numberline {7.2}Backpropagation - Training}{19}{section.27}%
+\contentsline {subsection}{\numberline {7.2.1}Chain rule}{19}{subsection.28}%
+\contentsline {paragraph}{Basics}{19}{paragraph*.29}%
+\contentsline {subsection}{\numberline {7.2.2}Gradient descent}{19}{subsection.31}%
+\contentsline {subsection}{\numberline {7.2.3}Optimizers}{19}{subsection.32}%
+\contentsline {subsection}{\numberline {7.2.4}Regularization}{19}{subsection.33}%
+\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{21}{chapter.34}%
+\contentsline {section}{\numberline {8.1}Convolution}{21}{section.35}%
+\contentsline {section}{\numberline {8.2}New Layers}{21}{section.36}%
+\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{21}{subsection.37}%
+\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{21}{subsection.38}%
+\contentsline {subsection}{\numberline {8.2.3}Dropout layers}{21}{subsection.39}%
+\contentsline {part}{III\hspace {1em}Acquiring Data}{23}{part.97}%
+\contentsline {chapter}{\numberline {9}Simulations}{25}{chapter.98}%
+\contentsline {section}{\numberline {9.1}Parameters}{25}{section.99}%
+\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{25}{subsection.100}%
+\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{25}{subsection.102}%
+\contentsline {subsection}{\numberline {9.1.3}Box parameters}{26}{subsection.104}%
+\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{26}{subsection.106}%
+\contentsline {section}{\numberline {9.2}Output}{26}{section.109}%
+\contentsline {subsection}{\numberline {9.2.1}Datacubes}{26}{subsection.110}%
+\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{27}{subsection.112}%
+\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{27}{subsection.113}%
+\contentsline {subsection}{\numberline {9.2.4}Normalisation}{27}{subsection.118}%
+\contentsline {chapter}{\numberline {10}Data Verification}{29}{chapter.120}%
+\contentsline {section}{\numberline {10.1}Slices of Datacubes}{29}{section.121}%
+\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{29}{section.123}%
+\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{29}{section.126}%
+\contentsline {section}{\numberline {10.4}Analytical Bispectra}{29}{section.127}%
+\contentsline {section}{\numberline {10.5}Bispectra from Cube}{29}{section.129}%
+\contentsline {subsection}{\numberline {10.5.1}Binning}{29}{subsection.130}%
+\contentsline {subsection}{\numberline {10.5.2}Bispectra}{29}{subsection.132}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{37}{chapter.134}%
+\contentsline {section}{\numberline {11.1}Gathering the cubes}{37}{section.135}%
+\contentsline {section}{\numberline {11.2}Find image from index}{37}{section.136}%
 \contentsfinish 

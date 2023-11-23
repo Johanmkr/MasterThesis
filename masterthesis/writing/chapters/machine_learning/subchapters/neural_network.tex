@@ -9,6 +9,13 @@
     \subsection{Loss functions}
 
 \section{Backpropagation - Training}
+    \subsection{Chain rule}
+        \paragraph{Basics}
+        Lets say we have a function $f(x)$ that is composed of two functions $g(x)$ and $h(x)$, such that $f(x) = g(h(x))$. The chain rule states that the derivative of $f(x)$ with respect to $x$ is the product of the derivative of $g(x)$ with respect to $h(x)$ and the derivative of $h(x)$ with respect to $x$:
+        \begin{equation}
+            \frac{df}{dx} = \frac{dg}{dh} \frac{dh}{dx}.
+        \end{equation}
+        This can be generalised into the vector case where $f(\vec{x}) = g(h(\vec{x}))$ and $\vec{x} \in \mathbb{R}^n$ and \TODO{write more ahaha}
     \subsection{Gradient descent}
     \subsection{Optimizers}
     \subsection{Regularization} % May belongs to forwards pass

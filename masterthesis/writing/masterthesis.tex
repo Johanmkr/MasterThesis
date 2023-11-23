@@ -2,8 +2,8 @@
 \usepackage{old_el_paso/overhead}
 \usepackage{newcommands}
 
-\includeonly{chapters/generation_of_data/data_generation, chapters/cosmological_structure_formation/cosmological_structure_formation}
-
+% \includeonly{chapters/generation_of_data/data_generation, chapters/cosmological_structure_formation/cosmological_structure_formation}
+\includeonly{\ml}
 \input{settings_and_stuff}
 
 \title{-sometitle-}        %% ... or whatever
@@ -57,14 +57,14 @@ techniques}         %% ... if any
 \include{chapters/introduction}
 
 % PART: Cosmological Structure Formation
-\include{chapters/cosmological_structure_formation/cosmological_structure_formation}
+\include{\cosmology}
 
 % PART: Machine Learning
-\include{chapters/machine_learning/machine_learning}
+\include{\ml}
 
 
 % PART: Simulation and Data Verification
-\include{chapters/generation_of_data/data_generation}
+\include{\data}
 
 % \part{Conclusion}                     %% ... or ??
 % \chapter{Results}                     %% ... or ??
