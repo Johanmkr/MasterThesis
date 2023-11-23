@@ -1,3 +1,4 @@
+######### GLOBAL IMPORTS #######################################
 import numpy as np
 import sys, os
 import torch
@@ -9,79 +10,60 @@ import torch.optim as optim
 import torchvision.utils as vutils
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from IPython import embed
 
-
+######### ADD PARENT DIRECTORY TO PATH #########################
 # Add the parent directory of the parent directory to sys.path
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, os.pardir))
 sys.path.append(parent_dir)
 
-from IPython import embed
 
-# Local imports
+######### LOCAL IMPORTS ########################################
 from src.data.custom_dataset import CustomDataset, make_dataset
 from src.models.MOTH import MOTH  # Dummy model of convolutional network
 from src.models.SLOTH import SLOTH  # Model of 3D conv network
 
-verbose = True
+######### IMPORT CONFIG FILE ####################################
+import config as cfg
 
-######### GPU STUFF #############################################
-if verbose:
+
+######### GPU STUFF ###########################################
+if cfg.VERBOSE:
     print("Checking for GPU...")
 GPU = torch.cuda.is_available()
-# GPU = False
 device = torch.device("cuda:0" if GPU else "cpu")
 print("GPU: ", GPU)
 print("Device: ", device)
 cudnn.benchmark = True
-if verbose:
+if cfg.VERBOSE:
     print("GPU check complete.\n\n")
-#################################################################
 
 
 ######### DATA ###############################################
-if verbose:
+if cfg.VERBOSE:
     print("Loading data...")
-train_loader, test_loader, val_loader = make_dataset(
-    train_test_val_split=(0.8, 0.1, 0.1),
-    batch_size=8,
-    num_workers=64,
-    stride=256,
-    redshifts=1.0,
-    additional_info=False,
-    total_seeds=np.arange(0, 500, 1),
-    random_seed=42,
-    prefetch_factor=64,
-)
-if verbose:
+train_loaders, test_loader, val_loader = make_dataset(**cfg.DATA_PARAMS)
+if cfg.VERBOSE:
     print("Data loaded.\n\n")
 
 
 ######### MODEL ###############################################
-if verbose:
+if cfg.VERBOSE:
     print("Loading model...")
-model = SLOTH(
-    input_size=(256, 256, 256),
-    layer_param=16,
-).to(device)
-# model = parallel.DistributedDataParallel(
-# model, device_ids=[device], process_group=dist.new_group()
-# )
-if verbose:
+model = cfg.MODEL.to(device)
+if cfg.VERBOSE:
     print("Model loaded.\n\n")
 
 
 ######### SUMMARY ###############################################
-if verbose and GPU:
+if cfg.VERBOSE and GPU:
     print("Printing summary")
     model.printSummary()
 
 
 ######### OPTIMIZER ###############################################
-optimizer = optim.Adam(
-    model.parameters(), lr=1e-1, betas=(0.5, 0.999), weight_decay=1e-5
-)
-loss_fn = nn.BCELoss().to(device)
-# data = next(iter(train_loader))
+optimizer = cfg.OPTIMIZER
+loss_fn = cfg.LOSS_FN.to(device)
 
 ######### TRAINING ###############################################
 tot_len = len(train_loader)

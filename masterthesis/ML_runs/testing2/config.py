@@ -10,21 +10,22 @@ parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, os.pardir))
 sys.path.append(parent_dir)
 
 from src.data.transforms import Normalise
-from src import models
+from src.models import SLOTH, MOTH
 
 VERBOSE = True
 
 DATA_PARAMS = {
     "train_test_val_split": (0.8, 0.1, 0.1),
-    "batch_size": 16,
-    "num_workers": 32,
+    "batch_size": 8,
+    "num_workers": 64,
     "stride": 256,
     "redshifts": 1.0,
     "transform": Normalise(),
     "additional_info": False,
-    "total_seeds": np.arange(0, 2000, 25),
+    "total_seeds": np.arange(0, 500, 1),
     "random_seed": 42,
-    "prefetch_factor": 32,
+    "prefetch_factor": 64,
+    "nr_train_loaders": 1,
 }
 
 
@@ -43,11 +44,11 @@ TRAINING_PARAMS = {
 }
 
 ##### MODEL #####
-MODEL = models.MOTH.MOTH(**MODEL_PARAMS)
+MODEL = SLOTH.SLOTH(**MODEL_PARAMS)
 
 
 ##### LOSS #####
-CRITERION = nn.BCELoss()
+LOSS_FN = nn.BCELoss()
 
 
 ##### OPTIMIZER #####
