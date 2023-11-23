@@ -299,6 +299,7 @@ def make_dataset(
     total_seeds: np.array = np.arange(0, 2000, 1),
     random_seed: int = 42,
     prefetch_factor: int = 2,
+    nr_train_loaders: int = 1,  ###TODO implement this
 ) -> tuple:
     """Create the dataset and dataloaders.
 
@@ -385,7 +386,7 @@ def make_dataset(
         num_workers=num_workers,
         prefetch_factor=prefetch_factor,
     )
-    return train_dataloader, test_dataloader, val_dataloader
+    return [train_dataloader], test_dataloader, val_dataloader
 
 
 if __name__ == "__main__":
