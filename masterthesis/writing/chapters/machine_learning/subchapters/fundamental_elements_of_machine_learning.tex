@@ -21,10 +21,24 @@ maybe
         Optimsation problems are problems in which we want to minimise some error, given some data. In other words, we want to optimise an algorithm or model given a specific dataset. We care about the error of our model for that specific dataset only.
 
         \paragraph{Generalisation}
-        The concept of \textit{generalisation} is what makes a machine learning model different from an optimisation model. We still \textit{train} the machine learning model on some specific data, but we measure how good the model is based on how it performs on a different set of data, which it was not trained on. I.e. we need a generalised model, which is not restricted to the data it was trained on.
+        The concept of \textit{generalisation} is what makes a machine learning model different from an optimisation model. We still \textit{train} the machine learning model on some specific data, but we measure how good the model is based on how it performs on a different set of data, which it was not trained on. I.e. we need a generalised model, which is not restricted to the data it was trained on, and has the ability to perform well on unobserved data. 
 
     \subsection{Data and Fitting}
-        The key ingredient to any machine learning algorithm is the data fed into it. 
+        \paragraph{Data}
+        The key ingredient to any machine learning algorithm is the data fed into it. In an optimisation problem we deal with one single set of data on which we train the model. In a machine learning scenario we want to quantify how well the model is generalised. This is done by training the model on part of the data only, called the \textit{training data}. The model is then assessed on the remaining data, on which it was not trained, in order to determine how general it is. I will come back to how the models are trained, but in essence they are learning features of the data they are trained on. Thus, in order to have a general model we need the data to have some inherent properties. The most important property is that the data is \textit{independent and identically distribution} (i.i.d.). In other words, both the training and testing data are drawn from the same probability distribution.
+
+        \paragraph{Training and testing}
+        When training the model, we want to minimise some error with respect to the training data, which is essentially an optimisation problem. The model is then tested by measuring the same error with respect to the testing date. It is the latter error we want to be low in order to call the model general. The discrepancy between the two are summaries by the concept of fitting. 
+
+        \paragraph{Overfitting}
+        Overfitting is when we train the model in such a way that the training error becomes too low. This optimises the model too much with respect to the training data, effectively reconstructing the training data point by point and thereby loosing trends in the data features. The result of this is poor performance on the testing data, and as a result a non-general model. 
+
+        \paragraph{Underfitting}
+        Underfitting is the opposite, when the model is unable to achieve a low error on the training data, not capturing the main features of the dataset. This is also bad, as the training error would also be large. This also results in a non-general model. 
+
+        \TODO{Figure explaining over- and underfitting}
+
+        
 
     \subsection{Estimators, Bias, Variance and Error}
 
@@ -37,6 +51,7 @@ maybe
         The bias of the estimator $\svec{\hat{\theta}}_m$ is defined as the difference between the expected value of the estimator and the true value of the parameter: $\text{bias}(\svec{\hat{\theta}}_m) = \EE{\estm} - \svec{\theta}$. An unbiased estimator has zero bias, i.e. $\EE{\estm} = \svec{\theta}$. An estimator is asymptotically unbiased if its bias approaches zero as the number of data points $m$ approaches infinity, i.e. $\lim_{m\to\infty} \EE{\estm} = \svec{\theta}$.
 
         \paragraph{Variance}
+        The variance is a measure of how much we expect an estimator to vary as a function of the data input. It is denoted $\VVar{\hat{\theta}}$
 
 
         \paragraph{Standard Error}

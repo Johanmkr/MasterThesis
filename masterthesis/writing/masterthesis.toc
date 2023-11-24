@@ -47,33 +47,37 @@
 \contentsline {paragraph}{Optimisation}{17}{paragraph*.12}%
 \contentsline {paragraph}{Generalisation}{17}{paragraph*.13}%
 \contentsline {subsection}{\numberline {6.4.2}Data and Fitting}{18}{subsection.14}%
-\contentsline {subsection}{\numberline {6.4.3}Estimators, Bias, Variance and Error}{18}{subsection.15}%
-\contentsline {paragraph}{Estimators}{18}{paragraph*.16}%
-\contentsline {paragraph}{Function estimators}{18}{paragraph*.18}%
-\contentsline {paragraph}{Bias}{18}{paragraph*.19}%
-\contentsline {paragraph}{Variance}{18}{paragraph*.20}%
-\contentsline {paragraph}{Standard Error}{18}{paragraph*.21}%
-\contentsline {paragraph}{Mean Squared Error}{18}{paragraph*.22}%
-\contentsline {subsection}{\numberline {6.4.4}Maximum Likelihood Estimation}{18}{subsection.23}%
-\contentsline {subsection}{\numberline {6.4.5}Bayesian Statistics}{18}{subsection.24}%
-\contentsline {subsection}{\numberline {6.4.6}Supervised Learning}{18}{subsection.25}%
-\contentsline {subsection}{\numberline {6.4.7}Unsupervised Learning}{18}{subsection.26}%
-\contentsline {chapter}{\numberline {7}Neural Networks}{19}{chapter.27}%
-\contentsline {section}{\numberline {7.1}Forward pass - Prediction}{19}{section.28}%
-\contentsline {subsection}{\numberline {7.1.1}Activation functions}{19}{subsection.29}%
-\contentsline {subsection}{\numberline {7.1.2}Loss functions}{19}{subsection.30}%
-\contentsline {section}{\numberline {7.2}Backpropagation - Training}{19}{section.31}%
-\contentsline {subsection}{\numberline {7.2.1}Chain rule}{19}{subsection.32}%
-\contentsline {paragraph}{Basics}{19}{paragraph*.33}%
-\contentsline {subsection}{\numberline {7.2.2}Gradient descent}{19}{subsection.35}%
-\contentsline {subsection}{\numberline {7.2.3}Optimizers}{19}{subsection.36}%
-\contentsline {subsection}{\numberline {7.2.4}Regularization}{19}{subsection.37}%
-\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{21}{chapter.38}%
-\contentsline {section}{\numberline {8.1}Convolution}{21}{section.39}%
-\contentsline {section}{\numberline {8.2}New Layers}{21}{section.40}%
-\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{21}{subsection.41}%
-\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{21}{subsection.42}%
-\contentsline {subsection}{\numberline {8.2.3}Dropout layers}{21}{subsection.43}%
+\contentsline {paragraph}{Data}{18}{paragraph*.15}%
+\contentsline {paragraph}{Training and testing}{18}{paragraph*.16}%
+\contentsline {paragraph}{Overfitting}{18}{paragraph*.17}%
+\contentsline {paragraph}{Underfitting}{18}{paragraph*.18}%
+\contentsline {subsection}{\numberline {6.4.3}Estimators, Bias, Variance and Error}{18}{subsection.19}%
+\contentsline {paragraph}{Estimators}{18}{paragraph*.20}%
+\contentsline {paragraph}{Function estimators}{18}{paragraph*.22}%
+\contentsline {paragraph}{Bias}{19}{paragraph*.23}%
+\contentsline {paragraph}{Variance}{19}{paragraph*.24}%
+\contentsline {paragraph}{Standard Error}{19}{paragraph*.25}%
+\contentsline {paragraph}{Mean Squared Error}{19}{paragraph*.26}%
+\contentsline {subsection}{\numberline {6.4.4}Maximum Likelihood Estimation}{19}{subsection.27}%
+\contentsline {subsection}{\numberline {6.4.5}Bayesian Statistics}{19}{subsection.28}%
+\contentsline {subsection}{\numberline {6.4.6}Supervised Learning}{19}{subsection.29}%
+\contentsline {subsection}{\numberline {6.4.7}Unsupervised Learning}{19}{subsection.30}%
+\contentsline {chapter}{\numberline {7}Neural Networks}{21}{chapter.31}%
+\contentsline {section}{\numberline {7.1}Forward pass - Prediction}{21}{section.32}%
+\contentsline {subsection}{\numberline {7.1.1}Activation functions}{21}{subsection.33}%
+\contentsline {subsection}{\numberline {7.1.2}Loss functions}{21}{subsection.34}%
+\contentsline {section}{\numberline {7.2}Backpropagation - Training}{21}{section.35}%
+\contentsline {subsection}{\numberline {7.2.1}Chain rule}{21}{subsection.36}%
+\contentsline {paragraph}{Basics}{21}{paragraph*.37}%
+\contentsline {subsection}{\numberline {7.2.2}Gradient descent}{21}{subsection.39}%
+\contentsline {subsection}{\numberline {7.2.3}Optimizers}{21}{subsection.40}%
+\contentsline {subsection}{\numberline {7.2.4}Regularization}{21}{subsection.41}%
+\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{23}{chapter.42}%
+\contentsline {section}{\numberline {8.1}Convolution}{23}{section.43}%
+\contentsline {section}{\numberline {8.2}New Layers}{23}{section.44}%
+\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{23}{subsection.45}%
+\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{23}{subsection.46}%
+\contentsline {subsection}{\numberline {8.2.3}Dropout layers}{23}{subsection.47}%
 \contentsline {part}{III\hspace {1em}Acquiring Data}{23}{part.97}%
 \contentsline {chapter}{\numberline {9}Simulations}{25}{chapter.98}%
 \contentsline {section}{\numberline {9.1}Parameters}{25}{section.99}%
