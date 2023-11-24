@@ -48,18 +48,51 @@ maybe
         Say we want to predict a variable $\vec{y}$ given some vector $\vec{x}$. We assume the true variable $\vec{y}$ is given by some function approxiamation $f(\vec{x})$ plus some error $\svec{\epsilon}$: $\vec{y} = f(\vec{x}) + \svec{\epsilon}$. The aim is then to estimate the function $f$ with the estimator $\hat{f}$. If we then realise that $\hat{f}$ is really just a point estimator in function space, the two above concepts are equivalent.
 
         \paragraph{Bias}
-        The bias of the estimator $\svec{\hat{\theta}}_m$ is defined as the difference between the expected value of the estimator and the true value of the parameter: $\text{bias}(\svec{\hat{\theta}}_m) = \EE{\estm} - \svec{\theta}$. An unbiased estimator has zero bias, i.e. $\EE{\estm} = \svec{\theta}$. An estimator is asymptotically unbiased if its bias approaches zero as the number of data points $m$ approaches infinity, i.e. $\lim_{m\to\infty} \EE{\estm} = \svec{\theta}$.
+        The bias of the estimator $\svec{\hat{\theta}}_m$ is defined as the difference between the expected value of the estimator and the true value of the parameter: $\Bias{\svec{\hat{\theta}}_m} = \EE{\estm} - \svec{\theta}$. An unbiased estimator has zero bias, i.e. $\EE{\estm} = \svec{\theta}$. An estimator is asymptotically unbiased if its bias approaches zero as the number of data points $m$ approaches infinity, i.e. $\lim_{m\to\infty} \EE{\estm} = \svec{\theta}$.
+
+        % \paragraph{Variance}
+        % The variance is a measure of how much we expect an estimator to vary as a function of the data input. It is denoted $\VVar{\hat{\theta}}$, where $\htheta$ is the training set. We would like an estimator to have low variance. 
+
+
+        % \paragraph{Standard Error}
+        % The standard error, denoted $\SE{\htheta}$ is simply the square root of the variance. The standard error of the estimator of the mean, $\hat{\mu}$ is:
+        % \begin{equation}
+        %     \SE{\hat{\mu}} = \sqrt{\VVar{\frac{1}{m}\sum_{i=1}^m x^{(i)}}} = \frac{\sigma}{\sqrt{m}},
+        % \end{equation}
+        % where the true variance is $\sigma^2$. The generalised error of a model is often found from computing the standard error of $\hat{\mu}$ of the testing data. 
+
+        % \paragraph{Mean Squared Error}
+        % \begin{equation}
+        %     \text{MSE} = \EE{(\htheta-\theta)^2} = \Bias{\htheta}^2+\VVar{\htheta}
+        % \end{equation}
 
         \paragraph{Variance}
-        The variance is a measure of how much we expect an estimator to vary as a function of the data input. It is denoted $\VVar{\hat{\theta}}$
 
+            Variance serves as a crucial metric in assessing the variability of an estimator concerning changes in the input data. Denoted as $\VVar{\hat{\theta}}$, where $\hat{\theta}$ represents the training set, low variance is desirable in an estimator. In essence, variance quantifies the extent to which we anticipate the estimator to fluctuate based on different datasets.
 
         \paragraph{Standard Error}
 
+            The standard error, denoted as $\SE{\hat{\theta}}$, is a fundamental concept closely related to variance, being the square root of the latter. Specifically, for the estimator of the mean, $\hat{\mu}$, the standard error is defined by the formula:
+
+            \begin{equation}
+                \SE{\hat{\mu}} = \sqrt{\VVar{\frac{1}{m}\sum_{i=1}^m x^{(i)}}} = \frac{\sigma}{\sqrt{m}},
+            \end{equation}
+
+            Here, $\sigma^2$ represents the true variance. The standard error of $\hat{\mu}$ is pivotal in gauging the precision of the estimator for the mean, especially when applied to testing data, aiding in the evaluation of a model's generalization performance.
+
         \paragraph{Mean Squared Error}
+
+            The Mean Squared Error (MSE) provides a comprehensive measure for evaluating the performance of an estimator. Expressed as:
+
+            \begin{equation}
+                \text{MSE} = \EE{(\hat{\theta}-\theta)^2} = \Bias{\hat{\theta}}^2 + \VVar{\hat{\theta}},
+            \end{equation}
+
+            MSE encompasses both the bias and variance components. The MSE offers a unified perspective, capturing the overall accuracy and variability of the estimator in estimating the true parameter $\theta$.
 
 
     \subsection{Maximum Likelihood Estimation}
+            
     \subsection{Bayesian Statistics}
     \subsection{Supervised Learning}
     \subsection{Unsupervised Learning}

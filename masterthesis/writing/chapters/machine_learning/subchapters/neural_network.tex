@@ -5,6 +5,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Forward pass - Prediction}
+    \subsection{Architecture}
+        The simplest architecture of a neural network is the fully connected feed forward (FCNN), which consist of $L$ layers in total, the first being an input layer and the remaining $L-1$ layers are called \textit{hidden layers}, $\vec{h}$. Each hidden layer has an \textit{activation} $\vec{a}$, used as an input to an \textit{activation function}, $g$. Mathematically we may write this architecture as:
+        \begin{equation}
+            \begin{split}
+                \vec{h}^0 &= \vec{x}^{(i)} \\
+                \vec{h}^1 &= g_1(\vec{a}^1) \\
+                \vec{h}^2 &= g_2(\vec{a}^2) \\
+                \vdots & \\
+                \vec{h}^{L} &= g_L(\vec{a}^L),
+            \end{split}
+        \end{equation}
+        where $\vec{h}^L$ and $g_L$ are the output layer and output function respectively. The parameter $L$ governs the depth of the neural network. 
+    \subsection{Activation}
+        The activation $\vec{a}^l$ of a layer $l$ is an affine transformation of the output of the previous layer, $\vec{h}^{l-1}$. The intercept of this affine transformation is known as the bias $\vec{b}^l$, \footnote{Must not be confused with the statistical bias of an estimator.} typically used to ensure that no activation becomes zero. The activation takes the form:
+        \begin{equation}
+            \vec{a}^l = (\vec{W}^{l-1\to l})^\mathrm{T}\vec{h}^{l-1} + \vec{b}^l,
+        \end{equation}
+        where $\vec{W}^{l-1\to l} \in \mathbb{R}^{\mathrm{dim}_{l-1}\cross\mathrm{dim}_l}$ is the matrix of weights describing the mapping from layer $l-1$ to layer $l$. Each layer $l$ has dimension (or neurons) $\mathrm{dim}_l$ which governs the width of each layer. 
+
     \subsection{Activation functions}
     \subsection{Loss functions}
 
