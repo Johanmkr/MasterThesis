@@ -22,6 +22,7 @@ sys.path.append(parent_dir)
 from src.data.custom_dataset import CustomDataset, make_dataset
 from src.models.MOTH import MOTH  # Dummy model of convolutional network
 from src.models.SLOTH import SLOTH  # Model of 3D conv network
+from src.models.train_model import train_model, overfit_model
 
 ######### IMPORT CONFIG FILE ####################################
 import config as cfg
@@ -31,7 +32,7 @@ import config as cfg
 if cfg.VERBOSE:
     print("Checking for GPU...")
 GPU = torch.cuda.is_available()
-device = torch.device("cuda:0" if GPU else "cpu")
+device = torch.device("cuda:1" if GPU else "cpu")
 print("GPU: ", GPU)
 print("Device: ", device)
 cudnn.benchmark = True
@@ -50,7 +51,7 @@ if cfg.VERBOSE:
 ######### MODEL ###############################################
 if cfg.VERBOSE:
     print("Loading model...")
-model = cfg.MODEL.to(device)
+model = cfg.MODEL
 if cfg.VERBOSE:
     print("Model loaded.\n\n")
 
@@ -58,41 +59,32 @@ if cfg.VERBOSE:
 ######### SUMMARY ###############################################
 if cfg.VERBOSE and GPU:
     print("Printing summary")
-    model.printSummary()
+    print(f"Model: {model}")
 
 
 ######### OPTIMIZER ###############################################
 optimizer = cfg.OPTIMIZER
-loss_fn = cfg.LOSS_FN.to(device)
+loss_fn = cfg.LOSS_FN
 
 ######### TRAINING ###############################################
-tot_len = len(train_loader)
-running_loss = 0
-for epoch in range(1, 21):
-    model.train()
-    # for i in range(11):
-    for i, data in enumerate(train_loader):
-        # Get the inputs
-        print(f"Epoch: {epoch}, Batch: [{i+1}/{tot_len}]")
-        images, labels = data["image"], data["label"]
-        images = images.to(device)
-        labels = labels.to(device)
+# train_model(
+#     model,
+#     optimizer,
+#     loss_fn,
+#     train_loaders[0],
+#     val_loader,
+#     1,
+#     device,
+#     verbose=True,
+# )
 
-        # Zero the parameter gradients
-        optimizer.zero_grad()
-
-        # embed()
-
-        # Forward + backward + optimize
-        # optimizer.zero_grad()
-        outputs = model(images)
-        # embed()
-        loss = loss_fn(outputs, labels)
-        loss.backward()
-        optimizer.step()
-
-        # Print statistics
-        running_loss += loss.item()
-        if i % 10 == 9:  # Print every 10th mini-batches
-            print(f"Epoch: {epoch}, Batch: {i}, Loss: {running_loss/10}")
-            running_loss = 0.0
+######### OVERFIT ###############################################
+overfit_model(
+    model,
+    optimizer,
+    loss_fn,
+    train_loaders[0],
+    device,
+    verbose=True,
+    tol=1e-1,
+)

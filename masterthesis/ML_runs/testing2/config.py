@@ -16,13 +16,13 @@ VERBOSE = True
 
 DATA_PARAMS = {
     "train_test_val_split": (0.8, 0.1, 0.1),
-    "batch_size": 8,
+    "batch_size": 16,
     "num_workers": 64,
     "stride": 256,
     "redshifts": 1.0,
     "transform": Normalise(),
     "additional_info": False,
-    "total_seeds": np.arange(0, 500, 1),
+    "total_seeds": np.arange(0, 100, 1),
     "random_seed": 42,
     "prefetch_factor": 64,
     "nr_train_loaders": 1,
@@ -32,10 +32,10 @@ DATA_PARAMS = {
 MODEL_PARAMS = {
     "input_size": (DATA_PARAMS["stride"], 256, 256),
     "layer_param": 16,
-    "activation": nn.LeakyReLU(),
+    "activation": nn.LeakyReLU(negative_slope=0.2),
     "output_activation": nn.Sigmoid(),
     "bias": False,
-    "dropout": 0.25,
+    "dropout": 0.5,
 }
 
 
@@ -53,7 +53,7 @@ LOSS_FN = nn.BCELoss()
 
 ##### OPTIMIZER #####
 OPTIMIZER_PARAMS = {
-    "lr": 0.0002,
+    "lr": 0.02,
     "betas": (0.5, 0.999),
     "weight_decay": 1e-11,
 }

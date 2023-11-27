@@ -31,6 +31,7 @@ class CustomDataset(Dataset):
         axes: int | list | tuple = [0, 1, 2],
         transform: callable = None,
         additional_info=False,
+        preload: bool = False,
     ) -> None:
         assert (
             NGRID % stride == 0
@@ -63,15 +64,17 @@ class CustomDataset(Dataset):
         self.nr_images = self.nr_cubes * self.images_per_cube
 
         # XXX TESTING full data load
-        # self.samples = []
-        # for idx in range(self.nr_images):
-        #     self.samples.append(self._get_sample(idx))
+        self.preload = preload
+        if preload:
+            self.samples = []
+            for idx in range(self.nr_images):
+                self.samples.append(self._get_sample(idx))
 
     def __len__(self):
         return self.nr_images
 
     def __getitem__(self, idx):
-        return self._get_sample(idx)
+        return self._get_sample(idx) if not self.preload else self.samples[idx]
 
     def __str__(self):
         returnString = "Dataset info:\n----------------------\n"
@@ -341,20 +344,53 @@ def make_dataset(
     ), "Train, test and validation sets must sum to total number of seeds"
 
     # Create datasets
-    train_dataset = CustomDataset(
-        stride=stride,
-        redshifts=redshifts,
-        seeds=train_seeds,
-        transform=transform,
-        additional_info=additional_info,
-    )
-    # embed()
+    train_loaders = []
+    # If more than one train loader
+    if nr_train_loaders > 1:
+        train_seeds = np.array_split(train_seeds, nr_train_loaders)
+        for sub_seeds in train_seeds:
+            sub_train_set = CustomDataset(
+                stride=stride,
+                redshifts=redshifts,
+                seeds=sub_seeds,
+                transform=transform,
+                additional_info=additional_info,
+                prelaod=True,
+            )
+            sub_train_loader = DataLoader(
+                sub_train_set,
+                batch_size=batch_size,
+                shuffle=True,
+                num_workers=num_workers,
+                prefetch_factor=prefetch_factor,
+            )
+            train_loaders.append(sub_train_loader)
+    else:
+        # All seeds in one train loader
+        train_dataset = CustomDataset(
+            stride=stride,
+            redshifts=redshifts,
+            seeds=train_seeds,
+            transform=transform,
+            additional_info=additional_info,
+            preload=False,
+        )
+        train_loader = DataLoader(
+            train_dataset,
+            batch_size=batch_size,
+            shuffle=True,
+            num_workers=num_workers,
+            prefetch_factor=prefetch_factor,
+        )
+        train_loaders.append(train_loader)
+
     test_dataset = CustomDataset(
         stride=stride,
         redshifts=redshifts,
         seeds=test_seeds,
         transform=transform,
         additional_info=additional_info,
+        preload=True,
     )
     val_dataset = CustomDataset(
         stride=stride,
@@ -362,16 +398,17 @@ def make_dataset(
         seeds=val_seeds,
         transform=transform,
         additional_info=additional_info,
+        preload=True,
     )
 
     # Crate dataloaders
-    train_dataloader = DataLoader(
-        train_dataset,
-        batch_size=batch_size,
-        shuffle=True,
-        num_workers=num_workers,
-        prefetch_factor=prefetch_factor,
-    )
+    # train_dataloader = DataLoader(
+    #     train_dataset,
+    #     batch_size=batch_size,
+    #     shuffle=True,
+    #     num_workers=num_workers,
+    #     prefetch_factor=prefetch_factor,
+    # )
     test_dataloader = DataLoader(
         test_dataset,
         batch_size=batch_size,
@@ -386,7 +423,7 @@ def make_dataset(
         num_workers=num_workers,
         prefetch_factor=prefetch_factor,
     )
-    return [train_dataloader], test_dataloader, val_dataloader
+    return train_loaders, test_dataloader, val_dataloader
 
 
 if __name__ == "__main__":
