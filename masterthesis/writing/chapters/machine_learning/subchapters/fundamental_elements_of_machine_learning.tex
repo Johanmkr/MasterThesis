@@ -16,25 +16,83 @@ maybe
 \section{Basic Machine Learning}
 \TODO{Fill more here}
 
+    \subsection{Optimisation and Generalisation}
+        \paragraph{Optimisation}
+        Optimsation problems are problems in which we want to minimise some error, given some data. In other words, we want to optimise an algorithm or model given a specific dataset. We care about the error of our model for that specific dataset only.
+
+        \paragraph{Generalisation}
+        The concept of \textit{generalisation} is what makes a machine learning model different from an optimisation model. We still \textit{train} the machine learning model on some specific data, but we measure how good the model is based on how it performs on a different set of data, which it was not trained on. I.e. we need a generalised model, which is not restricted to the data it was trained on, and has the ability to perform well on unobserved data. 
+
+    \subsection{Data and Fitting}
+        \paragraph{Data}
+        The key ingredient to any machine learning algorithm is the data fed into it. In an optimisation problem we deal with one single set of data on which we train the model. In a machine learning scenario we want to quantify how well the model is generalised. This is done by training the model on part of the data only, called the \textit{training data}. The model is then assessed on the remaining data, on which it was not trained, in order to determine how general it is. I will come back to how the models are trained, but in essence they are learning features of the data they are trained on. Thus, in order to have a general model we need the data to have some inherent properties. The most important property is that the data is \textit{independent and identically distribution} (i.i.d.). In other words, both the training and testing data are drawn from the same probability distribution.
+
+        \paragraph{Training and testing}
+        When training the model, we want to minimise some error with respect to the training data, which is essentially an optimisation problem. The model is then tested by measuring the same error with respect to the testing date. It is the latter error we want to be low in order to call the model general. The discrepancy between the two are summaries by the concept of fitting. 
+
+        \paragraph{Overfitting}
+        Overfitting is when we train the model in such a way that the training error becomes too low. This optimises the model too much with respect to the training data, effectively reconstructing the training data point by point and thereby loosing trends in the data features. The result of this is poor performance on the testing data, and as a result a non-general model. 
+
+        \paragraph{Underfitting}
+        Underfitting is the opposite, when the model is unable to achieve a low error on the training data, not capturing the main features of the dataset. This is also bad, as the training error would also be large. This also results in a non-general model. 
+
+        \TODO{Figure explaining over- and underfitting}
+
+        
+
     \subsection{Estimators, Bias, Variance and Error}
 
         \paragraph{Estimators} 
         Based on the assumption that there exists some true parameter(s) $\svec{\theta}$ which remain unknown,\footnote{This is the frequentist perspective of statistics} we are able to make predictions and estimations of such parameter(s). Let's say we have $m$ independent and identically distributed (i.i.d.) random variables $\{\vec{x}_1, \vec{x}_2, \dots, \vec{x}_m\}$ drawn from the same probability distribution $p(\vec{x})$. An \textit{estimator} of the true values $\svec{\theta}$ is any function of the data such that $\svec{\hat{\theta}}_m = g(\vec{x}_1,\dots,\vec{x}_m)$, where $\svec{\hat{\theta}}$ is the estimate of $\svec{\theta}$. This is known as point estimation, as we are estimating a single value. This definition does not pose any restrictions on the function $g$. However, a good estimator would yield an estimate $\svec{\hat{\theta}}_m$ that is close to the true value $\svec{\theta}$. 
-        
         \paragraph{Function estimators}
         Say we want to predict a variable $\vec{y}$ given some vector $\vec{x}$. We assume the true variable $\vec{y}$ is given by some function approxiamation $f(\vec{x})$ plus some error $\svec{\epsilon}$: $\vec{y} = f(\vec{x}) + \svec{\epsilon}$. The aim is then to estimate the function $f$ with the estimator $\hat{f}$. If we then realise that $\hat{f}$ is really just a point estimator in function space, the two above concepts are equivalent.
 
         \paragraph{Bias}
-        The bias of the estimator $\svec{\hat{\theta}}_m$ is defined as the difference between the expected value of the estimator and the true value of the parameter: $\text{bias}(\svec{\hat{\theta}}_m) = \EE{\estm} - \svec{\theta}$. An unbiased estimator has zero bias, i.e. $\EE{\estm} = \svec{\theta}$. An estimator is asymptotically unbiased if its bias approaches zero as the number of data points $m$ approaches infinity, i.e. $\lim_{m\to\infty} \EE{\estm} = \svec{\theta}$.
+        The bias of the estimator $\svec{\hat{\theta}}_m$ is defined as the difference between the expected value of the estimator and the true value of the parameter: $\Bias{\svec{\hat{\theta}}_m} = \EE{\estm} - \svec{\theta}$. An unbiased estimator has zero bias, i.e. $\EE{\estm} = \svec{\theta}$. An estimator is asymptotically unbiased if its bias approaches zero as the number of data points $m$ approaches infinity, i.e. $\lim_{m\to\infty} \EE{\estm} = \svec{\theta}$.
+
+        % \paragraph{Variance}
+        % The variance is a measure of how much we expect an estimator to vary as a function of the data input. It is denoted $\VVar{\hat{\theta}}$, where $\htheta$ is the training set. We would like an estimator to have low variance. 
+
+
+        % \paragraph{Standard Error}
+        % The standard error, denoted $\SE{\htheta}$ is simply the square root of the variance. The standard error of the estimator of the mean, $\hat{\mu}$ is:
+        % \begin{equation}
+        %     \SE{\hat{\mu}} = \sqrt{\VVar{\frac{1}{m}\sum_{i=1}^m x^{(i)}}} = \frac{\sigma}{\sqrt{m}},
+        % \end{equation}
+        % where the true variance is $\sigma^2$. The generalised error of a model is often found from computing the standard error of $\hat{\mu}$ of the testing data. 
+
+        % \paragraph{Mean Squared Error}
+        % \begin{equation}
+        %     \text{MSE} = \EE{(\htheta-\theta)^2} = \Bias{\htheta}^2+\VVar{\htheta}
+        % \end{equation}
 
         \paragraph{Variance}
 
+            Variance serves as a crucial metric in assessing the variability of an estimator concerning changes in the input data. Denoted as $\VVar{\hat{\theta}}$, where $\hat{\theta}$ represents the training set, low variance is desirable in an estimator. In essence, variance quantifies the extent to which we anticipate the estimator to fluctuate based on different datasets.
+
         \paragraph{Standard Error}
+
+            The standard error, denoted as $\SE{\hat{\theta}}$, is a fundamental concept closely related to variance, being the square root of the latter. Specifically, for the estimator of the mean, $\hat{\mu}$, the standard error is defined by the formula:
+
+            \begin{equation}
+                \SE{\hat{\mu}} = \sqrt{\VVar{\frac{1}{m}\sum_{i=1}^m x^{(i)}}} = \frac{\sigma}{\sqrt{m}},
+            \end{equation}
+
+            Here, $\sigma^2$ represents the true variance. The standard error of $\hat{\mu}$ is pivotal in gauging the precision of the estimator for the mean, especially when applied to testing data, aiding in the evaluation of a model's generalization performance.
 
         \paragraph{Mean Squared Error}
 
+            The Mean Squared Error (MSE) provides a comprehensive measure for evaluating the performance of an estimator. Expressed as:
+
+            \begin{equation}
+                \text{MSE} = \EE{(\hat{\theta}-\theta)^2} = \Bias{\hat{\theta}}^2 + \VVar{\hat{\theta}},
+            \end{equation}
+
+            MSE encompasses both the bias and variance components. The MSE offers a unified perspective, capturing the overall accuracy and variability of the estimator in estimating the true parameter $\theta$.
+
 
     \subsection{Maximum Likelihood Estimation}
+            
     \subsection{Bayesian Statistics}
     \subsection{Supervised Learning}
     \subsection{Unsupervised Learning}
