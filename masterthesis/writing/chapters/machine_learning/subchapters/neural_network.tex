@@ -16,7 +16,7 @@
                 \vec{h}^{L} &= g_L(\vec{a}^L),
             \end{split}
         \end{equation}
-        where $\vec{h}^L$ and $g_L$ are the output layer and output function respectively. The parameter $L$ governs the depth of the neural network. 
+        where $\vec{h}^L$ and $g_L$ are the output layer and output function respectively. The parameter $L$ governs the depth of the neural network. The result of the output layer is simply called the \textit{output} or \textit{predictor}, and typically denoted as $\pred = \vec{h}^L$. When training, we will have a true value, or label, denoted $\yv$
     \subsection{Activation}
         The activation $\vec{a}^l$ of a layer $l$ is an affine transformation of the output of the previous layer, $\vec{h}^{l-1}$. The intercept of this affine transformation is known as the bias $\vec{b}^l$, \footnote{Must not be confused with the statistical bias of an estimator.} typically used to ensure that no activation becomes zero. The activation takes the form:
         \begin{equation}
@@ -25,7 +25,97 @@
         where $\vec{W}^{l-1\to l} \in \mathbb{R}^{\mathrm{dim}_{l-1}\cross\mathrm{dim}_l}$ is the matrix of weights describing the mapping from layer $l-1$ to layer $l$. Each layer $l$ has dimension (or neurons) $\mathrm{dim}_l$ which governs the width of each layer. 
 
     \subsection{Activation functions}
+        The activation functions are what determines the output of each layer. They can be broadly classifies into two types: \textit{saturating activation functions} and \textit{non-saturating activation function}. For saturating activations, $\lim_{\abs{\vec{x}}\to\infty}\abs{\nabla g(\vec{x})} = 0$. 
+        \paragraph{Linear}
+            The linear activation is as simple as it gets:
+            \begin{equation}
+                g(\vec{x}) = a\vec{x} + b \quad \mathrm{and} \quad g'(\vec{x}) = a.
+            \end{equation}
+            This activation is non-saturating. There is however a problem with using linear activations, \TODO{Write about UNIVERSAL APPROXIMATION THEOREM, here or elsewhere}
+
+        \paragraph{Sigmoid}
+            The sigmoid function, or the logistic function is defined as: 
+            \begin{equation}
+                g(\vec{x}) = \sigma(\vec{x}) = \frac{1}{1+\expe{-\vec{x}}} \quad \mathrm{and} \quad g'(\vec{x}) = g(\vec{x})(1-g(\vec{x}))
+            \end{equation}
+
+
+        \paragraph{Hyperbolic tangent}
+            The hyperbolic tangent is defined as:
+            \begin{equation}
+                g(\vec{x}) = \frac{\expe{\vec{x}}-\expe{-\vec{x}}}{\expe{\vec{x}}+\expe{-\vec{x}}} \quad \mathrm{and} \quad g'(\xv)=1-g(\xv)^2
+            \end{equation}
+
+        \paragraph{Rectified linear unit}
+            The rectified linear unit, ReLU, is defined as:
+            \begin{equation}
+                g(\xv) = 
+                \begin{cases}
+                    0, \quad & \xv < 0 \\
+                    \xv, \quad & \xv \geq 0
+                \end{cases}
+                \quad \mathrm{and} \quad
+                g'(\xv) = 
+                \begin{cases}
+                    0, \quad & \xv < 0 \\
+                    1, \quad & \xv \geq 0.
+                \end{cases}
+            \end{equation}
+
+        \paragraph{(Scaled) Exponential linear unit}
+            The exponential linear unit, (S)ELU, is defined as:
+            \begin{equation}
+                g(\xv) = \lambda
+                \begin{cases}
+                    \alpha(\expe{\xv}-1), \quad & \xv < 0 \\
+                    \xv, \quad & \xv \geq 0
+                \end{cases}
+                \quad \mathrm{and} \quad
+                g'(\xv) = \lambda
+                \begin{cases}
+                    \alpha\expe{\xv}, \quad & \xv < 0 \\
+                    1, \quad & \xv \geq 0.
+                \end{cases}
+            \end{equation}
+            This function requires two hyperparameters $\alpha$ and $\lambda$.
+
+        \paragraph{Parametric rectified linear unit}
+            The parametric rectified linear unit, PReLU, is defined as:
+            \begin{equation}
+                g(\xv) = 
+                \begin{cases}
+                    \alpha \xv, \quad & \xv<0 \\
+                    \xv, \quad & \xv\geq 0
+                \end{cases}
+                \quad \mathrm{and} \quad
+                q'(\xv) = 
+                \begin{cases}
+                    \alpha, \quad & \xv<0 \\
+                    1, \quad & \xv\geq 0.
+                \end{cases}
+            \end{equation}
+            If $\alpha=0.01$ this function is also known as the leaky rectified unit, or Leaky ReLU. 
     \subsection{Loss functions}
+        \TODO{write about loss functions}
+        \paragraph{MSE}
+            \begin{equation}
+                \mathcal{L}_\mathrm{MSE}(\yv, \pred) = \frac{1}{n}\sum_{i=1}^n(y_i-\hat{y}_i)^2 = \frac{1}{n}\tilde{\yv}^\mathtt{T}\tilde{\yv},
+            \end{equation}
+            where $\tilde{\yv} \equiv \yv-\pred$
+
+        \paragraph{Huber}
+            \begin{equation}
+                \mathcal{L}_\delta(\yv, \pred) = 
+                \begin{cases}
+                    \frac{1}{2}\tilde{\yv}^\mathtt{T}\tilde{\yv}, \quad & \abs{\tilde{\yv}}\leq\delta \\
+                    \delta(\abs{\tilde{\yv}} - \delta/2), \quad & \mathrm{otherwise}
+                \end{cases}
+            \end{equation}
+            \TODO{Check if above should perhaps be element wise, use sigma notationa instead?}
+
+        \paragraph{Binary cross entropy}
+
+        \paragraph{Categorical cross entropy}
 
 \section{Backpropagation - Training}
     \subsection{Chain rule}
