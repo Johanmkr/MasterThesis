@@ -128,8 +128,6 @@ def overfit_model(
         # Training
         print(f"--- Epoch {epoch+1} ---")
         model.train()
-        train_loss = 0.0
-        train_acc = 0.0
         # Get the inputs
         images, labels = data["image"], data["label"]
         images = images.to(device)
@@ -145,17 +143,17 @@ def overfit_model(
         optimizer.step()
 
         # Print statistics
-        train_loss += loss.item()
-        train_acc += (abs(outputs - labels) < tol).sum().item()
+        train_loss = loss.item()
+        predictions = (abs(outputs - labels) < tol).sum().item()
 
         # Print statistics
-        train_loss /= len(train_loader.dataset)
-        train_acc /= len(train_loader.dataset)
+        train_loss /= len(images)
+        train_acc = predictions / len(images)
 
         epoch += 1
         print(
             f"Epoch: {epoch}: "
-            f"Train loss: {train_loss:.5f}, Train acc: {train_acc:.4f}\n"
+            f"Train loss: {train_loss:.5f}, Train acc: {train_acc:.4f}, predicted: {predictions}/{len(images)}\n"
         )
-        if epoch > max_epoch:
+        if epoch >= max_epoch:
             break

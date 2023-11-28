@@ -15,14 +15,14 @@ from src.models import SLOTH, MOTH
 VERBOSE = True
 
 DATA_PARAMS = {
-    "train_test_val_split": (0.8, 0.1, 0.1),
-    "batch_size": 16,
-    "num_workers": 64,
+    "train_test_val_split": (0.7, 0.2, 0.1),
+    "batch_size": 8,
+    "num_workers": 55,
     "stride": 256,
-    "redshifts": 1.0,
+    "redshifts": 0.0,
     "transform": Normalise(),
     "additional_info": False,
-    "total_seeds": np.arange(0, 100, 1),
+    "total_seeds": np.arange(0, 1000, 1),
     "random_seed": 42,
     "prefetch_factor": 64,
     "nr_train_loaders": 1,
@@ -31,7 +31,7 @@ DATA_PARAMS = {
 
 MODEL_PARAMS = {
     "input_size": (DATA_PARAMS["stride"], 256, 256),
-    "layer_param": 16,
+    "layer_param": 20,
     "activation": nn.LeakyReLU(negative_slope=0.2),
     "output_activation": nn.Sigmoid(),
     "bias": False,

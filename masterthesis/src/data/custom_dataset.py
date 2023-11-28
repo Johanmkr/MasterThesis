@@ -328,7 +328,7 @@ def make_dataset(
 
     # Check if train_test_val_split is valid
     assert (
-        sum(train_test_val_split) == 1.0
+        abs(1.0 - sum(train_test_val_split)) < 1e-5
     ), "Train, test and validation split must sum to 1.0"
 
     train_size = int(array_size * train_test_val_split[0])

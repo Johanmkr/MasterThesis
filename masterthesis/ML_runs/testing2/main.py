@@ -67,24 +67,24 @@ optimizer = cfg.OPTIMIZER
 loss_fn = cfg.LOSS_FN
 
 ######### TRAINING ###############################################
-# train_model(
-#     model,
-#     optimizer,
-#     loss_fn,
-#     train_loaders[0],
-#     val_loader,
-#     1,
-#     device,
-#     verbose=True,
-# )
-
-######### OVERFIT ###############################################
-overfit_model(
+train_model(
     model,
     optimizer,
     loss_fn,
     train_loaders[0],
+    val_loader,
+    10,
     device,
     verbose=True,
-    tol=1e-1,
 )
+
+######### OVERFIT ###############################################
+# overfit_model(
+#     model,
+#     optimizer,
+#     loss_fn,
+#     train_loaders[0],
+#     device,
+#     verbose=True,
+#     tol=1e-1,
+# )
