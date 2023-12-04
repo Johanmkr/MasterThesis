@@ -1,0 +1,9 @@
+,epoch,train_loss,activation,layer_param,dropout
+0,0,5,somestring,5,0.5
+1,1,5,somestring,5,0.5
+2,2,5,somestring,5,0.5
+3,3,5,somestring,5,0.5
+4,4,6,somestring,5,0.5
+5,5,6,somestring,5,0.5
+6,5,6,somestring,5,0.5
+7,5,6,somestring,5,0.5
