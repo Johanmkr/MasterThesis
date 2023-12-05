@@ -6,7 +6,8 @@ import h5py
 import random
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
-
+import time
+from tqdm import trange
 
 # Local imports
 from ..utils import paths
@@ -48,6 +49,9 @@ class SlicedCubeDataset(Dataset):
         self._find_cube_data()
         for i in range(self.images_per_cube):
             self._find_slices(i)
+        self.cubes = []
+        for i in trange(self.nr_cubes):
+            self.cubes.append(self._get_cube(i))
 
     def __len__(self) -> int:
         return self.length
@@ -82,27 +86,59 @@ class SlicedCubeDataset(Dataset):
         )
         self.slice_data[slice_idx] = tuple(slices)
 
-    def _get_sample(self, idx) -> dict:
+    # def _get_sample(self, idx) -> dict:
+    #     cube_idx = idx // self.images_per_cube
+    #     slice_idx = idx % self.images_per_cube
+    #     sample_data = self.cube_data[cube_idx]
+    #     sample_path = sample_data["cube_path"]
+    #     sample_gravity = sample_data["gravity_theory"].lower()
+    #     sample_slice = self.slice_data[slice_idx]
+
+    #     # Load the sample
+    #     start_time = time.time()
+    #     with h5py.File(sample_path, "r") as f:
+    #         image = torch.tensor(f["data"][sample_slice], dtype=torch.float32)
+    #     print(f"Loading time: {time.time() - start_time:.4f} s")
+    #     label = (
+    #         torch.tensor([1.0], dtype=torch.float32)
+    #         if sample_gravity == "gr"
+    #         else torch.tensor([0.0], dtype=torch.float32)
+    #     )
+    #     sample = {"image": image.reshape(self.stride, 256, 256), "label": label}
+
+    #     if self.transform is not None:
+    #         sample = self.transform(sample)
+
+    #     return sample
+
+    # TESTING FUNCTION
+    def _get_cube(self, idx) -> dict:
         cube_idx = idx // self.images_per_cube
-        slice_idx = idx % self.images_per_cube
         sample_data = self.cube_data[cube_idx]
         sample_path = sample_data["cube_path"]
         sample_gravity = sample_data["gravity_theory"].lower()
-        sample_slice = self.slice_data[slice_idx]
-
         # Load the sample
         with h5py.File(sample_path, "r") as f:
-            image = torch.tensor(f["data"][sample_slice], dtype=torch.float32)
+            cube = torch.tensor(f["data"][()], dtype=torch.float32)
         label = (
             torch.tensor([1.0], dtype=torch.float32)
             if sample_gravity == "gr"
             else torch.tensor([0.0], dtype=torch.float32)
         )
-        sample = {"image": image.reshape(self.stride, 256, 256), "label": label}
+        cube_sample = {"cube": cube, "label": label}
+        return cube_sample
 
+    # TESTING FUNCTION
+    def _get_sample(self, idx) -> dict:
+        cube_idx = idx // self.images_per_cube
+        slice_idx = idx % self.images_per_cube
+        cube = self.cubes[cube_idx]
+        sample_slice = self.slice_data[slice_idx]
+        image = cube[sample_slice]
+        label = cube["label"]
+        sample = {"image": image, "label": label}
         if self.transform is not None:
             sample = self.transform(sample)
-
         return sample
 
 
