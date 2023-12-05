@@ -1,9 +1,9 @@
-"""First attempt at creating a small model, with the first layer being a 3D convolutional layer.
-    """
+"""
+    3D convolutional neural network for classifying whole datacubes from GR/Newtonian simulations.
+"""
 
 import torch
 import torch.nn as nn
-from torchsummary import summary
 
 
 class SLOTH(nn.Module):
@@ -14,7 +14,7 @@ class SLOTH(nn.Module):
         activation=nn.LeakyReLU(),
         output_activation=nn.Sigmoid(),
         bias=False,
-        dropout=0.5,
+        dropout=0.25,
     ):
         super().__init__()
         self.input_size = input_size
@@ -165,5 +165,6 @@ class SLOTH(nn.Module):
         out = self.output(X)
         return out
 
-    def printSummary(self):
-        summary(self, self.input_size)
+
+if __name__ == "__main__":
+    print("SLOTH model for predicting whole datacubes from GR/Newtonian simulations.")

@@ -6,14 +6,25 @@ from IPython import embed
 
 class ModelTrainer:
     def __init__(
-        self, model, optimizer, loss_fn, device, verbose=True, writer=None, tol=1e-2
+        self,
+        model,
+        optimizer,
+        loss_fn,
+        device,
+        verbose=True,
+        writer=None,
+        tol=1e-2,
+        save_path="model.pt",
     ):
+        # Self parameters
         self.model = model
         self.optimizer = optimizer
         self.loss_fn = loss_fn
         self.device = device
         self.verbose = verbose
         self.tol = tol
+        self.save_path = save_path
+        self.writer = writer
 
         # Data storage
         self.epoch_array = []
@@ -22,9 +33,11 @@ class ModelTrainer:
         self.test_loss_array = []
         self.test_acc_array = []
 
+        # Tensorboard
         if writer is not None:
-            self.writer = writer
-            self.writer.add_graph(self.model, torch.zeros(model.input_size))
+            self.writer.add_graph(
+                self.model, torch.zeros(model.input_size).unsqueeze(0)
+            )
 
     def train_model(
         self,
@@ -40,6 +53,30 @@ class ModelTrainer:
 
         # Move model to device
         self.model = self.model.to(self.device)
+
+        for epoch in range(1, epochs + 1):
+            # Training
+            train_loss, train_accuracy = self.train_one_epoch(
+                train_loader, epoch, verbose=self.verbose
+            )
+
+            # Testing
+            test_loss, test_accuracy = self.test_model(test_loader)
+
+            # Log stuff
+            if self.writer is not None:
+                self.log_stuff(
+                    epoch,
+                    train_loss,
+                    train_accuracy,
+                    test_loss,
+                    test_accuracy,
+                )
+
+            # Save model
+            if test_loss < best_loss:
+                best_loss = test_loss
+                torch.save(self.model.state_dict(), self.save_path)
 
     def train_one_epoch(
         self, train_loader: list | np.ndarray, epoch: int, verbose: bool = True
