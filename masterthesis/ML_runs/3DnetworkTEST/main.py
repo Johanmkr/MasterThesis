@@ -1,16 +1,8 @@
 ######### GLOBAL IMPORTS #######################################
-import numpy as np
 import sys, os
 import torch
-import torch.nn as nn
-import torch.nn.parallel as parallel
-import torch.distributed as dist
-import torch.backends.cudnn as cudnn
-import torch.optim as optim
-import torchvision.utils as vutils
-import matplotlib.pyplot as plt
-from tqdm import tqdm
-from IPython import embed
+from torch.utils.tensorboard import SummaryWriter
+
 
 ######### ADD PARENT DIRECTORY TO PATH #########################
 # Add the parent directory of the parent directory to sys.path
@@ -19,23 +11,24 @@ sys.path.append(parent_dir)
 
 
 ######### LOCAL IMPORTS ########################################
-from src.data.custom_dataset import CustomDataset, make_dataset
-from src.models.MOTH import MOTH  # Dummy model of convolutional network
-from src.models.SLOTH import SLOTH  # Model of 3D conv network
-from src.models.train_model import train_model, overfit_model
+from src.data.whole_cube_dataset import make_whole_dataset
+from src.models.SLOTH import SLOTH
+from src.models.train_model import ModelTrainer
+
 
 ######### IMPORT CONFIG FILE ####################################
-import config as cfg
+import config_3Dtest as cfg
 
 
 ######### GPU STUFF ###########################################
 if cfg.VERBOSE:
     print("Checking for GPU...")
 GPU = torch.cuda.is_available()
+GPU = False
 device = torch.device("cuda:0" if GPU else "cpu")
 print("GPU: ", GPU)
 print("Device: ", device)
-cudnn.benchmark = True
+# cudnn.benchmark = True
 if cfg.VERBOSE:
     print("GPU check complete.\n\n")
 
@@ -43,7 +36,7 @@ if cfg.VERBOSE:
 ######### DATA ###############################################
 if cfg.VERBOSE:
     print("Loading data...")
-train_loaders, test_loader, val_loader = make_dataset(**cfg.DATA_PARAMS)
+train_loader, test_loader, val_loader = make_whole_dataset(**cfg.DATA_PARAMS)
 if cfg.VERBOSE:
     print("Data loaded.\n\n")
 
@@ -57,7 +50,7 @@ if cfg.VERBOSE:
 
 
 ######### SUMMARY ###############################################
-if cfg.VERBOSE and GPU:
+if cfg.VERBOSE:
     print("Printing summary")
     print(f"Model: {model}")
 
@@ -67,15 +60,22 @@ optimizer = cfg.OPTIMIZER
 loss_fn = cfg.LOSS_FN
 
 ######### TRAINING ###############################################
-train_model(
+writer = SummaryWriter("runs/3Dtest_script")
+trainer = ModelTrainer(
     model,
     optimizer,
     loss_fn,
-    train_loaders[0],
-    val_loader,
-    10,
     device,
-    verbose=True,
+    verbose=cfg.VERBOSE,
+    writer=writer,
+    save_path="saved_models/3Dtest_script",
+)
+
+# Train 2 epoch
+trainer.train_model(
+    train_loader,
+    test_loader,
+    2,
 )
 
 ######### OVERFIT ###############################################
