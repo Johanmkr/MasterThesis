@@ -141,27 +141,19 @@ class SLOTH(nn.Module):
 
     def forward(self, X):
         X = torch.unsqueeze(X, dim=1)
-        # print(f"X shape before conv3d1: {X.shape}")
         X = self.conv3d1(X)
-        # print(f"X shape before conv3d2: {X.shape}")
         X = self.conv3d2(X)
-        # print(f"X shape before conv3d3: {X.shape}")
         X = self.conv3d3(X)
 
         # Reshape for 2D convolutional layers
         X = torch.reshape(X, (-1, 8, 16, 16))
-
-        # print(f"X shape before conv2d1: {X.shape}")
+        
         X = self.conv2d1(X)
-        # print(f"X shape before conv2d2: {X.shape}")
         X = self.conv2d2(X)
-        # print(f"X shape before conv2d3: {X.shape}")
         X = self.conv2d3(X)
-        # print(f"X shape before fc1: {X.shape}")
+        
         X = self.fc1(X)
-        # print(f"X shape before fc2: {X.shape}")
         X = self.fc2(X)
-        # print(f"X shape before output: {X.shape}")
         out = self.output(X)
         return out
 

@@ -149,8 +149,8 @@ class ModelTrainer:
         self.test_acc_array.append(test_accuracy)
 
         # Add loss and accuracy to tensorboard
-        self.writer.add_scalar("Loss", {"train": train_loss, "test": test_loss}, epoch)
-        self.writer.add_scalar(
+        self.writer.add_scalars("Loss", {"train": train_loss, "test": test_loss}, epoch)
+        self.writer.add_scalars(
             "Accuracy", {"train": train_accuracy, "test": test_accuracy}, epoch
         )
 
