@@ -36,7 +36,7 @@ class SlicedCubeDataset(Dataset):
         nr_redshifts = 1
         nr_seeds = len(self.seeds)
         self.nr_axes = nr_axes
-        self.nr_cubes = nr_gravity_theories * nr_redshifts * nr_seeds * nr_axes
+        self.nr_cubes = nr_gravity_theories * nr_redshifts * nr_seeds
         self.images_per_axis = 256 // self.stride
         self.images_per_cube = self.nr_axes * self.images_per_axis
         self.length = self.nr_cubes * self.images_per_cube
@@ -63,18 +63,16 @@ class SlicedCubeDataset(Dataset):
         cube_idx = 0
         for gravity_theory in ["Newton", "GR"]:
             for seed in self.seeds:
-                for axis in range(self.nr_axes):
-                    self.cube_data[cube_idx] = {
-                        "cube_path": paths.get_cube_path(
-                            seed,
-                            gravity_theory,
-                            self.redshift,
-                        ),
-                        "gravity_theory": gravity_theory,
-                        "seed": seed,
-                        "axis": axis,
-                    }
-                    cube_idx += 1
+                self.cube_data[cube_idx] = {
+                    "cube_path": paths.get_cube_path(
+                        seed,
+                        gravity_theory,
+                        self.redshift,
+                    ),
+                    "gravity_theory": gravity_theory,
+                    "seed": seed,
+                }
+                cube_idx += 1
         assert cube_idx == self.nr_cubes, "Cube index does not match number of cubes."
 
     def _find_slices(self, slice_idx: int) -> None:
@@ -86,32 +84,6 @@ class SlicedCubeDataset(Dataset):
         )
         self.slice_data[slice_idx] = tuple(slices)
 
-    # def _get_sample(self, idx) -> dict:
-    #     cube_idx = idx // self.images_per_cube
-    #     slice_idx = idx % self.images_per_cube
-    #     sample_data = self.cube_data[cube_idx]
-    #     sample_path = sample_data["cube_path"]
-    #     sample_gravity = sample_data["gravity_theory"].lower()
-    #     sample_slice = self.slice_data[slice_idx]
-
-    #     # Load the sample
-    #     start_time = time.time()
-    #     with h5py.File(sample_path, "r") as f:
-    #         image = torch.tensor(f["data"][sample_slice], dtype=torch.float32)
-    #     print(f"Loading time: {time.time() - start_time:.4f} s")
-    #     label = (
-    #         torch.tensor([1.0], dtype=torch.float32)
-    #         if sample_gravity == "gr"
-    #         else torch.tensor([0.0], dtype=torch.float32)
-    #     )
-    #     sample = {"image": image.reshape(self.stride, 256, 256), "label": label}
-
-    #     if self.transform is not None:
-    #         sample = self.transform(sample)
-
-    #     return sample
-
-    # TESTING FUNCTION
     def _get_cube(self, idx) -> dict:
         cube_idx = idx // self.images_per_cube
         sample_data = self.cube_data[cube_idx]
@@ -128,15 +100,14 @@ class SlicedCubeDataset(Dataset):
         cube_sample = {"cube": cube, "label": label}
         return cube_sample
 
-    # TESTING FUNCTION
     def _get_sample(self, idx) -> dict:
         cube_idx = idx // self.images_per_cube
         slice_idx = idx % self.images_per_cube
         cube = self.cubes[cube_idx]
         sample_slice = self.slice_data[slice_idx]
-        image = cube[sample_slice]
+        image = cube["cube"][sample_slice]
         label = cube["label"]
-        sample = {"image": image, "label": label}
+        sample = {"image": image.reshape(self.stride, 256, 256), "label": label}
         if self.transform is not None:
             sample = self.transform(sample)
         return sample

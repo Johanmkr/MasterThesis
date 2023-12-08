@@ -6,6 +6,7 @@ import h5py
 import random
 from torch.utils.data import DataLoader
 from torch.utils.data.dataset import Dataset
+from tqdm import trange
 
 
 # Local imports
@@ -18,7 +19,6 @@ class WholeCubeDataset(Dataset):
         self,
         redshift: int | float = 1.0,
         seeds: np.ndarray = np.arange(0, 100, 1),
-        nr_axis: int = 1,
         transform: callable = None,
     ) -> None:
         super().__init__()
@@ -32,12 +32,17 @@ class WholeCubeDataset(Dataset):
         nr_gravity_theories = 2
         nr_redshifts = 1
         nr_seeds = len(self.seeds)
-        self.nr_axis = nr_axis
-        self.length = nr_gravity_theories * nr_redshifts * nr_seeds * nr_axis
+        self.nr_cubes = nr_gravity_theories * nr_redshifts * nr_seeds
+        self.length = self.nr_cubes
 
         ### data variables ###
         self.cube_data = {}
         self._find_cube_data()
+
+        ### fill cubes ###
+        self.cubes = []
+        for i in trange(self.nr_cubes):
+            self.cubes.append(self._get_cube(i))
 
     def __len__(self):
         return self.length
@@ -45,28 +50,27 @@ class WholeCubeDataset(Dataset):
     def __getitem__(self, idx):
         return self._get_sample(idx)
 
-    def _find_cube_data(self):
+    def _find_cube_data(self) -> None:
         cube_idx = 0
         for gravity_theory in ["Newton", "GR"]:
             for seed in self.seeds:
-                for axis in range(self.nr_axis):
-                    self.cube_data[cube_idx] = {
-                        "cube_path": paths.get_cube_path(
-                            seed,
-                            gravity_theory,
-                            self.redshift,
-                        ),
-                        "gravity_theory": gravity_theory,
-                        "seed": seed,
-                        "axis": axis,
-                    }
-                    cube_idx += 1
-        assert cube_idx == self.length, "Cube index does not match number of cubes."
+                self.cube_data[cube_idx] = {
+                    "cube_path": paths.get_cube_path(
+                        seed,
+                        gravity_theory,
+                        self.redshift,
+                    ),
+                    "gravity_theory": gravity_theory,
+                    "seed": seed,
+                }
+                cube_idx += 1
+        assert cube_idx == self.nr_cubes, "Cube index does not match number of cubes."
 
-    def _get_sample(self, idx):
-        sample_data = self.cube_data[idx]
+    def _get_cube(self, cube_idx):
+        sample_data = self.cube_data[cube_idx]
         sample_path = sample_data["cube_path"]
         sample_gravity = sample_data["gravity_theory"].lower()
+
         # Load the sample
         with h5py.File(sample_path, "r") as f:
             cube = torch.tensor(f["data"][()], dtype=torch.float32)
@@ -75,7 +79,13 @@ class WholeCubeDataset(Dataset):
             if sample_gravity == "gr"
             else torch.tensor([0.0], dtype=torch.float32)
         )
-        sample = {"image": cube, "label": label}
+        cube_sample = {"cube": cube, "label": label}
+
+        return cube_sample
+
+    def _get_sample(self, idx):
+        cube_sample = self.cubes[idx]
+        sample = {"image": cube_sample["cube"], "label": cube_sample["label"]}
 
         if self.transform is not None:
             sample = self.transform(sample)
@@ -113,18 +123,21 @@ def make_whole_dataset(
     val_seeds = total_seeds[train_size + test_size :]
 
     # Make datasets
+    print(f"Making training dataset: {int(train_test_val_split[0]*100)}% ...")
     train_dataset = WholeCubeDataset(
         redshift=redshifts,
         seeds=train_seeds,
         transform=transform,
     )
 
+    print(f"Making testing dataset: {int(train_test_val_split[1]*100)}% ...")
     test_dataset = WholeCubeDataset(
         redshift=redshifts,
         seeds=test_seeds,
         transform=transform,
     )
 
+    print(f"Making validation dataset: {int(train_test_val_split[2]*100)}% ...")
     val_dataset = WholeCubeDataset(
         redshift=redshifts,
         seeds=val_seeds,
