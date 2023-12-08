@@ -1,3 +1,8 @@
+"""
+    MAIN FILE FOR 2D CNN TEST
+"""
+
+
 ######### GLOBAL IMPORTS #######################################
 import sys, os
 import torch
@@ -74,11 +79,11 @@ trainer = ModelTrainer(
     save_path="saved_models/2Dtest_script",
 )
 
-# Train 2 epoch
+# Train 500 epoch
 trainer.train_model(
     train_loader,
     test_loader,
-    2500,
+    500,
 )
 
 ######### OVERFIT ###############################################

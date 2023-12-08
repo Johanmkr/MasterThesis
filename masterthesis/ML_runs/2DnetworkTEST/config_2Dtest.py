@@ -21,24 +21,24 @@ VERBOSE = True
 
 DATA_PARAMS = {
     "train_test_val_split": (0.7, 0.2, 0.1),
-    "batch_size": 256,
-    "num_workers": 96,
+    "batch_size": 256 * 3 * 2,  # corresponds to 2 cubes
+    "num_workers": 8,
     "stride": 1,
     "redshifts": 1.0,
     "transform": Normalise(),
     "total_seeds": np.arange(0, 1000, 1),
     "random_seed": 42,
-    "prefetch_factor": 256,
+    "prefetch_factor": 4,
 }
 
 
 MODEL_PARAMS = {
     "input_size": (DATA_PARAMS["stride"], 256, 256),
-    "layer_param": 15,
-    "activation": nn.LeakyReLU(),
+    "layer_param": 2,
+    "activation": nn.ReLU(),
     "output_activation": nn.Sigmoid(),
     "bias": False,
-    "dropout": 0.25,
+    "dropout": 0.5,
 }
 
 
