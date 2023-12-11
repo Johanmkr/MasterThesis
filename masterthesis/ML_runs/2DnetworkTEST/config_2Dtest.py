@@ -13,7 +13,6 @@ from torch.utils.tensorboard import SummaryWriter
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, os.pardir))
 sys.path.append(parent_dir)
 
-from src.data.transforms import Normalise
 from src.models.PENGUIN import PENGUIN
 from src.models.train_model import ModelTrainer
 
