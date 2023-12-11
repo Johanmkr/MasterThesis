@@ -41,7 +41,7 @@ class SlicedCubeDataset(Dataset):
         ### transformation variables ###
         try:
             mean_std_var = np.load(
-                f"{os.path.dirname(__file__)}/redshifts_[{self.redshifts:.1f}]_mean_std_var.npy",
+                f"{os.path.dirname(__file__)}/redshifts_[{self.redshift:.1f}]_mean_std_var.npy",
                 "r",
             )
             self.mean = mean_std_var[0]
@@ -55,7 +55,7 @@ class SlicedCubeDataset(Dataset):
         self.rotate180 = transforms.RandomRotation((180, 180))
         self.rotate270 = transforms.RandomRotation((270, 270))
         self.flipH = transforms.RandomHorizontalFlip(p=1.0)
-        self.flipV = transforms.RandomVerticalFlip(p=1.0)
+        # self.flipV = transforms.RandomVerticalFlip(p=1.0)
         self.normalize = transforms.Normalize(self.mean, self.std)
 
         ### define combinations of transformations ###
@@ -64,50 +64,42 @@ class SlicedCubeDataset(Dataset):
         # original
         original = transforms.Compose([self.normalize])
         self.all_transformations.append(original)
-        # rotate 90
+
+        # rot90
         rotate90 = transforms.Compose([self.rotate90, self.normalize])
         self.all_transformations.append(rotate90)
-        # rotate 180
+
+        # rot180
         rotate180 = transforms.Compose([self.rotate180, self.normalize])
         self.all_transformations.append(rotate180)
-        # rotate 270
+
+        # rot270
         rotate270 = transforms.Compose([self.rotate270, self.normalize])
         self.all_transformations.append(rotate270)
-        # flip horizontal
+
+        # flipH
         flipH = transforms.Compose([self.flipH, self.normalize])
         self.all_transformations.append(flipH)
-        # flip vertical
-        flipV = transforms.Compose([self.flipV, self.normalize])
-        self.all_transformations.append(flipV)
-        # rotate 90 + flip horizontal
-        rotate90_flipH = transforms.Compose([self.rotate90, self.flipH, self.normalize])
-        self.all_transformations.append(rotate90_flipH)
-        # rotate 90 + flip vertical
-        rotate90_flipV = transforms.Compose([self.rotate90, self.flipV, self.normalize])
-        self.all_transformations.append(rotate90_flipV)
-        # rotate 180 + flip horizontal
-        rotate180_flipH = transforms.Compose(
-            [self.rotate180, self.flipH, self.normalize]
+
+        # flipH + rot90
+        flipH_rotate90 = transforms.Compose([self.flipH, self.rotate90, self.normalize])
+        self.all_transformations.append(flipH_rotate90)
+
+        # flipH + rot180
+        flipH_rotate180 = transforms.Compose(
+            [self.flipH, self.rotate180, self.normalize]
         )
-        self.all_transformations.append(rotate180_flipH)
-        # rotate 180 + flip vertical
-        rotate180_flipV = transforms.Compose(
-            [self.rotate180, self.flipV, self.normalize]
+        self.all_transformations.append(flipH_rotate180)
+
+        # flipH +rot270
+        flipH_rotate270 = transforms.Compose(
+            [self.flipH, self.rotate270, self.normalize]
         )
-        self.all_transformations.append(rotate180_flipV)
-        # rotate 270 + flip horizontal
-        rotate270_flipH = transforms.Compose(
-            [self.rotate270, self.flipH, self.normalize]
-        )
-        self.all_transformations.append(rotate270_flipH)
-        # rotate 270 + flip vertical
-        rotate270_flipV = transforms.Compose(
-            [self.rotate270, self.flipV, self.normalize]
-        )
-        self.all_transformations.append(rotate270_flipV)
+        self.all_transformations.append(flipH_rotate270)
 
         self.nr_transformations = len(self.all_transformations)
-        self.length = self.nr_cubes * self.images_per_cube * self.nr_transformations
+        self.images_per_transformation = self.nr_cubes * self.images_per_cube
+        self.length = self.images_per_transformation * self.nr_transformations
 
         ### load data ###
         self.cubes = []
@@ -129,7 +121,131 @@ class SlicedCubeDataset(Dataset):
                 cube_idx += 1
         assert cube_idx == self.nr_cubes, "Cube index does not match number of cubes."
 
-        # TODO
-        # - Make dict with slices for one cube
-        # - Implement way of getting slice from cube
-        # - Apply transformations to slice
+        ### define slices ###
+        for slice_idx in range(self.images_per_cube):
+            slices = [slice(None)] * self.nr_axes
+            axis = slice_idx // self.images_per_axis
+            idx_on_slice = slice_idx % self.images_per_axis
+            slices[axis] = slice(
+                idx_on_slice * self.stride, (idx_on_slice + 1) * self.stride
+            )
+            self.slice_data[slice_idx] = tuple(slices)
+        assert (
+            len(self.slice_data) == self.images_per_cube
+        ), "Slice index does not match number of slices."
+
+    def __len__(self) -> int:
+        return self.length
+
+    def __getitem__(self, idx) -> dict:
+        ### sub-indices ###
+        transform_idx = idx // self.images_per_transformation
+        seed_idx = idx % self.images_per_transformation
+        return self.get_sample(seed_idx, self.all_transformations[transform_idx])
+
+    def get_sample(self, seed_idx, transformation) -> dict:
+        cube_idx = seed_idx // self.images_per_cube
+        slice_idx = seed_idx % self.images_per_cube
+        cube = self.cubes[cube_idx]
+        sample_slice = self.slice_data[slice_idx]
+        image = cube["cube"][sample_slice]
+        label = cube["label"]
+        sample = {
+            "image": transformation(image.reshape(self.stride, 256, 256)),
+            "label": label,
+        }
+        return sample
+
+
+def make_training_sets(
+    train_test_split: tuple[float, float] = (0.8, 0.2),
+    stride=1,
+    batch_size=1,
+    num_workers=4,
+    redshift: int | float = 1.0,
+    total_seeds: int = np.arange(0, 1750, 1),
+    random_seed: int = 42,
+    prefetch_factor: int = 2,
+) -> tuple:
+    random.seed(random_seed)
+    random.shuffle(total_seeds)
+
+    array_length = len(total_seeds)
+    assert (
+        abs(sum(train_test_split) - 1.0) < 1e-6
+    ), "Train and test split does not sum to 1."
+    train_length = int(array_length * train_test_split[0])
+    test_length = int(array_length * train_test_split[1])
+    train_seeds = total_seeds[:train_length]
+    test_seeds = total_seeds[train_length:]
+
+    # Make datasets
+    print("Making datasets...")
+    print(f"Training set: {len(train_seeds)} seeds")
+    train_dataset = SlicedCubeDataset(
+        stride=stride,
+        redshift=redshift,
+        seeds=train_seeds,
+    )
+    print(f"Test set: {len(test_seeds)} seeds")
+    test_dataset = SlicedCubeDataset(
+        stride=stride,
+        redshift=redshift,
+        seeds=test_seeds,
+    )
+
+    # Make dataloaders
+    print("Making dataloaders...")
+    train_dataloader = DataLoader(
+        train_dataset,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        prefetch_factor=prefetch_factor,
+        shuffle=True,
+        pin_memory=True,
+    )
+    test_dataloader = DataLoader(
+        test_dataset,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        prefetch_factor=prefetch_factor,
+        shuffle=True,
+        pin_memory=True,
+    )
+
+    return train_dataloader, test_dataloader
+
+
+def make_validation_set(
+    stride=1,
+    batch_size=1,
+    num_workers=4,
+    redshift: int | float = 1.0,
+    val_seeds: int = np.arange(1750, 2000, 1),
+    random_seed: int = 42,
+    prefetch_factor: int = 2,
+) -> tuple:
+    random.seed(random_seed)
+    random.shuffle(val_seeds)
+
+    # Make dataset
+    print("Making datasets...")
+    print(f"Validation set: {len(val_seeds)} seeds")
+    val_dataset = SlicedCubeDataset(
+        stride=stride,
+        redshift=redshift,
+        seeds=val_seeds,
+    )
+
+    # Make dataloader
+    print("Making dataloaders...")
+    val_dataloader = DataLoader(
+        val_dataset,
+        batch_size=batch_size,
+        num_workers=num_workers,
+        prefetch_factor=prefetch_factor,
+        shuffle=True,
+        pin_memory=True,
+    )
+
+    return val_dataloader
