@@ -21,6 +21,7 @@ class SlicedCubeDataset(Dataset):
         redshift: int | float = 1.0,
         seeds: np.ndarray = np.arange(0, 1750, 1),
         nr_axes: int = 3,
+        use_transformations: bool = True,
     ):
         super().__init__()
 
@@ -29,6 +30,7 @@ class SlicedCubeDataset(Dataset):
         self.redshift = redshift
         self.seeds = seeds
         self.nr_axes = nr_axes
+        self.use_transformations = use_transformations
 
         ### length variables ###
         nr_gravity_theories = 2
@@ -63,39 +65,42 @@ class SlicedCubeDataset(Dataset):
 
         # original
         original = transforms.Compose([self.normalize])
-        self.all_transformations.append(original)
 
         # rot90
         rotate90 = transforms.Compose([self.rotate90, self.normalize])
-        self.all_transformations.append(rotate90)
 
         # rot180
         rotate180 = transforms.Compose([self.rotate180, self.normalize])
-        self.all_transformations.append(rotate180)
 
         # rot270
         rotate270 = transforms.Compose([self.rotate270, self.normalize])
-        self.all_transformations.append(rotate270)
 
         # flipH
         flipH = transforms.Compose([self.flipH, self.normalize])
-        self.all_transformations.append(flipH)
 
         # flipH + rot90
         flipH_rotate90 = transforms.Compose([self.flipH, self.rotate90, self.normalize])
-        self.all_transformations.append(flipH_rotate90)
 
         # flipH + rot180
         flipH_rotate180 = transforms.Compose(
             [self.flipH, self.rotate180, self.normalize]
         )
-        self.all_transformations.append(flipH_rotate180)
 
         # flipH +rot270
         flipH_rotate270 = transforms.Compose(
             [self.flipH, self.rotate270, self.normalize]
         )
-        self.all_transformations.append(flipH_rotate270)
+
+        # Add transformations to list
+        self.all_transformations.append(original)
+        if self.use_transformations:
+            self.all_transformations.append(rotate90)
+            self.all_transformations.append(rotate180)
+            self.all_transformations.append(rotate270)
+            self.all_transformations.append(flipH)
+            self.all_transformations.append(flipH_rotate90)
+            self.all_transformations.append(flipH_rotate180)
+            self.all_transformations.append(flipH_rotate270)
 
         self.nr_transformations = len(self.all_transformations)
         self.images_per_transformation = self.nr_cubes * self.images_per_cube
