@@ -26,7 +26,7 @@ parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir, os.pardir))
 sys.path.append(parent_dir)
 
 from src.data.cube_datasets import SlicedCubeDataset
-from src.models.PENGUIN import PENGUIN
+from src.models.RACOON import RACOON
 
 ###############################################################
 ######### VARIABLES ###########################################
@@ -36,30 +36,30 @@ batch_size = 256 * 2 * 1  # corresponds to 2/3 cubes
 num_workers = 8
 redshift = 1.0
 stride = 1
-train_test_seeds = np.arange(0, 1750, 1)
-val_seeds = np.arange(1750, 2000, 1)
-prefetch_factor = 6
+train_test_seeds = np.arange(0, 250, 1)
+val_seeds = np.arange(1750, 1800, 1)
+prefetch_factor = 8
 random_seed = 42
 
 # Model variables
 input_size = (stride, 256, 256)
 layer_param = 64
-activation = nn.ReLU()
+activation = nn.LeakyReLU(0.2)
 output_activation = nn.Sigmoid()
 bias = False
 dropout = 0.5
 
 # Training variables
 lr = 0.001
-betas = (0.9, 0.999)
+betas = (0.5, 0.999)
 weight_decay = 1e-5
 max_epochs = 750
 best_loss = 1e10
 breakout_loss = 1e-5
 
 # Logging and saving
-writer_path = "long_test_runs/parallel_test"
-model_save_path = "saved_models/long_parallel_test.pt"
+writer_path = "runs/first"
+model_save_path = "models/first.pt"
 
 # Print summary of all variables as one string
 # print(f"Variables:\n{pd.DataFrame(globals().items(), columns=['Parameter', 'Value'])}")
@@ -87,12 +87,14 @@ def get_data():
         stride=stride,
         redshift=redshift,
         seeds=train_seeds,
+        use_transformations=False,
     )
     print(f"Test set: {len(test_seeds)} seeds")
     test_dataset = SlicedCubeDataset(
         stride=stride,
         redshift=redshift,
         seeds=test_seeds,
+        use_transformations=False,
     )
     return train_dataset, test_dataset
 
@@ -102,7 +104,7 @@ def get_data():
 
 
 def get_model():
-    model = PENGUIN(
+    model = RACOON(
         input_size=input_size,
         layer_param=layer_param,
         activation=activation,
@@ -225,10 +227,8 @@ def train(
             f"\nTraining for epoch {epoch+1} / {max_epochs}..."
         ) if rank == 0 else None
         for i, batch in enumerate(train_dataloader):
-            if rank == 0 and i % 9 == 0:
-                print(f"Batc        batch_size,
-        num_workers,
-        prefetch_factor,h {i+1} / {nr_batches}")
+            if rank == 0 and (i + 1) % 25 == 0:
+                print(f"Batch {i+1} / {nr_batches}")
             images, labels = batch["image"], batch["label"]
             images = images.to(rank)
             labels = labels.to(rank)
@@ -246,7 +246,7 @@ def train(
         accuracy_tensor = torch.tensor(
             [correct_guesses, total_guesses], dtype=torch.float
         ).to(rank)
-        loss_tensor = torch.tensor([epoch_loss]).to(rank)
+        loss_tensor = torch.tensor([epoch_loss], dtype=torch.float).to(rank)
         reduced_accuracy = [torch.zeros(2).to(rank) for _ in range(world_size)]
         reduced_loss = [torch.zeros(1).to(rank) for _ in range(world_size)]
         dist.all_gather(reduced_loss, loss_tensor)
@@ -257,7 +257,7 @@ def train(
             ddp_model.module, rank, loss_fn, test_dataloader
         )
 
-        test_loss_tensor = torch.tensor([test_loss]).to(rank)
+        test_loss_tensor = torch.tensor([test_loss], dtype=torch.float).to(rank)
         test_accuracy_tensor = torch.tensor(
             [test_correct_guesses, test_total_guesses], dtype=torch.float
         ).to(rank)
