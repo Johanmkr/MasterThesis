@@ -1,7 +1,5 @@
 """
     2D convolutional neural network for classification of slices of datacubes from GR/Newtonian simulations.
-    
-    
 """
 
 import torch
