@@ -85,5 +85,5 @@ class MultipleGPUTrainer:
         self,
         rank,
         world_size,
-        
-    )
+    ):
+        pass
