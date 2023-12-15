@@ -13,7 +13,7 @@ class RACOON(nn.Module):
         input_size: tuple,
         layer_param: float = 64,
         activation=nn.ReLU(),
-        output_activation=nn.Sigmoid(),
+        output_activation=nn.Identity(),
         bias=False,
         dropout=0.5,
     ):
