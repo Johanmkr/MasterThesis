@@ -10,6 +10,7 @@ def make_training_and_testing_data(
     stride=1,
     redshift=1.0,
     random_seed=42,
+    transforms: bool = True,
 ):
     random.seed(random_seed)
     random.shuffle(train_test_seeds)
@@ -30,11 +31,13 @@ def make_training_and_testing_data(
         stride=stride,
         redshift=redshift,
         seeds=train_seeds,
+        use_transformations=transforms,
     )
     print(f"Test set: {len(test_seeds)} seeds")
     test_dataset = SlicedCubeDataset(
         stride=stride,
         redshift=redshift,
         seeds=test_seeds,
+        use_transformations=transforms,
     )
     return train_dataset, test_dataset
