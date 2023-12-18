@@ -122,7 +122,6 @@ class MultipleGPUTrainer:
     def train_one_epoch(
         self,
         rank,
-        world_size,
         model,
         train_loader,
         optimizer,
@@ -164,7 +163,6 @@ class MultipleGPUTrainer:
             f"\nTraining:\nTrain loss: {train_loss:.4f}\nTrain predictions: {train_predictions}/{train_samples}\nTrain accuracy: {train_predictions/train_samples*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
         ) if rank == 0 else None
         return train_loss, train_predictions, train_samples
-        pass
 
     def evaluate(
         model,
@@ -173,4 +171,28 @@ class MultipleGPUTrainer:
         test_loader,
         success_tol=0.5,
     ):
-        pass
+        epoch_evaluation_start_time = time.time()
+        model.eval()
+        test_loss = 0
+        evaluation_predictions = 0
+        evaluation_samples = 0
+        with torch.no_grad():
+            for batch in test_loader:
+                images, labels = batch["image"], batch["label"]
+                images = images.to(rank)
+                labels = labels.to(rank)
+
+                outputs = model(images)
+                loss = loss_fn(outputs, labels)
+
+                # Print statistics
+                test_loss += loss.item()
+                evaluation_predictions += self._success(
+                    outputs, labels, tol=success_tol
+                )
+                evaluation_samples += len(labels)
+        epoch_evaluation_end_time = time.time()
+        print(
+            f"Testing:\nTest loss: {test_loss:.4f}\nTest predictions: {evaluation_predictions}/{evaluation_samples}\nTest accuracy: {evaluation_predictions/evaluation_samples*100:.4f} %\nTime elapsed for testing: {epoch_evaluation_end_time - epoch_evaluation_start_time:.2f} s\n"
+        ) if rank == 0 else None
+        return test_loss, evaluation_predictions, evaluation_samples
