@@ -29,7 +29,7 @@ data_params = {
 
 model_params = {
     "input_size": (data_params["stride"], 256, 256),
-    "layer_param": 64,
+    "layer_param": 16,
     "activation": nn.LeakyReLU(negative_slope=0.2, inplace=True),
     "output_activation": nn.Identity(),
     "bias": False,
@@ -43,13 +43,13 @@ loader_params = {
 }
 
 optimizer_params = {
-    "lr": 0.1,
+    "lr": 4e-4,
     "betas": (0.5, 0.999),
     "weight_decay": 1e-11,
 }
 
 training_params = {
-    "epochs": 10,
+    "epochs": 100,
     "breakout_loss": 1e-3,
     "tol": 0.5,
 }
@@ -72,7 +72,7 @@ trainer = SingleGPUTrainer(
     loss_fn=loss_fn,
     train_dataset=train_data,
     test_dataset=test_data,
-    test_name="test",
+    test_name="RACCOON_test_lp16",
     **loader_params,
 )
 
