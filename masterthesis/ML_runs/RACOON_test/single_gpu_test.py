@@ -20,7 +20,7 @@ from src.trainers.train_single_gpu import SingleGPUTrainer
 # Params
 data_params = {
     "train_test_split": [0.8, 0.2],
-    "train_test_seeds": np.arange(0, 20, 1),
+    "train_test_seeds": np.arange(0, 175, 1),
     "stride": 1,
     "redshift": 1.0,
     "random_seed": 42,
@@ -43,13 +43,13 @@ loader_params = {
 }
 
 optimizer_params = {
-    "lr": 0.01,
+    "lr": 0.1,
     "betas": (0.5, 0.999),
-    "weight_decay": 0,
+    "weight_decay": 1e-11,
 }
 
 training_params = {
-    "epochs": 100,
+    "epochs": 10,
     "breakout_loss": 1e-3,
     "tol": 0.5,
 }
