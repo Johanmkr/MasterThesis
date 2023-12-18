@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 import torch.distributed as dist
 from torch.utils.data import DataLoader, DistributedSampler
+import time
 from torch.utils.tensorboard import SummaryWriter
 from torch.nn.parallel import DistributedDataParallel as DDP
 
@@ -41,14 +42,32 @@ class MultipleGPUTrainer:
 
     def create_data_loaders(
         self,
+        rank,
+        world_size,
         train_dataset,
         test_dataset,
-        train_sampler,
-        test_sampler,
         batch_size,
-        num_workers,
-        prefetch_factor,
+        num_workers=0,
+        prefetch_factor=0,
+        pin_memory=False,
+        shuffle=True,
+        drop_last=True,
     ):
+        # Create distributed samplers
+        train_sampler = DistributedSampler(
+            train_dataset,
+            num_replicas=world_size,
+            rank=rank,
+            shuffle=shuffle,
+            drop_last=drop_last,
+        )
+        test_sampler = DistributedSampler(
+            test_dataset,
+            num_replicas=world_size,
+            rank=rank,
+            shuffle=shuffle,
+            drop_last=drop_last,
+        )
         # Create data loaders
         train_loader = DataLoader(
             train_dataset,
@@ -56,7 +75,7 @@ class MultipleGPUTrainer:
             num_workers=num_workers,
             prefetch_factor=prefetch_factor,
             sampler=train_sampler,
-            pin_memory=True,
+            pin_memory=pin_memory,
         )
         test_loader = DataLoader(
             test_dataset,
@@ -64,7 +83,7 @@ class MultipleGPUTrainer:
             num_workers=num_workers,
             prefetch_factor=prefetch_factor,
             sampler=test_sampler,
-            pin_memory=True,
+            pin_memory=pin_memory,
         )
         return train_loader, test_loader
 
@@ -81,9 +100,77 @@ class MultipleGPUTrainer:
     def _success(self, outputs, labels, tol):
         return (abs(outputs - labels) < tol).sum().item()
 
-    def trainer_function(
+    def main_ddp_init(self, rank, world_size, model):
+        # setup the process group
+        self._setup(rank, world_size)
+
+        # Explicitly setting seed to make sure that models created in two processes
+        # start from same random weights and biases.
+        torch.manual_seed(42)
+
+        # create model and move it to GPU with id rank
+        model = model.to(rank)
+        ddp_model = DDP(
+            model,
+            device_ids=[rank],
+            output_device=rank,
+            find_unused_parameters=True,
+        )
+
+        return ddp_model
+
+    def train_one_epoch(
         self,
         rank,
         world_size,
+        model,
+        train_loader,
+        optimizer,
+        loss_fn,
+        epoch_nr,
+        success_tol=1e-2,
+    ):
+        epoch_train_start_time = time.time()
+        print(f"---------- Epoch {epoch_nr} ----------\n")
+        model.train()
+        train_loss = 0
+        train_predictions = 0
+        train_samples = 0
+        max_batches = len(train_loader)
+        for i, data in enumerate(train_loader):
+            if (i + 1) % 25 == 0 and rank == 0:
+                print(f"Batch: {i+1}/{max_batches}")
+            # Get the inputs
+            images, labels = data["image"], data["label"]
+            images = images.to(rank)
+            labels = labels.to(rank)
+
+            # Zero the parameter gradients
+            optimizer.zero_grad()
+
+            # Forward + backward + optimize
+            outputs = model(images)
+            loss = loss_fn(outputs, labels)
+            loss.backward()
+            optimizer.step()
+
+            # Print statistics
+            train_loss += loss.item()
+            train_predictions += self._success(outputs, labels, tol=success_tol)
+            train_samples += len(labels)
+        train_loss /= max_batches  # avg loss per batch
+        epoch_train_end_time = time.time()
+        print(
+            f"\nTraining:\nTrain loss: {train_loss:.4f}\nTrain predictions: {train_predictions}/{train_samples}\nTrain accuracy: {train_predictions/train_samples*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
+        ) if rank == 0 else None
+        return train_loss, train_predictions, train_samples
+        pass
+
+    def evaluate(
+        model,
+        rank,
+        loss_fn,
+        test_loader,
+        success_tol=0.5,
     ):
         pass

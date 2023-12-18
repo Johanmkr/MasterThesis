@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
+import time
 
 GPU = torch.cuda.is_available()
 device = torch.device("cuda:0" if GPU else "cpu")
@@ -95,6 +96,7 @@ class SingleGPUTrainer:
         # Train model
         for _ in range(epochs):
             # Training
+            epoch_start_time = time.time()
             current_epoch = self.epochs_trained + 1
             train_loss, train_predictions, train_samples = self.train_one_epoch(
                 current_epoch, success_tol=tol
@@ -135,7 +137,10 @@ class SingleGPUTrainer:
             )
 
             self.epochs_trained += 1
-
+            epoch_end_time = time.time()
+            print(
+                f"Time elapsed for epoch: {epoch_end_time - epoch_start_time:.2f} s\n"
+            )
             # Early stopping
             if best_loss < breakout_loss:
                 print(
@@ -148,6 +153,7 @@ class SingleGPUTrainer:
         epoch_nr,
         success_tol=1e-2,
     ):
+        epoch_train_start_time = time.time()
         print(f"---------- Epoch {epoch_nr} ----------\n")
         self.model.train()
         train_loss = 0
@@ -176,15 +182,17 @@ class SingleGPUTrainer:
             train_predictions += self._success(outputs, labels, tol=success_tol)
             train_samples += len(labels)
         train_loss /= max_batches  # avg loss per batch
+        epoch_train_end_time = time.time()
         print(
-            f"\nTraining:\nTrain loss: {train_loss:.4f}\nTrain predictions: {train_predictions}/{train_samples}\nTrain accuracy: {train_predictions/train_samples*100:.4f} %\n"
+            f"\nTraining:\nTrain loss: {train_loss:.4f}\nTrain predictions: {train_predictions}/{train_samples}\nTrain accuracy: {train_predictions/train_samples*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
         )
         return train_loss, train_predictions, train_samples
 
     def evaluate(
         self,
-        success_tol=1e-2,
+        success_tol=0.5,
     ):
+        epoch_evaluate_start_time = time.time()
         self.model.eval()
         test_loss = 0
         test_predictions = 0
@@ -205,7 +213,8 @@ class SingleGPUTrainer:
                 test_predictions += self._success(outputs, labels, tol=success_tol)
                 test_samples += len(labels)
         test_loss /= len(self.test_loader)  # avg loss per batch
+        epoch_evaluate_end_time = time.time()
         print(
-            f"Testing:\nTest loss: {test_loss:.4f}\nTest predictions: {test_predictions}/{test_samples}\nTest accuracy: {test_predictions/test_samples*100:.4f} %\n"
+            f"Testing:\nTest loss: {test_loss:.4f}\nTest predictions: {test_predictions}/{test_samples}\nTest accuracy: {test_predictions/test_samples*100:.4f} %\nTime elapsed for testing: {epoch_evaluate_end_time - epoch_evaluate_start_time:.2f} s\n"
         )
         return test_loss, test_predictions, test_samples
