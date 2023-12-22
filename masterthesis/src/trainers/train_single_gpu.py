@@ -18,8 +18,6 @@ class SingleGPUTrainer:
     def __init__(
         self,
         model,
-        optimizer,
-        loss_fn,
         train_dataset,
         test_dataset,
         batch_size,
@@ -29,8 +27,6 @@ class SingleGPUTrainer:
         test_name: str = "test",
     ) -> None:
         self.model = model
-        self.optimizer = optimizer
-        self.loss_fn = loss_fn
         self.device = device
         self.model_save_path = f"models/{test_name}.pt"
         self.writer_log_path = f"runs/{test_name}"
@@ -86,12 +82,15 @@ class SingleGPUTrainer:
 
     def train(
         self,
-        epochs=1,
-        breakout_loss=1e-3,
-        tol=1e-2,
+        epochs,
+        breakout_loss,
+        tol,
+        optimizer_params,
     ):
         # Initialize variables
         best_loss = 1e10
+        optimizer = torch.optim.Adam(self.model.parameters(), **optimizer_params)
+        loss_fn = nn.BCEWithLogitsLoss()
 
         # Train model
         for _ in range(epochs):
@@ -99,11 +98,17 @@ class SingleGPUTrainer:
             epoch_start_time = time.time()
             current_epoch = self.epochs_trained + 1
             train_loss, train_predictions, train_samples = self.train_one_epoch(
-                current_epoch, success_tol=tol
+                epoch_nr=current_epoch,
+                success_tol=tol,
+                optimizer=optimizer,
+                loss_fn=loss_fn,
             )
 
             # Testing
-            test_loss, test_predictions, test_samples = self.evaluate(success_tol=tol)
+            test_loss, test_predictions, test_samples = self.evaluate(
+                success_tol=tol,
+                loss_fn=loss_fn,
+            )
 
             # Calculate accuracy
             train_accuracy = train_predictions / train_samples
@@ -116,7 +121,7 @@ class SingleGPUTrainer:
                     {
                         "epoch": current_epoch,
                         "model_state_dict": self.model.state_dict(),
-                        "optimizer_state_dict": self.optimizer.state_dict(),
+                        "optimizer_state_dict": optimizer.state_dict(),
                         "train_loss": train_loss,
                         "test_loss": test_loss,
                     },
@@ -150,6 +155,8 @@ class SingleGPUTrainer:
 
     def train_one_epoch(
         self,
+        optimizer,
+        loss_fn,
         epoch_nr,
         success_tol=1e-2,
     ):
@@ -169,13 +176,13 @@ class SingleGPUTrainer:
             labels = labels.to(self.device)
 
             # Zero the parameter gradients
-            self.optimizer.zero_grad()
+            optimizer.zero_grad()
 
             # Forward + backward + optimize
             outputs = self.model(images)
-            loss = self.loss_fn(outputs, labels)
+            loss = loss_fn(outputs, labels)
             loss.backward()
-            self.optimizer.step()
+            optimizer.step()
 
             # Print statistics
             train_loss += loss.item()
@@ -184,12 +191,14 @@ class SingleGPUTrainer:
         train_loss /= max_batches  # avg loss per batch
         epoch_train_end_time = time.time()
         print(
-            f"\nTraining:\nTrain loss: {train_loss:.4f}\nTrain predictions: {train_predictions}/{train_samples}\nTrain accuracy: {train_predictions/train_samples*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
+            optimizer,
+            f"\nTraining:\nTrain loss: {train_loss:.4f}\nTrain predictions: {train_predictions}/{train_samples}\nTrain accuracy: {train_predictions/train_samples*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n",
         )
         return train_loss, train_predictions, train_samples
 
     def evaluate(
         self,
+        loss_fn,
         success_tol=0.5,
     ):
         epoch_evaluate_start_time = time.time()
@@ -206,7 +215,7 @@ class SingleGPUTrainer:
 
                 # Forward
                 outputs = self.model(images)
-                loss = self.loss_fn(outputs, labels)
+                loss = loss_fn(outputs, labels)
 
                 # Print statistics
                 test_loss += loss.item()
@@ -218,3 +227,6 @@ class SingleGPUTrainer:
             f"Testing:\nTest loss: {test_loss:.4f}\nTest predictions: {test_predictions}/{test_samples}\nTest accuracy: {test_predictions/test_samples*100:.4f} %\nTime elapsed for testing: {epoch_evaluate_end_time - epoch_evaluate_start_time:.2f} s\n"
         )
         return test_loss, test_predictions, test_samples
+
+    def run(self, **kwargs):
+        self.train(**kwargs)
