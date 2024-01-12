@@ -7,6 +7,7 @@ import torch
 import torch.nn as nn
 from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader
+import torch.profiler
 import time
 
 GPU = torch.cuda.is_available()
@@ -153,6 +154,44 @@ class SingleGPUTrainer:
                 )
                 break
 
+    def one_step(self, data, optimizer, loss_fn):
+        # Get the inputs
+        images, labels = data["image"], data["label"]
+        images = images.to(self.device)
+        labels = labels.to(self.device)
+
+        # Forward
+        outputs = self.model(images)
+        loss = loss_fn(outputs, labels)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+
+        return outputs, labels, loss
+
+    def profiler(self, optimizer, loss_fn, profiler_path):
+        with torch.profiler.profile(
+            activities=[
+                torch.profiler.ProfilerActivity.CPU,
+                torch.profiler.ProfilerActivity.CUDA,
+            ],
+            schedule=torch.profiler.schedule(
+                wait=1,
+                warmup=1,
+                active=3,
+                repeat=3,
+            ),
+            on_trace_ready=torch.profiler.tensorboard_trace_handler(profiler_path),
+            record_shapes=True,
+            profile_memory=True,
+            with_stack=True,
+        ) as profiler:
+            for i, data in enumerate(self.train_loader):
+                profiler.step()
+                if i >= (1 + 1 + 3) * 3:
+                    break
+                self.one_step(data, optimizer, loss_fn)
+
     def train_one_epoch(
         self,
         optimizer,
@@ -170,19 +209,8 @@ class SingleGPUTrainer:
         for i, data in enumerate(self.train_loader):
             if (i + 1) % 25 == 0:
                 print(f"Batch: {i+1}/{max_batches}")
-            # Get the inputs
-            images, labels = data["image"], data["label"]
-            images = images.to(self.device)
-            labels = labels.to(self.device)
 
-            # Zero the parameter gradients
-            optimizer.zero_grad()
-
-            # Forward + backward + optimize
-            outputs = self.model(images)
-            loss = loss_fn(outputs, labels)
-            loss.backward()
-            optimizer.step()
+            outputs, labels, loss = self.one_step(data, optimizer, loss_fn)
 
             # Print statistics
             train_loss += loss.item()
@@ -230,3 +258,16 @@ class SingleGPUTrainer:
 
     def run(self, **kwargs):
         self.train(**kwargs)
+
+    def run_profiler(
+        self,
+        epochs,
+        breakout_loss,
+        tol,
+        optimizer_params,
+        profiler_path="./profiler",
+    ):
+        best_loss = 1e10
+        optimizer = torch.optim.Adam(self.model.parameters(), **optimizer_params)
+        loss_fn = nn.BCEWithLogitsLoss()
+        self.profiler(optimizer, loss_fn, profiler_path)
