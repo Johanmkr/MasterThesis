@@ -1,0 +1,19 @@
+\begin{tikzpicture}[node distance=2cm and 1.5cm, main/.style = {draw, circle}]
+  % Nodes
+  \node (h_lminus1) {};
+  \node[above=of h_lminus1] (w_lminus1_l) {};
+  \node[main, right=of h_lminus1] (matmul) {$\texttt{matmul}$};
+  \node[main, right=of matmul] (sum) {$\texttt{sum}$};
+  \node[main, right=of sum] (g_l) {$g_l$};
+  \node[above=of matmul] (b_l) {};
+  \node[right=of g_l] (h_l) {};
+
+  % Edges
+  \draw[->] (h_lminus1) -- (matmul) node[midway,above] {$\vec{h}^{l-1}$};
+  \draw[->] (w_lminus1_l) -- (matmul) node[midway,right] {$(\vec{W}^{l-1\to l})^\mathrm{T}$};
+  \draw[->] (matmul) -- (sum) node[midway,above] {$\vec{u}$};
+  \draw[->] (b_l) -- (sum) node[midway,right] {$\vec{b}^l$};
+  \draw[->] (sum) -- (g_l) node[midway,above] {$\vec{a}^l$};
+  \draw[->] (g_l) -- (h_l) node[midway,above] {$\vec{h}^l$};
+
+\end{tikzpicture}

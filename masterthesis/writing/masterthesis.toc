@@ -64,32 +64,35 @@
 \contentsline {subsection}{\numberline {6.4.7}Unsupervised Learning}{19}{subsection.32}%
 \contentsline {chapter}{\numberline {7}Neural Networks}{21}{chapter.33}%
 \contentsline {section}{\numberline {7.1}Forward pass - Prediction}{21}{section.34}%
-\contentsline {subsection}{\numberline {7.1.1}Architecture}{21}{subsection.35}%
-\contentsline {subsection}{\numberline {7.1.2}Activation}{21}{subsection.37}%
-\contentsline {subsection}{\numberline {7.1.3}Activation functions}{22}{subsection.40}%
-\contentsline {paragraph}{Linear}{22}{paragraph*.41}%
-\contentsline {paragraph}{Sigmoid}{22}{paragraph*.43}%
-\contentsline {paragraph}{Hyperbolic tangent}{22}{paragraph*.45}%
-\contentsline {paragraph}{Rectified linear unit}{22}{paragraph*.47}%
-\contentsline {paragraph}{(Scaled) Exponential linear unit}{22}{paragraph*.49}%
-\contentsline {paragraph}{Parametric rectified linear unit}{22}{paragraph*.51}%
-\contentsline {subsection}{\numberline {7.1.4}Loss functions}{22}{subsection.53}%
-\contentsline {paragraph}{MSE}{22}{paragraph*.54}%
-\contentsline {paragraph}{Huber}{23}{paragraph*.56}%
-\contentsline {paragraph}{Binary cross entropy}{23}{paragraph*.58}%
-\contentsline {paragraph}{Categorical cross entropy}{23}{paragraph*.59}%
-\contentsline {section}{\numberline {7.2}Backpropagation - Training}{23}{section.60}%
-\contentsline {subsection}{\numberline {7.2.1}Chain rule}{23}{subsection.61}%
-\contentsline {paragraph}{Basics}{23}{paragraph*.62}%
-\contentsline {subsection}{\numberline {7.2.2}Gradient descent}{23}{subsection.64}%
-\contentsline {subsection}{\numberline {7.2.3}Optimizers}{23}{subsection.65}%
-\contentsline {subsection}{\numberline {7.2.4}Regularization}{23}{subsection.66}%
-\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{25}{chapter.67}%
-\contentsline {section}{\numberline {8.1}Convolution}{25}{section.68}%
-\contentsline {section}{\numberline {8.2}New Layers}{25}{section.69}%
-\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{25}{subsection.70}%
-\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{25}{subsection.71}%
-\contentsline {subsection}{\numberline {8.2.3}Dropout layers}{25}{subsection.72}%
+\contentsline {subsection}{\numberline {7.1.1}Computational Graphs}{21}{subsection.35}%
+\contentsline {subsection}{\numberline {7.1.2}Architecture}{21}{subsection.37}%
+\contentsline {subsection}{\numberline {7.1.3}Activation}{22}{subsection.39}%
+\contentsline {subsection}{\numberline {7.1.4}Activation functions}{22}{subsection.42}%
+\contentsline {paragraph}{Linear}{22}{paragraph*.43}%
+\contentsline {paragraph}{Sigmoid}{22}{paragraph*.45}%
+\contentsline {paragraph}{Hyperbolic tangent}{22}{paragraph*.47}%
+\contentsline {paragraph}{Rectified linear unit}{22}{paragraph*.49}%
+\contentsline {paragraph}{(Scaled) Exponential linear unit}{23}{paragraph*.51}%
+\contentsline {paragraph}{Parametric rectified linear unit}{23}{paragraph*.53}%
+\contentsline {paragraph}{Softmax}{23}{paragraph*.55}%
+\contentsline {subsection}{\numberline {7.1.5}Loss functions}{23}{subsection.58}%
+\contentsline {paragraph}{MSE}{23}{paragraph*.59}%
+\contentsline {paragraph}{Huber}{23}{paragraph*.61}%
+\contentsline {paragraph}{Cross entropy}{23}{paragraph*.63}%
+\contentsline {paragraph}{Binary cross entropy}{24}{paragraph*.64}%
+\contentsline {paragraph}{Categorical cross entropy}{24}{paragraph*.65}%
+\contentsline {section}{\numberline {7.2}Backpropagation - Training}{24}{section.66}%
+\contentsline {subsection}{\numberline {7.2.1}Chain rule}{24}{subsection.67}%
+\contentsline {paragraph}{Basics}{24}{paragraph*.68}%
+\contentsline {subsection}{\numberline {7.2.2}Gradient descent}{24}{subsection.70}%
+\contentsline {subsection}{\numberline {7.2.3}Optimizers}{24}{subsection.71}%
+\contentsline {subsection}{\numberline {7.2.4}Regularization}{24}{subsection.72}%
+\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{25}{chapter.73}%
+\contentsline {section}{\numberline {8.1}Convolution}{25}{section.74}%
+\contentsline {section}{\numberline {8.2}New Layers}{25}{section.75}%
+\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{25}{subsection.76}%
+\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{25}{subsection.77}%
+\contentsline {subsection}{\numberline {8.2.3}Dropout layers}{25}{subsection.78}%
 \contentsline {part}{III\hspace {1em}Acquiring Data}{25}{part.5}%
 \contentsline {chapter}{\numberline {9}Simulations}{27}{chapter.6}%
 \contentsline {section}{\numberline {9.1}Parameters}{27}{section.7}%
