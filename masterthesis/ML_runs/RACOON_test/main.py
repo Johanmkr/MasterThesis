@@ -1,5 +1,4 @@
-MULTIPLE_GPUS = False
-print(f"MULTIPLE_GPUS: {MULTIPLE_GPUS}")
+MULTIPLE_GPUS = True
 VERBOSE = True
 
 ######### IMPORTS ###########################################
@@ -25,37 +24,47 @@ if MULTIPLE_GPUS:
 else:
     from src.trainers.train_single_gpu import SingleGPUTrainer as TRAINER
 
-import config as cfg
+if MULTIPLE_GPUS:
+    import multiple_config as cfg
+else:
+    import single_config as cfg
 
-# print all info from config file
-if VERBOSE:
-    print("CONFIGURATION:")
-    for dicti in [
-        cfg.data_params,
-        cfg.model_params,
-        cfg.loader_params,
-        cfg.optimizer_params,
-        cfg.training_params,
-    ]:
-        for key, value in dicti.items():
-            print(f"{key}: {value}")
 
-# 1. make datasets
-train_data, test_data = tu.make_training_and_testing_data(**cfg.data_params)
+######### MAIN ###########################################
 
-# 2. make model
-model = RACOON(**cfg.model_params)
-if VERBOSE:
-    print(model)
+if __name__ == "__main__":
+    print(f"MULTIPLE_GPUS: {MULTIPLE_GPUS}")
+    # print all info from config file
+    if VERBOSE:
+        print("CONFIGURATION:")
+        for dicti in [
+            cfg.data_params,
+            cfg.model_params,
+            cfg.loader_params,
+            cfg.optimizer_params,
+            cfg.training_params,
+        ]:
+            for key, value in dicti.items():
+                print(f"{key}: {value}")
+            print()
 
-# 3. trainer
-trainer = TRAINER(
-    model=model,
-    train_dataset=train_data,
-    test_dataset=test_data,
-    test_name=f"RACCOON_test_lp{cfg.model_params['layer_param']}_lr{cfg.optimizer_params['lr']}",
-    **cfg.loader_params,
-)
+    # 1. make datasets
+    train_data, test_data = tu.make_training_and_testing_data(**cfg.data_params)
 
-# 4. train
-trainer.run(**cfg.training_params, optimizer_params=cfg.optimizer_params)
+    # 2. make model
+    model = RACOON(**cfg.model_params)
+    if VERBOSE:
+        print(model)
+
+    # 3. trainer
+    test_name = f"RACCOON_test_lp{cfg.model_params['layer_param']}_lr{cfg.optimizer_params['lr']}"
+    trainer = TRAINER(
+        model=model,
+        train_dataset=train_data,
+        test_dataset=test_data,
+        test_name=test_name,
+        **cfg.loader_params,
+    )
+
+    # 4. train
+    trainer.run(**cfg.training_params, optimizer_params=cfg.optimizer_params)
