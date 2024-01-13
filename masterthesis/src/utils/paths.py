@@ -55,6 +55,16 @@ def get_cube_path(seed: int, gravity: str, redshift: int) -> pl.Path:
     )
 
 
+def get_prepared_cube_path(seed: int, gravity: str, redshift: int) -> pl.Path:
+    local_directory = f"data_z{redshift:.0f}"
+    filename = f"{gravity.lower()}_seed{seed:04d}_redshift{redshift:.0f}.h5"
+    return datapath / local_directory / filename
+
+
+def get_full_dataset_path(redshift: int) -> pl.Path:
+    return datapath / f"data_z{redshift:.0f}" / f"data_z{redshift:.0f}.h5"
+
+
 def get_high_res_bispectrum(
     seed: int, gravity: str, redshift: int, k_res: int, theta_res: int, tag: str
 ) -> pl.PosixPath:
