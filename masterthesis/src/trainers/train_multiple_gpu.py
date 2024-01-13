@@ -8,6 +8,7 @@ import time
 from torch.utils.tensorboard import SummaryWriter
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
+
 mp.set_sharing_strategy("file_system")
 
 GPU = torch.cuda.is_available()
@@ -191,7 +192,7 @@ def create_data_loaders(
     test_dataset,
     batch_size,
     num_workers=0,
-    prefetch_factor=0,
+    prefetch_factor=2,
     pin_memory=False,
     shuffle=True,
     drop_last=True,
