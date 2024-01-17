@@ -11,7 +11,7 @@ import torch.multiprocessing as mp
 
 import data
 
-mp.set_sharing_strategy("file_system")
+mp.set_sharing_strategy("file_descriptor")
 
 GPU = torch.cuda.is_available()
 world_size = torch.cuda.device_count()
@@ -115,6 +115,9 @@ def get_state(model_params: dict):
         # Load model
         try:
             state = torch.load(model_params["model_save_path"])
+            print(
+                f"Loaded model from {model_params['model_save_path']}\nAlready trained for {state['epoch']} epochs"
+            )
         except FileNotFoundError:
             print("No model found. Training from scratch.")
     return state
@@ -170,6 +173,28 @@ def train_one_epoch(
         except StopIteration:
             end_of_data = True
 
+    # for i, batch in enumerate(train_loader):
+    #     if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and rank == 0:
+    #         print(f"TRAIN - Batch: {i+1}/{max_batches}")
+    #     # Get the inputs
+    #     images, labels = batch["image"], batch["label"]
+    #     images = images.to(rank, non_blocking=True)
+    #     labels = labels.to(rank, non_blocking=True)
+
+    #     # Zero the parameter gradients
+    #     optimizer.zero_grad()
+
+    #     # Forward + backward + optimize
+    #     outputs = model(images)
+    #     loss = loss_fn(outputs, labels)
+    #     loss.backward()
+    #     optimizer.step()
+
+    #     # Print statistics
+    #     train_loss += loss.item()
+    #     train_predictions += success(outputs, labels, tol=success_tol)
+    #     train_samples += len(labels)
+
     train_loss /= max_batches  # avg loss per batch
 
     return train_loss, train_predictions, train_samples
@@ -216,6 +241,7 @@ def evaluate(
     return (
         test_loss,
         evaluation_predictions,
+        evaluation_samples,
     )
 
 
@@ -257,7 +283,9 @@ def worker(
 
     # Train and test
     best_loss = 1e10
-    for epoch in range(epochs_trained + 1, training_params["epochs"] + 1):
+    for epoch in range(
+        epochs_trained + 1, epochs_trained + training_params["epochs"] + 1
+    ):
         epoch_total_time_start = time.time() if rank == 0 else None
 
         # ---- TRAINING ----
@@ -310,7 +338,7 @@ def worker(
         # Placeholder for early stopping across all ranks
         should_stop = torch.tensor(False, dtype=torch.bool).to(rank)
 
-        if epoch % 10 == 0:
+        if epoch % training_params["test_every"] == 0:
             # ---- TESTING ----
             epoch_test_start_time = time.time() if rank == 0 else None
             local_test_loss, local_test_predictions, local_test_samples = evaluate(
@@ -413,7 +441,7 @@ def train(
 ):
     train_dataset, test_dataset = data.make_training_and_testing_data(**data_params)
 
-    model = architecture_params["architecture"](**architecture_params)
+    model = model_params["architecture"](**architecture_params)
     state = get_state(model_params)
     if state["model_state_dict"] is not None:
         model.load_state_dict(state["model_state_dict"])

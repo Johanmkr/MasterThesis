@@ -11,7 +11,9 @@ import time
 from tqdm import tqdm
 
 # Local imports
-from ..src.utils import paths
+parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+sys.path.append(parent_dir)
+from src.utils import paths
 
 
 class SlicedCubeDataset(Dataset):
@@ -131,10 +133,10 @@ class SlicedCubeDataset(Dataset):
 
     def __getitem__(self, idx) -> dict:
         ### sub-indices ###
-        transform_idx = idx // (self.images_per_transformation + 1)
+        transform_idx = idx // self.images_per_transformation
         seed_idx = idx % self.images_per_transformation
         return (
-            self.get_sample(seed_idx, self.all_transformations[transform_idx])
+            self.get_sample(seed_idx, self.all_transformations[transform_idx - 1])
             if transform_idx != 0
             else self.get_sample(seed_idx)
         )
@@ -164,6 +166,7 @@ def make_training_and_testing_data(
     redshift=1.0,
     random_seed=42,
     transforms: bool = True,
+    newton_augmentation: float = 1.0,
 ):
     random.seed(random_seed)
     random.shuffle(train_test_seeds)
@@ -185,6 +188,7 @@ def make_training_and_testing_data(
         redshift=redshift,
         seeds=train_seeds,
         use_transformations=transforms,
+        newton_augmentation=newton_augmentation,
     )
     print(f"Test set: {len(test_seeds)} seeds")
     test_dataset = SlicedCubeDataset(
@@ -192,5 +196,6 @@ def make_training_and_testing_data(
         redshift=redshift,
         seeds=test_seeds,
         use_transformations=transforms,
+        newton_augmentation=newton_augmentation,
     )
     return train_dataset, test_dataset
