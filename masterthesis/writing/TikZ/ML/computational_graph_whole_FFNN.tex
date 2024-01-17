@@ -1,0 +1,28 @@
+\begin{tikzpicture}[node distance=2cm and 1.5cm, main/.style = {draw, circle}]
+    % Nodes
+    \node (start) {};
+    \node[main, right=of start] (act1) {act};
+    \node[main, right=of act1] (g1) {$g_1$};
+    \node[right=of g1] (firstdot) {$\cdots$};
+    \node[main, right=of firstdot] (act2) {act};
+    \node[main, right=of act2] (gl) {$g_l$};
+    \node[below=of gl] (seconddot) {$\vdots$};
+    \node[main, below=of seconddot] (act3) {act};
+    \node[main, left=of act3] (gL) {$g_L$};
+    \node[main, left=of gL] (loss) {$\mathcal{L}$};
+    \node[above=of loss] (pred) {};
+    \node[left=of loss] (end) {};
+
+    % Edges
+    \draw[->] (start) -- (act1) node[midway,above] {$\vec{x}/\vec{h}^0$};
+    \draw[->] (act1) -- (g1) node[midway,above] {$\vec{a}^1$};
+    \draw[->] (g1) -- (firstdot) node[midway,above] {$\vec{h}^1$};
+    \draw[->] (firstdot) -- (act2) node[midway,above] {$\vec{h}^{l-1}$};
+    \draw[->] (act2) -- (gl) node[midway,above] {$\vec{a}^l$};
+    \draw[->] (gl) -- (seconddot) node[midway,right] {$\vec{h}^l$};
+    \draw[->] (seconddot) -- (act3) node[midway,right] {$\vec{h}^{L-1}$};
+    \draw[->] (act3) -- (gL) node[midway,above] {$\vec{a}^L$};
+    \draw[->] (gL) -- (loss) node[midway,above] {$\vec{h}^L/\pred$};
+    \draw[->] (pred) -- (loss) node[midway, right] {$\vec{y}$};
+    \draw[->] (loss) -- (end) node[midway,above] {$\delta$};
+\end{tikzpicture}

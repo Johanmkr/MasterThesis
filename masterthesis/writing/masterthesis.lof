@@ -8,8 +8,10 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {7.1}{\ignorespaces Computational graph of a function $\mathbf {z} = f(g(\mathbf {x}))$.\relax }}{21}{figure.caption.36}%
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Computational graph of a hidden layer of a neural network.\relax }}{23}{figure.caption.57}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Computational graph of a hidden layer of a neural network.\relax }}{22}{figure.caption.42}%
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Computational graph of a fully connected feed forward neural network.\relax }}{23}{figure.caption.44}%
 \addvspace {10\p@ }
+\contentsline {figure}{\numberline {8.1}{\ignorespaces Example of a convolution operation. The input image is given by the matrix $\mathbf I$ and the kernel is given by the matrix $\mathbf K$. The output is given by the matrix $\mathbf {I * K}$. The dashed lines indicate which elements of the input and kernel are multiplied together to produce the output.\relax }}{30}{figure.caption.119}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \contentsline {figure}{\numberline {10.1}{\ignorespaces Slice 0\relax }}{32}{figure.caption.30}%

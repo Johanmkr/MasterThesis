@@ -5,7 +5,34 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Convolution}
+    \subsection{Basic definitions}
+        Mathematically, convolution is given as:
+        \begin{equation}\label{eq:ML:CNN:convolution:basic_defintion}
+            s(t) = (x * w)(t) = \int x(a)w(t-a)\d a.
+        \end{equation}
+        This definition is purely mathematical. For machine learning purposes we refer to the function $x(a)$ as the \textit{input} and $w(t-a)$ as the \textit{kernel}. The output of the convolution is often called the \textit{feature map}. This is easily generalized to higher dimensions. For example, in two dimensions the discrete convolution between an input image $I$ and a kernel $K$ is given as:
+        \begin{equation}\label{eq:ML:CNN:convolution:discrete_convolution}
+            S(i,j) = (I * K)(i,j) = \sum_m\sum_n I(m,n)K(i-m,j-n).
+        \end{equation}
+        If we choose to $\textit{flip the kernel}$ relative to the input $I$, the convolution becomes commutative:
+        \begin{equation}\label{eq:ML:CNN:convolution:discrete_convolution_commutative}
+            S(i,j) = (K * I)(i,j) = \sum_m\sum_n I(i-m,j-n)K(m,n).
+        \end{equation}
+        The latter is preferred in a machine learning context as there is less variation in the values of $m$ and $n$ because the size of the kernel is often much smaller than the size of the input. However, there is yet another quantity that is often used in machine learning, namely the \textit{cross-correlation}, which is more intuitive in some sense, because the kernel is not flipped. The cross-correlation is given as:
+        \begin{equation}\label{eq:ML:CNN:convolution:cross_correlation}
+            S(i,j) = (K * I)(i,j) = \sum_m\sum_n I(i+m,j+n)K(m,n).
+        \end{equation}
+
+        \begin{figure}[h!]
+            \centering
+            \input{TikZ/ML/convolution_operation_map_example.tex}
+            \caption{Example of a convolution operation. The input image is given by the matrix $\mathbf I$ and the kernel is given by the matrix $\mathbf K$. The output is given by the matrix $\mathbf{I * K}$. The dashed lines indicate which elements of the input and kernel are multiplied together to produce the output.}
+            \label{fig:ML:CNN:convolution:convolution_operation_map_example}
+        \end{figure}
+    \subsection{Properties}
 \section{New Layers}
     \subsection{Convolutional layers}
+
     \subsection{Pooling layers}
-    \subsection{Dropout layers}
+
+\section{Implementation}

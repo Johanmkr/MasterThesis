@@ -18,13 +18,9 @@
     \end{figure}
 
 
-
-
-    
-
     \subsection{Architecture}
         The simplest architecture of a neural network is the fully connected feed forward (FCNN), which consist of $L$ layers in total, the first being an input layer and the remaining $L-1$ layers are called \textit{hidden layers}, $\vec{h}$. Each hidden layer has an \textit{activation} $\vec{a}$, used as an input to an \textit{activation function}, $g$. Mathematically we may write this architecture as:
-        \begin{equation}
+        \begin{equation}\label{eq:ML:NN:architecture}
             \begin{split}
                 \vec{h}^0 &= \vec{x}^{(i)} \\
                 \vec{h}^1 &= g_1(\vec{a}^1) \\
@@ -34,38 +30,58 @@
             \end{split}
         \end{equation}
         where $\vec{h}^L$ and $g_L$ are the output layer and output function respectively. The parameter $L$ governs the depth of the neural network. The result of the output layer is simply called the \textit{output} or \textit{predictor}, and typically denoted as $\pred = \vec{h}^L$. When training, we will have a true value, or label, denoted $\yv$. The difference between the true value and the predicted value is called the \textit{residual} or \textit{error}, denoted $\tilde{\yv} = \yv - \pred$. The goal of training is to minimise the error, or equivalently, maximise the likelihood of the true value.
+
+
+
     \subsection{Activation}
         The activation $\vec{a}^l$ of a layer $l$ is an affine transformation of the output of the previous layer, $\vec{h}^{l-1}$. The intercept of this affine transformation is known as the bias $\vec{b}^l$, \footnote{Must not be confused with the statistical bias of an estimator.} typically used to ensure that no activation becomes zero. The activation takes the form:
-        \begin{equation}
+        \begin{equation}\label{eq:ML:NN:activation}
             \vec{a}^l = (\vec{W}^{l-1\to l})^\mathrm{T}\vec{h}^{l-1} + \vec{b}^l,
         \end{equation}
         where $\vec{W}^{l-1\to l} \in \mathbb{R}^{\mathrm{dim}_{l-1}\cross\mathrm{dim}_l}$ is the matrix of weights describing the mapping from layer $l-1$ to layer $l$. Each layer $l$ has dimension (or neurons) $\mathrm{dim}_l$ which governs the width of each layer. 
+
+        \begin{figure}[h!]
+            \centering
+            \input{TikZ/ML/computational_graph_hidden_layer.tex}
+            \caption{Computational graph of a hidden layer of a neural network.}
+            \label{fig:ML:NN:comp_graph_hl}
+        \end{figure}
+
+    \subsection{Full graph and its output}
+        \begin{figure}[h!]
+            \centering
+            \input{TikZ/ML/computational_graph_whole_FFNN.tex}
+            \caption{Computational graph of a fully connected feed forward neural network.}
+            \label{fig:ML:NN:comp_graph_whole_FFNN}
+        \end{figure}
+        The full computational graph of a fully connected neural network is shown in \cref{fig:ML:NN:comp_graph_whole_FFNN}. The output of the network is the output of the output layer, $\vec{h}^L$. The output function is typically a probability distribution, such as the softmax function, or a scalar value, such as the sigmoid function. Either way, the output is the prediction of the network, also noted $\pred = \vec{h}^L$. In order to determine the goodness of this output we must compare it with the target value $\yv$. This is done using a \textit{loss function}, $\mathcal{L}(\yv, \pred)$, which is a function of the prediction and the target. The loss function is a measure of how good the prediction is. The goal of training is to minimise the loss function, or equivalently, maximise the likelihood of the target value. We define the loss $\delta=\mathcal{L}(\yv, \pred)$ which is the error of the prediction. The loss is then used to update the weights and biases of the network, which is done using the \textit{backpropagation} algorithm explained in section \TODO{ref this}
+
 
     \subsection{Activation functions}
         The activation functions, $g_l$, are what determines the output of each layer $l$. They can be broadly classifies into two types: \textit{saturating activation functions} and \textit{non-saturating activation function}. For saturating activations, $\lim_{\abs{\vec{x}}\to\infty}\abs{\nabla g(\vec{x})} = 0$. 
         \paragraph{Linear}
             The linear activation is as simple as it gets:
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:linear}
                 g(\vec{x}) = a\vec{x} + b \quad \mathrm{and} \quad g'(\vec{x}) = a.
             \end{equation}
             This activation is non-saturating. There is however a problem with using linear activations, \TODO{Write about UNIVERSAL APPROXIMATION THEOREM, here or elsewhere}
 
         \paragraph{Sigmoid}
             The sigmoid function, or the logistic function is defined as: 
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:sigmoid}
                 g(\vec{x}) = \sigma(\vec{x}) = \frac{1}{1+\expe{-\vec{x}}} \quad \mathrm{and} \quad g'(\vec{x}) = g(\vec{x})(1-g(\vec{x}))
             \end{equation}
 
 
         \paragraph{Hyperbolic tangent}
             The hyperbolic tangent is defined as:
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:tanh}
                 g(\vec{x}) = \frac{\expe{\vec{x}}-\expe{-\vec{x}}}{\expe{\vec{x}}+\expe{-\vec{x}}} \quad \mathrm{and} \quad g'(\xv)=1-g(\xv)^2
             \end{equation}
 
         \paragraph{Rectified linear unit}
             The rectified linear unit, ReLU, is defined as:
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:relu}
                 g(\xv) = 
                 \begin{cases}
                     0, \quad & \xv < 0 \\
@@ -81,7 +97,7 @@
 
         \paragraph{(Scaled) Exponential linear unit}
             The exponential linear unit, (S)ELU, is defined as:
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:selu}
                 g(\xv) = \lambda
                 \begin{cases}
                     \alpha(\expe{\xv}-1), \quad & \xv < 0 \\
@@ -98,7 +114,7 @@
 
         \paragraph{Parametric rectified linear unit}
             The parametric rectified linear unit, PReLU, is defined as:
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:prelu}
                 g(\xv) = 
                 \begin{cases}
                     \alpha \xv, \quad & \xv<0 \\
@@ -115,41 +131,36 @@
 
         \paragraph{Softmax}
             The softmax activation function is defined as:
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:activation:softmax}
                 g(\xv) = \frac{\expe{\xv}}{\sum_{i=1}^n\expe{x_i}} \quad \mathrm{and} \quad g'(\xv) = g(\xv)(1-g(\xv)).
             \end{equation}
             This activation function is typically used for the output layer of a neural network, where the output is a probability distribution over $n$ classes, i.e. multiclass classification problems. 
-        \begin{figure}[h!]
-            \centering
-            \input{TikZ/ML/computational_graph_hidden_layer.tex}
-            \caption{Computational graph of a hidden layer of a neural network.}
-            \label{fig:ML:NN:comp_graph_hl}
-        \end{figure}
+    
     \subsection{Loss functions}
         \TODO{write about loss functions}
         \paragraph{MSE}
-            \begin{equation}
+            \begin{equation}\label{eq:ML:NN:loss:MSE}
                 \mathcal{L}_\mathrm{MSE}(\yv, \pred) = \frac{1}{n}\sum_{i=1}^n(y_i-\hat{y}_i)^2 = \frac{1}{n}\tilde{\yv}^\mathtt{T}\tilde{\yv},
             \end{equation}
             where $\tilde{\yv} \equiv \yv-\pred$
 
-        \paragraph{Huber}
-            \begin{equation}
-                \mathcal{L}_\delta(\yv, \pred) = 
-                \begin{cases}
-                    \frac{1}{2}\tilde{\yv}^\mathtt{T}\tilde{\yv}, \quad & \abs{\tilde{\yv}}\leq\delta \\
-                    \delta(\abs{\tilde{\yv}} - \delta/2), \quad & \mathrm{otherwise}
-                \end{cases}
-            \end{equation}
-            \TODO{Check if above should perhaps be element wise, use sigma notationa instead?}
 
 
         \paragraph{Cross entropy}
+            \begin{equation}\label{eq:ML:NN:loss:cross_entropy}
+                \mathcal{L}_\mathrm{CE}(\yv, \pred) = -\sum_{i=1}^n y_i\log(\hat{y}_i)
+            \end{equation}
+            where $\hat{y}_i$ is the predicted probability of class $i$ and $y_i$ is the true probability of class $i$, i.e. the target probability for that class. $n$ is the number of classes. In the binary case, $n=2$, this is equivalent to the binary cross entropy:
+            \begin{equation}\label{eq:ML:NN:loss:binary_cross_entropy}
+                \mathcal{L}_\mathrm{BCE}(\yv, \pred) = -y\log(\hat{y}) - (1-y)\log(1-\hat{y}).
+            \end{equation}
 
-        \paragraph{Binary cross entropy}
+    \subsection{Regularization} % May belongs to forwards pass
+            % \TODO{Add dropout, batch normalization, weight decay, early stopping, data augmentation, etc.}
 
-        \paragraph{Categorical cross entropy}
-
+%
+%   BACKPROPAGATION
+%
 \section{Backpropagation - Training}
     \subsection{Chain rule}
         \paragraph{Basics}
@@ -158,11 +169,104 @@
             \frac{df}{dx} = \frac{dg}{dh} \frac{dh}{dx}.
         \end{equation}
         This can be generalised into the vector case where $f(\vec{x}) = g(h(\vec{x}))$ and $\vec{x} \in \mathbb{R}^n$ and \TODO{write more ahaha}
-    \subsection{Gradient descent}
-    \subsection{Optimizers}
-    \subsection{Regularization} % May belongs to forwards pass
-    % \TODO{Add dropout, batch normalization, weight decay, early stopping, data augmentation, etc.}
+
+    \subsection{Backpropagation algorithm}
+        The learnable parameters of a neural network are the weights and biases of each layer. In order to update these in an educated\footnote{Instead of just wildly guessing} way, we need to know how the loss, $\delta$, changes with respect to each parameter, $\nabla_{\vec{b}^l}\delta$, $\nabla_{\vec{W}^{l-1\to l}}\delta \quad \forall \; l \in [1,L]$ . This is done using the chain rule, starting from the output layers and working our way backwards through the network. Recalling that the activation is written as \cref{eq:ML:NN:activation} it makes sense to find the derivative of the loss with respect to the output activation:
+        \begin{equation}
+            \dv{\delta}{a^L_i} = \sum_j\pdv{\delta}{h^L_j}\dv{h^L_j}{a^L_i} = \sum_j\pdv{\delta}{\hat{y}_j}\dv{g_L}{a^L_i}\bigg|_{a^L_j} \leftrightarrow \nabla_{\vec{a}^L}\delta = \nabla_{\pred}\delta \odot \dv{g_L}{\vec{a}^L}\bigg|_{\vec{a}^L},
+        \end{equation}
+        where $\odot$ is the \textit{element-wise Hadamard product}. The quantity $\nabla_{\vec{a}^L}\delta$ is the gradient of the loss with respect to the output activation. This is propagated backwards through the network as follows:
+        \begin{equation}
+            \nabla_{\vec{h}^{l-1}}\delta = \vec{W}^{l-1\to l}\nabla_{\vec{a}^l}\delta \quad \mathrm{and} \quad \nabla_{\vec{a}^{l-1}}\delta = \nabla_{\vec{h}^{l-1}}\delta \odot \dv{g_{l-1}}{\vec{a}^{l-1}}\bigg|_{\vec{a}^{l-1}}.
+        \end{equation}
+        When we know these loss gradients we can compute the gradient of the weight and biases:
+        \begin{equation}
+            \nabla_{\vec{W}^{l-1\to l}}\delta = \vec{h}^{l-1}(\nabla_{\vec{a}^l}\delta)^T \quad \mathrm{and} \quad \nabla_{\vec{b}^l}\delta = \nabla_{\vec{a}^l}\delta.
+        \end{equation}
+        We further define a parameter tuple $\Theta^l \equiv (\vec{W}^{l-1\to l}, \vec{b}^l)$ and a gradient tuple $\nabla_{\Theta^l}\delta \equiv (\nabla_{\vec{W}^{l-1\to l}}\delta, \nabla_{\vec{b}^l}\delta)$. The weight and biases of each layer is then updated as $\Theta^l \leftarrow \mathcal{U}(\Theta^l, \nabla_{\Theta^l}\delta)$, where $\mathcal{U}$ is an update function. This is done for each layer $l$ in the network. The backpropagation algorithm is summarised in \cref{alg:ML:NN:backpropagation}.
+        \begin{algorithm}
+            \caption{Backpropagation algorithm}
+            \label{alg:ML:NN:backpropagation}
+            \begin{algorithmic}[1]
+                \Require{Loss $\delta$, output activation $\vec{a}^L$, output layer $\vec{h}^L$, weight and bias tuples $\Theta^l \equiv (\vec{W}^{l-1\to l}, \vec{b}^l)$, activation functions $g_l$ and update function $\mathcal{U}$.}
+                \Ensure{Updated weight and bias tuples $\Theta^l \equiv (\vec{W}^{l-1\to l}, \vec{b}^l)$.}
+                \State $\nabla_{\vec{a}^L}\delta \leftarrow \nabla_{\pred}\delta \odot \dv{g_L}{\vec{a}^L}\bigg|_{\vec{a}^L}$
+                \For{$l = L, L-1, \ldots, 1$}
+                    \State $\nabla_{\vec{h}^{l-1}}\delta \leftarrow \vec{W}^{l-1\to l}\nabla_{\vec{a}^l}\delta$
+                    \State $\nabla_{\vec{a}^{l-1}}\delta \leftarrow \nabla_{\vec{h}^{l-1}}\delta \odot \dv{g_{l-1}}{\vec{a}^{l-1}}\bigg|_{\vec{a}^{l-1}}$
+                    \State $\nabla_{\vec{W}^{l-1\to l}}\delta \leftarrow \vec{h}^{l-1}(\nabla_{\vec{a}^l}\delta)^T$
+                    \State $\nabla_{\vec{b}^l}\delta \leftarrow \nabla_{\vec{a}^l}\delta$
+                    \State $\Theta^l \leftarrow \mathcal{U}(\Theta^l, \nabla_{\Theta^l}\delta)$
+                \EndFor
+            \end{algorithmic}
+        \end{algorithm}
+        \TODO{Revise this algorithm}
+
+    \subsection{Optimization of parameters}
+        \paragraph{Gradient descent}
+        The ultimate goal is to arrive at some parameters $\Theta$ that minimize the output loss $\delta$. In order to do so, we must update the parameters until this goal is reached. The question is then \textit{how} we should update these parameters. In the most general case, we need to find some $\Delta\Theta$ such that $\Theta \leftarrow \Theta + \Delta\Theta$, where the only condition is that $\Delta\Theta$ yield a new $\Theta$ whose loss decrease. The backbone of this thinking is the \textit{gradient descent} algorithm, which is a first order optimization algorithm. The idea is that since we want to minimize the loss, which is a function of $\Theta$, we should move in the direction of the negative gradient of the loss with respect to $\Theta$. the most naïve implementation of this is to simply advance in the direction of the negative gradient by a step given by the learning rate\footnote{$\gamma$ is also often referred to as the step size} $\gamma$: $\Delta\Theta = -\gamma\nabla_\Theta\delta$. This is known as \textit{batch gradient descent} and is the most basic form of gradient descent. This would leave us with the following update function:
+        \begin{equation}\label{eq:ML:NN:gradient_descent:update_function}
+            \mathcal{U} =  \Theta - \gamma\nabla_\Theta\delta.
+        \end{equation}
+        There are several problems with this approach, the most important of them being:
+        \begin{itemize}
+            \item The learning rate $\gamma$ is constant, which means that the step size is constant. This can lead to the algorithm getting stuck in local minima.
+            \item The gradient is computed using the entire dataset, which can be very computationally expensive.
+        \end{itemize}
+    
+        \paragraph{Stochastic gradient descent}
+        To our rescue comes stochastic gradient descent (SGD), which solves both of the above issues, by estimating the gradient using only a subset of the data, called a \textit{mini-batch}. This means that the gradient is computed as an average over the mini-batch, which is a good approximation of the true gradient since the gradient of a dataset is statistically an expectation value. This allows us to increase the dataset without increasing the cost of computing the gradients. We may use several such minibatches chosen at random, say $m$ batches. This would yield the following estimate for the gradient:
+        \begin{equation}\label{eq:ML:NN:stochastic_gradient_descent:gradient_estimate}
+            \nabla_\Theta\delta \approx \frac{1}{m}\sum_{i=1}^m\nabla_\Theta\delta_i,
+        \end{equation}
+        where $\delta_i$ is the loss from minibatch $i$. This is known as \textit{mini-batch gradient descent}. The update function for SGD is then identical to \cref{eq:ML:NN:gradient_descent:update_function} but with the gradient estimate from \cref{eq:ML:NN:stochastic_gradient_descent:gradient_estimate}. Choosing minibatches at random also greatly reduce the chances of being stuck in a local minimum. 
+
+        \paragraph{Adding momentum} In order to speed up convergence we may add a momentum term, which takes into account the previously found gradients. This is done by adding a momentum term, called the velocity $\vec{v}$, to the update function. We start with some initial velocity, and it is updated as $\vec{v}\leftarrow \alpha\vec{v}-\gamma\nabla_\Theta\delta$, where $\alpha$ is the momentum hyperparameter, which controls the weight of the previous velocity (and thus the previous gradients). This yields simply $\Delta\Theta = \vec{v}$ and the following update function:
+        \begin{equation}\label{eq:ML:NN:stochastic_gradient_descent:momentum:update_function}
+            \mathcal{U} = \Theta + \vec{v}.
+        \end{equation}
+        \TODO{Nesterov momentum?}
+
+        \paragraph{Adaptive momentum} 
+        One algorithm that adapts the momentum term is the \textit{Adam} algorithm \TODO{ref Kinga and Ba} which uses the first and second moments of the gradient to adapt the momentum term. The first moment is the mean of the gradient and the second moment is the variance of the gradient. 
+
+        The adam algorithm is given as:
+        \begin{algorithm}[h!]
+            \caption{Adam}
+            \label{alg:ML:NN:adam}
+            \begin{algorithmic}[1]
+                \Require{Learning rate $\gamma$, decay rates $\beta_1$, $\beta_2$ $\in [0,1)$, first moment $\vec{m}=\vec{0}$, second moment $\vec{v}=\vec{0}$, weight decay rate $\epsilon$ (for numerical stability), initial parameters $\Theta_0$, and timestep $t=0$.}
+                \While{$\Theta_t$ not converged}
+                    \State $t \leftarrow t + 1$ (Update timestep)
+                    \State $\vec{g}_t \leftarrow \nabla_{\Theta_{t-1}}\delta$ (Compute gradient at timestep $t$)
+                    \State $\vec{m}_t \leftarrow \beta_1\vec{m}_{t-1} + (1-\beta_1)\vec{g}_t$ (Update biased first moment estimate)
+                    \State $\vec{v}_t \leftarrow \beta_2\vec{v}_{t-1} + (1-\beta_2)\vec{g}_t\odot\vec{g}$ (Update biased second moment estimate)
+                    \State $\hat{\vec{m}}_t \leftarrow \frac{\vec{m}_t}{1-\beta_1^t}$ (Bias-corrected first moment estimate)
+                    \State $\hat{\vec{v}}_t \leftarrow \frac{\vec{v}_t}{1-\beta_2^t}$ (Bias-corrected second moment estimate)
+                    \State $\Delta\Theta_t = - \gamma\frac{\hat{\vec{m}}_t}{\sqrt{\hat{\vec{v}}_t}+\epsilon}$ (Compute update)
+                    \State $\Theta_{t} \leftarrow \Theta_{t-1} +\Delta\Theta_t$ (Update parameters)
+                \EndWhile
+
+                \Return $\Theta_t$ (Resulting parameters)
+            \end{algorithmic}
+        \end{algorithm}
+        The hyperparameters $\beta_1$ and $\beta_2$ are typically set to $0.9$ and $0.999$ respectively, and $\epsilon$ is typically set to $10^{-8}$. The learning rate $\gamma$ is typically set to $0.001$. 
+
+        \paragraph{Learning rate schedules?}
+
+        \paragraph{Batch normalization}
 
 
+    \subsection{Challenges in optimization}
+
+        \paragraph{Ill-conditioning}
+
+        \paragraph{Vanishing gradient}
+
+        \paragraph{Exploding gradient}
+
+        \paragraph{Local minima}
+
+    
 
 
