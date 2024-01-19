@@ -15,6 +15,7 @@ data_params = {
     "redshift": 1.0,
     "random_seed": 42,
     "transforms": True,
+    "newton_augmentation": 1.0,  # must be 1.0 for serious training, change for testing pipeline.
 }
 
 architecture_params = {
@@ -56,6 +57,7 @@ training_params = {
     "breakout_loss": 1e-4,
     "tol": 0.5,
     "writer_log_path": f"runs/{model_params['model_name']}_{optimizer_params['lr']:.5f}",
+    "test_every": 1,
 }
 
 

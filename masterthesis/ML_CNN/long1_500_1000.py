@@ -45,7 +45,7 @@ loader_params = {
 }
 
 optimizer_params = {
-    "lr": 1e-3,
+    "lr": 1e-2,
     "betas": (0.5, 0.999),
     "weight_decay": 1e-11,
 }

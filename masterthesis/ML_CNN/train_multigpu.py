@@ -109,6 +109,7 @@ def get_state(model_params: dict):
         "optimizer_state_dict": None,
         "train_loss": 0,
         "test_loss": 0,
+        "best_loss": 1e10,
         "model_save_path": model_params["model_save_path"],
     }
     if model_params["load_model"]:
@@ -282,7 +283,10 @@ def worker(
         # writer.add_graph(ddp_model, torch.zeros((1, 256, 256)).unsqueeze(0))
 
     # Train and test
-    best_loss = 1e10
+    try:
+        best_loss = state["best_loss"]
+    except KeyError:
+        best_loss = 1e10
     for epoch in range(
         epochs_trained + 1, epochs_trained + training_params["epochs"] + 1
     ):
@@ -395,6 +399,7 @@ def worker(
                     state["optimizer_state_dict"] = optimizer.state_dict()
                     state["train_loss"] = mean_train_loss
                     state["test_loss"] = mean_test_loss
+                    state["best_loss"] = best_loss
 
                     torch.save(
                         state,
