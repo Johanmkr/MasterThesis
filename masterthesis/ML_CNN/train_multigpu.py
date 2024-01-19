@@ -11,6 +11,8 @@ import torch.multiprocessing as mp
 
 import data
 
+import train_utils as tutils
+
 mp.set_sharing_strategy("file_descriptor")
 
 GPU = torch.cuda.is_available()
@@ -47,8 +49,7 @@ def cleanup():
     dist.destroy_process_group()
 
 
-#################################################################
-############################# Data ##############################
+##################################################################
 
 
 def create_data_loaders(
@@ -96,154 +97,6 @@ def create_data_loaders(
         pin_memory=pin_memory,
     )
     return train_loader, test_loader, train_sampler, test_sampler
-
-
-#################################################################
-############################# Model #############################
-
-
-def get_state(model_params: dict):
-    state = {
-        "epoch": 0,
-        "model_state_dict": None,
-        "optimizer_state_dict": None,
-        "train_loss": 0,
-        "test_loss": 0,
-        "best_loss": 1e10,
-        "model_save_path": model_params["model_save_path"],
-    }
-    if model_params["load_model"]:
-        # Load model
-        try:
-            state = torch.load(model_params["model_save_path"])
-            print(
-                f"Loaded model from {model_params['model_save_path']}\nAlready trained for {state['epoch']} epochs"
-            )
-        except FileNotFoundError:
-            print("No model found. Training from scratch.")
-    return state
-
-
-def success(outputs, labels, tol):
-    return (abs(output_func(outputs) - labels) < tol).sum().item()
-
-
-def train_one_epoch(
-    rank,
-    model,
-    train_loader,
-    optimizer,
-    loss_fn,
-    epoch_nr,
-    success_tol=0.5,
-):
-    print(f"---------- Epoch {epoch_nr} ----------\n") if rank == 0 else None
-    model.train()
-    train_loss = 0
-    train_predictions = 0
-    train_samples = 0
-    max_batches = len(train_loader)
-
-    i = 0
-    iterator = iter(train_loader)
-    end_of_data = False
-    while not end_of_data:
-        try:
-            batch = next(iterator)
-            if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and rank == 0:
-                print(f"TRAIN - Batch: {i+1}/{max_batches}")
-            # Get the inputs
-            images, labels = batch["image"], batch["label"]
-            images = images.to(rank, non_blocking=True)
-            labels = labels.to(rank, non_blocking=True)
-
-            # Zero the parameter gradients
-            optimizer.zero_grad()
-
-            # Forward + backward + optimize
-            outputs = model(images)
-            loss = loss_fn(outputs, labels)
-            loss.backward()
-            optimizer.step()
-
-            # Print statistics
-            train_loss += loss.item()
-            train_predictions += success(outputs, labels, tol=success_tol)
-            train_samples += len(labels)
-            i += 1
-        except StopIteration:
-            end_of_data = True
-
-    # for i, batch in enumerate(train_loader):
-    #     if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and rank == 0:
-    #         print(f"TRAIN - Batch: {i+1}/{max_batches}")
-    #     # Get the inputs
-    #     images, labels = batch["image"], batch["label"]
-    #     images = images.to(rank, non_blocking=True)
-    #     labels = labels.to(rank, non_blocking=True)
-
-    #     # Zero the parameter gradients
-    #     optimizer.zero_grad()
-
-    #     # Forward + backward + optimize
-    #     outputs = model(images)
-    #     loss = loss_fn(outputs, labels)
-    #     loss.backward()
-    #     optimizer.step()
-
-    #     # Print statistics
-    #     train_loss += loss.item()
-    #     train_predictions += success(outputs, labels, tol=success_tol)
-    #     train_samples += len(labels)
-
-    train_loss /= max_batches  # avg loss per batch
-
-    return train_loss, train_predictions, train_samples
-
-
-def evaluate(
-    rank,
-    model,
-    loss_fn,
-    test_loader,
-    success_tol=0.5,
-):
-    model.eval()
-    test_loss = 0
-    evaluation_predictions = 0
-    evaluation_samples = 0
-    max_batches = len(test_loader)
-
-    i = 0
-    iterator = iter(test_loader)
-    end_of_data = False
-
-    with torch.no_grad():
-        while not end_of_data:
-            try:
-                batch = next(iterator)
-                if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and rank == 0:
-                    print(f"EVAL - Batch: {i+1}/{max_batches}")
-                images, labels = batch["image"], batch["label"]
-                images = images.to(rank, non_blocking=True)
-                labels = labels.to(rank, non_blocking=True)
-
-                outputs = model(images)
-                loss = loss_fn(outputs, labels)
-
-                # Print statistics
-                test_loss += loss.item()
-                evaluation_predictions += success(outputs, labels, tol=success_tol)
-                evaluation_samples += len(labels)
-            except StopIteration:
-                end_of_data = True
-    test_loss /= max_batches  # avg loss per batch
-
-    return (
-        test_loss,
-        evaluation_predictions,
-        evaluation_samples,
-    )
 
 
 def worker(
@@ -299,7 +152,7 @@ def worker(
             local_train_loss,
             local_train_predictions,
             local_train_samples,
-        ) = train_one_epoch(
+        ) = tutils.train_one_epoch(
             rank,
             ddp_model,
             train_loader,
@@ -329,15 +182,25 @@ def worker(
             mean_train_loss = total_mean_train_loss / world_size
             mean_train_accuracy = total_train_predictions / total_train_samples
 
-            # Print statistics
-            print(
-                f"\nTraining:\nTrain loss: {mean_train_loss:.4f}\nTrain predictions: {total_train_predictions}/{total_train_samples}\nTrain accuracy: {mean_train_accuracy*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
+            tutils.print_and_write_statistics(
+                writer=writer,
+                epoch_nr=epoch,
+                loss=mean_train_loss,
+                predictions=total_train_predictions,
+                samples=total_train_samples,
+                suffix="train",
+                time=epoch_train_end_time - epoch_train_start_time,
             )
-            # Write to tensorboard
-            writer.add_scalar("Loss/train", mean_train_loss, epoch)
-            writer.add_scalar("Accuracy/train", mean_train_accuracy, epoch)
-            writer.add_scalar("Correct/train", total_train_predictions, epoch)
-            writer.flush()
+
+            # # Print statistics
+            # print(
+            #     f"\nTraining:\nTrain loss: {mean_train_loss:.4f}\nTrain predictions: {total_train_predictions}/{total_train_samples}\nTrain accuracy: {mean_train_accuracy*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
+            # )
+            # # Write to tensorboard
+            # writer.add_scalar("Loss/train", mean_train_loss, epoch)
+            # writer.add_scalar("Accuracy/train", mean_train_accuracy, epoch)
+            # writer.add_scalar("Correct/train", total_train_predictions, epoch)
+            # writer.flush()
 
         # Placeholder for early stopping across all ranks
         should_stop = torch.tensor(False, dtype=torch.bool).to(rank)
@@ -345,7 +208,11 @@ def worker(
         if epoch % training_params["test_every"] == 0:
             # ---- TESTING ----
             epoch_test_start_time = time.time() if rank == 0 else None
-            local_test_loss, local_test_predictions, local_test_samples = evaluate(
+            (
+                local_test_loss,
+                local_test_predictions,
+                local_test_samples,
+            ) = tutils.evaluate(
                 rank,
                 ddp_model,
                 loss_fn,
@@ -373,16 +240,26 @@ def worker(
                 mean_test_loss = total_mean_test_loss / world_size
                 mean_test_accuracy = total_test_predictions / total_test_samples
 
-                # Print statistics
-                print(
-                    f"Testing:\nTest loss: {mean_test_loss:.4f}\nTest predictions: {total_test_predictions}/{total_test_samples}\nTest accuracy: {mean_test_accuracy*100:.4f} %\nTime elapsed for testing: {epoch_test_end_time - epoch_test_start_time:.2f} s\n"
+                tutils.print_and_write_statistics(
+                    writer=writer,
+                    epoch_nr=epoch,
+                    loss=mean_test_loss,
+                    predictions=total_test_predictions,
+                    samples=total_test_samples,
+                    suffix="test",
+                    time=epoch_test_end_time - epoch_test_start_time,
                 )
 
-                # Write to tensorboard
-                writer.add_scalar("Loss/test", mean_test_loss, epoch)
-                writer.add_scalar("Accuracy/test", mean_test_accuracy, epoch)
-                writer.add_scalar("Correct/test", total_test_predictions, epoch)
-                writer.flush()
+                # # Print statistics
+                # print(
+                #     f"Testing:\nTest loss: {mean_test_loss:.4f}\nTest predictions: {total_test_predictions}/{total_test_samples}\nTest accuracy: {mean_test_accuracy*100:.4f} %\nTime elapsed for testing: {epoch_test_end_time - epoch_test_start_time:.2f} s\n"
+                # )
+
+                # # Write to tensorboard
+                # writer.add_scalar("Loss/test", mean_test_loss, epoch)
+                # writer.add_scalar("Accuracy/test", mean_test_accuracy, epoch)
+                # writer.add_scalar("Correct/test", total_test_predictions, epoch)
+                # writer.flush()
 
                 # Early stopping condition
                 if mean_test_loss < training_params["breakout_loss"]:
@@ -447,7 +324,7 @@ def train(
     train_dataset, test_dataset = data.make_training_and_testing_data(**data_params)
 
     model = model_params["architecture"](**architecture_params)
-    state = get_state(model_params)
+    state = tutils.get_state(model_params)
     if state["model_state_dict"] is not None:
         model.load_state_dict(state["model_state_dict"])
 

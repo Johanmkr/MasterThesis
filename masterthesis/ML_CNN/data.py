@@ -25,6 +25,8 @@ class SlicedCubeDataset(Dataset):
         nr_axes: int = 3,
         use_transformations: bool = True,
         newton_augmentation: float = 1.0,
+        lazy_load: bool = False,
+        target_noise: float = 0.0,
     ):
         super().__init__()
 
@@ -34,6 +36,9 @@ class SlicedCubeDataset(Dataset):
         self.seeds = seeds
         self.nr_axes = nr_axes
         self.use_transformations = use_transformations
+        self.newton_augmentation = newton_augmentation
+        self.lazy_load = lazy_load
+        self.target_noise = target_noise
 
         ### length variables ###
         nr_gravity_theories = 2
@@ -99,17 +104,25 @@ class SlicedCubeDataset(Dataset):
         with h5py.File(dataset_path, "r") as f:
             for seed in tqdm(self.seeds):
                 # GR cube
-                cube = torch.tensor(f[f"gr_seed{seed:04d}"][()], dtype=torch.float32)
-                label = torch.tensor([1.0], dtype=torch.float32)
+                cube = (
+                    torch.tensor(f[f"gr_seed{seed:04d}"][()], dtype=torch.float32)
+                    if not lazy_load
+                    else f"gr_seed{seed:04d}"
+                )
+                label = torch.tensor([1.0 - target_noise], dtype=torch.float32)
                 self.cubes.append({"cube": cube, "label": label})
                 cube_idx += 1
 
                 # Newton cube
-                cube = torch.tensor(
-                    f[f"newton_seed{seed:04d}"][()] * newton_augmentation,
-                    dtype=torch.float32,
+                cube = (
+                    torch.tensor(
+                        f[f"newton_seed{seed:04d}"][()] * newton_augmentation,
+                        dtype=torch.float32,
+                    )
+                    if not lazy_load
+                    else f"newton_seed{seed:04d}"
                 )
-                label = torch.tensor([0.0], dtype=torch.float32)
+                label = torch.tensor([target_noise], dtype=torch.float32)
                 self.cubes.append({"cube": cube, "label": label})
                 cube_idx += 1
 
@@ -146,7 +159,11 @@ class SlicedCubeDataset(Dataset):
         slice_idx = seed_idx % self.images_per_cube
         cube = self.cubes[cube_idx]
         sample_slice = self.slice_data[slice_idx]
-        image = cube["cube"][sample_slice]
+        if self.lazy_load:
+            with h5py.File(paths.get_full_dataset_path(self.redshift), "r") as f:
+                image = torch.tensor(f[cube["cube"]][sample_slice], dtype=torch.float32)
+        else:
+            image = cube["cube"][sample_slice]
         label = cube["label"]
         sample = (
             {
@@ -167,6 +184,8 @@ def make_training_and_testing_data(
     random_seed=42,
     transforms: bool = True,
     newton_augmentation: float = 1.0,
+    lazy_load: bool = False,
+    target_noise: float = 0.0,
 ):
     random.seed(random_seed)
     random.shuffle(train_test_seeds)
@@ -189,6 +208,8 @@ def make_training_and_testing_data(
         seeds=train_seeds,
         use_transformations=transforms,
         newton_augmentation=newton_augmentation,
+        lazy_load=lazy_load,
+        target_noise=target_noise,
     )
     print(f"Test set: {len(test_seeds)} seeds")
     test_dataset = SlicedCubeDataset(
@@ -197,5 +218,7 @@ def make_training_and_testing_data(
         seeds=test_seeds,
         use_transformations=transforms,
         newton_augmentation=newton_augmentation,
+        lazy_load=lazy_load,
+        target_noise=target_noise,
     )
     return train_dataset, test_dataset

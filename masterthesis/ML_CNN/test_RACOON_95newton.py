@@ -5,17 +5,22 @@ import numpy as np
 import torch.nn as nn
 
 import architectures as arch
-import train_multigpu as train
+
+if MULTIPLE_GPUS:
+    import train_multigpu as train
+else:
+    import train_singlegpu as train
 
 # Params
 data_params = {
     "train_test_split": [0.8, 0.2],
-    "train_test_seeds": np.arange(0, 1750, 1),
+    "train_test_seeds": np.arange(0, 175, 1),
     "stride": 1,
     "redshift": 1.0,
     "random_seed": 42,
     "transforms": True,
     "newton_augmentation": 0.95,  # must be 1.0 for serious training, change for testing pipeline.
+    "lazy_load": False,
 }
 
 architecture_params = {
@@ -34,12 +39,12 @@ model_params = {
     "model_save_path": f"models/{model_name}.pt",
 }
 
-cube_frac_in_batch_size = 3
+cube_frac_in_batch_size = 3.5
 loader_params = {
     "batch_size": int((256 * 3) * cube_frac_in_batch_size),
-    "num_workers": 0,
-    "prefetch_factor": None,
-    "pin_memory": False,
+    "num_workers": 24,
+    "prefetch_factor": 2,
+    "pin_memory": True,
     "shuffle": True,
     "drop_last": True,
 }
