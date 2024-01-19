@@ -14,16 +14,16 @@
 
   \node[below=of mtr-5-4] {$\mathbf I$};
 
-  \node[right=0.2em of mtr] (str) {$*$};
+  \node[left=0.2em of mtr] (str) {$\star$};
 
-  \matrix (K) [2d-arr, right=0.2em of str, nodes={draw, fill=teal!30}] {
+  \matrix (K) [2d-arr, left=0.2em of str, nodes={draw, fill=teal!30}] {
     1 & 0 & 1 \\
     0 & 1 & 0 \\
     1 & 0 & 1 \\
   };
   \node[below=of K-3-2] {$\mathbf K$};
 
-  \node[right=0.2em of K] (eq) {$=$};
+  \node[right=0.2em of mtr] (eq) {$=$};
 
   \matrix (ret) [2d-arr, right=0.2em of eq] {
   1 & 4 & 3 & |[fill=blue!80!black!30]| 4 & 1\\
@@ -32,13 +32,13 @@
   1 & 3 & 3 & 1 & 1\\
   3 & 3 & 1 & 1 & 0\\
   };
-  \node[below=of ret-4-3] {$\mathbf{I * K}$};
+  \node[below=of ret-4-3] {$\mathbf{K\star I}$};
 
-  \draw[dashed, teal] (mtr-1-6.north east) -- (K-1-1.north west);
-  \draw[dashed, teal] (mtr-3-6.south east) -- (K-3-1.south west);
+  \draw[dashed, teal] (mtr-1-3.north east) -- (K-1-3.north east);
+  \draw[dashed, teal] (mtr-3-3.south east) -- (K-3-3.south east);
 
-  \draw[dashed, blue!80!black] (K-1-3.north east) -- (ret-1-4.north west);
-  \draw[dashed, blue!80!black] (K-3-3.south east) -- (ret-1-4.south west);
+  \draw[dashed, blue!80!black] (mtr-1-6.north east) -- (ret-1-4.north west);
+  \draw[dashed, blue!80!black] (mtr-3-6.south east) -- (ret-1-4.south west);
 
   \foreach \i in {1,2,3} {
       \foreach \j in {4,5,6} {

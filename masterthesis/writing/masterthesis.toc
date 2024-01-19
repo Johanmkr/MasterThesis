@@ -91,40 +91,53 @@
 \contentsline {paragraph}{Adaptive momentum}{26}{paragraph*.93}%
 \contentsline {paragraph}{Learning rate schedules?}{27}{paragraph*.105}%
 \contentsline {paragraph}{Batch normalization}{27}{paragraph*.106}%
-\contentsline {subsection}{\numberline {7.2.4}Challenges in optimization}{27}{subsection.107}%
-\contentsline {paragraph}{Ill-conditioning}{27}{paragraph*.108}%
-\contentsline {paragraph}{Vanishing gradient}{27}{paragraph*.109}%
-\contentsline {paragraph}{Exploding gradient}{27}{paragraph*.110}%
-\contentsline {paragraph}{Local minima}{27}{paragraph*.111}%
-\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{29}{chapter.112}%
-\contentsline {section}{\numberline {8.1}Convolution}{29}{section.113}%
-\contentsline {subsection}{\numberline {8.1.1}Basic definitions}{29}{subsection.114}%
-\contentsline {subsection}{\numberline {8.1.2}Properties}{29}{subsection.120}%
-\contentsline {section}{\numberline {8.2}New Layers}{29}{section.121}%
-\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{29}{subsection.122}%
-\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{29}{subsection.123}%
-\contentsline {section}{\numberline {8.3}Implementation}{29}{section.124}%
-\contentsline {part}{III\hspace {1em}Acquiring Data}{25}{part.5}%
-\contentsline {chapter}{\numberline {9}Simulations}{27}{chapter.6}%
-\contentsline {section}{\numberline {9.1}Parameters}{27}{section.7}%
-\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{27}{subsection.8}%
-\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{27}{subsection.10}%
-\contentsline {subsection}{\numberline {9.1.3}Box parameters}{28}{subsection.12}%
-\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{28}{subsection.14}%
-\contentsline {section}{\numberline {9.2}Output}{28}{section.17}%
-\contentsline {subsection}{\numberline {9.2.1}Datacubes}{28}{subsection.18}%
-\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{29}{subsection.20}%
-\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{29}{subsection.21}%
-\contentsline {subsection}{\numberline {9.2.4}Normalisation}{29}{subsection.26}%
-\contentsline {chapter}{\numberline {10}Data Verification}{31}{chapter.28}%
-\contentsline {section}{\numberline {10.1}Slices of Datacubes}{31}{section.29}%
-\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{31}{section.31}%
-\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{31}{section.34}%
-\contentsline {section}{\numberline {10.4}Analytical Bispectra}{31}{section.35}%
-\contentsline {section}{\numberline {10.5}Bispectra from Cube}{31}{section.37}%
-\contentsline {subsection}{\numberline {10.5.1}Binning}{31}{subsection.38}%
-\contentsline {subsection}{\numberline {10.5.2}Bispectra}{31}{subsection.40}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{39}{chapter.42}%
-\contentsline {section}{\numberline {11.1}Gathering the cubes}{39}{section.43}%
-\contentsline {section}{\numberline {11.2}Find image from index}{39}{section.44}%
+\contentsline {section}{\numberline {7.3}Challenges in optimization}{27}{section.107}%
+\contentsline {paragraph}{Vanishing gradient}{27}{paragraph*.108}%
+\contentsline {paragraph}{Exploding gradient}{27}{paragraph*.109}%
+\contentsline {paragraph}{Local minima}{27}{paragraph*.110}%
+\contentsline {section}{\numberline {7.4}Regularization}{28}{section.111}%
+\contentsline {subsection}{\numberline {7.4.1}Parameter norm penalties}{28}{subsection.112}%
+\contentsline {subsection}{\numberline {7.4.2}Data augmentation}{28}{subsection.113}%
+\contentsline {subsection}{\numberline {7.4.3}Early stopping}{28}{subsection.114}%
+\contentsline {subsection}{\numberline {7.4.4}Parameter sharing}{28}{subsection.115}%
+\contentsline {subsection}{\numberline {7.4.5}Ensemble methods}{28}{subsection.116}%
+\contentsline {subsection}{\numberline {7.4.6}Dropout}{28}{subsection.117}%
+\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{29}{chapter.118}%
+\contentsline {section}{\numberline {8.1}Convolution}{29}{section.119}%
+\contentsline {subsection}{\numberline {8.1.1}Basic definitions}{29}{subsection.120}%
+\contentsline {subsection}{\numberline {8.1.2}Properties}{30}{subsection.126}%
+\contentsline {paragraph}{Feature detection}{30}{paragraph*.127}%
+\contentsline {paragraph}{Sparse interactions}{30}{paragraph*.128}%
+\contentsline {paragraph}{Parameter sharing}{30}{paragraph*.129}%
+\contentsline {paragraph}{Equivariance}{30}{paragraph*.130}%
+\contentsline {section}{\numberline {8.2}New Layers}{30}{section.131}%
+\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{30}{subsection.132}%
+\contentsline {paragraph}{Kernel size}{31}{paragraph*.135}%
+\contentsline {paragraph}{Padding}{31}{paragraph*.136}%
+\contentsline {paragraph}{Stride}{31}{paragraph*.137}%
+\contentsline {paragraph}{Dilation}{31}{paragraph*.138}%
+\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{32}{subsection.140}%
+\contentsline {part}{III\hspace {1em}Acquiring Data}{31}{part.185}%
+\contentsline {chapter}{\numberline {9}Simulations}{33}{chapter.186}%
+\contentsline {section}{\numberline {9.1}Parameters}{33}{section.187}%
+\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{33}{subsection.188}%
+\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{33}{subsection.190}%
+\contentsline {subsection}{\numberline {9.1.3}Box parameters}{34}{subsection.192}%
+\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{34}{subsection.194}%
+\contentsline {section}{\numberline {9.2}Output}{34}{section.197}%
+\contentsline {subsection}{\numberline {9.2.1}Datacubes}{34}{subsection.198}%
+\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{35}{subsection.200}%
+\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{35}{subsection.201}%
+\contentsline {subsection}{\numberline {9.2.4}Normalisation}{35}{subsection.206}%
+\contentsline {chapter}{\numberline {10}Data Verification}{37}{chapter.208}%
+\contentsline {section}{\numberline {10.1}Slices of Datacubes}{37}{section.209}%
+\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{37}{section.211}%
+\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{37}{section.214}%
+\contentsline {section}{\numberline {10.4}Analytical Bispectra}{37}{section.215}%
+\contentsline {section}{\numberline {10.5}Bispectra from Cube}{37}{section.217}%
+\contentsline {subsection}{\numberline {10.5.1}Binning}{37}{subsection.218}%
+\contentsline {subsection}{\numberline {10.5.2}Bispectra}{37}{subsection.220}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{45}{chapter.222}%
+\contentsline {section}{\numberline {11.1}Gathering the cubes}{45}{section.223}%
+\contentsline {section}{\numberline {11.2}Find image from index}{45}{section.224}%
 \contentsfinish 

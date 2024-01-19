@@ -1,0 +1,26 @@
+\begin{tikzpicture}[
+    cell/.style={draw, rectangle, minimum size=1cm, inner sep=0, outer sep=0},
+    padded/.style={draw, rectangle, minimum size=1cm, pattern=north east lines, pattern color=blue!30, inner sep=0, outer sep=0},
+    2d-arr/.style={matrix of nodes, row sep=-\pgflinewidth, column sep=-\pgflinewidth, nodes={draw}}
+  ]
+
+  % Zero-padded matrix
+  \matrix(paddedmat)[2d-arr]{
+    |[padded]| & |[padded]| & |[padded]| & |[padded]| & |[padded]| & |[padded]| & |[padded]| \\
+    |[padded]| & |[cell]| 1 & |[cell]| 0 & |[cell]| 1 & |[cell]| 0 & |[cell]| 1 & |[padded]| \\
+    |[padded]| & |[cell]| 0 & |[cell]| 1 & |[cell]| 0 & |[cell]| 1 & |[cell]| 0 & |[padded]| \\
+    |[padded]| & |[cell]| 1 & |[cell]| 0 & |[cell]| 1 & |[cell]| 0 & |[cell]| 1 & |[padded]| \\
+    |[padded]| & |[padded]| & |[padded]| & |[padded]| & |[padded]| & |[padded]| & |[padded]| \\
+  };
+
+%   % Labels
+%   \node[above=1em of paddedmat] (padding-label) {Padding};
+%   \draw[<->] (paddedmat-1-1.north west) -- (paddedmat-1-1.north east) node[midway, fill=white] {1};
+%   \draw[<->] (paddedmat-1-1.north west) -- (paddedmat-1-1.south west) node[midway, fill=white, rotate=90] {1};
+
+%   % Drawing the padded area around the original matrix
+%   \draw[dotted] (paddedmat-2-2.north west) rectangle (paddedmat-4-6.south east);
+%   \node[below=1em of paddedmat.south] (original) {Original Matrix};
+%   \draw[->] (original) -- (paddedmat-3-4);
+
+\end{tikzpicture}

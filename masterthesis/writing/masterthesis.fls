@@ -1150,6 +1150,12 @@ INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/gen
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypositioning.code.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarymatrix.code.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarymatrix.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypatterns.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarypatterns.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/libraries/pgflibrarypatterns.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/libraries/pgflibrarypatterns.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryfit.code.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/tex/latex/amsmath/amsmath.sty

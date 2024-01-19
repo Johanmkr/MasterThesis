@@ -257,15 +257,31 @@
         \paragraph{Batch normalization}
 
 
-    \subsection{Challenges in optimization}
-
-        \paragraph{Ill-conditioning}
+    \section{Challenges in optimization}
 
         \paragraph{Vanishing gradient}
+            The vanishing gradient problem is a problem that arises when using saturating activation functions, such as the sigmoid function. The problem is that the gradient of the loss with respect to the weights and biases of the network becomes very small, which means that the weights and biases are not updated. This is a problem because the network is not learning anything. Another cause of vanishing gradients are flat regions of the loss in parameter space which are neither local minima nor global minima. This is a problem because the gradient is zero in these regions, which means that the network is not learning anything. Examples of such points are saddle points and plateaus. 
 
         \paragraph{Exploding gradient}
+            Another issue are cliffs in parameter space, or very steep regions. This is a problem because the gradient is very large in these regions, which means that the network is learning too much. This can lead to the network diverging.
 
         \paragraph{Local minima}
+            Being stuck in a local minimum means that the network appear to converge and learning stops. However, the optimal parameters are not found, and the converged model is not the best one. It is hard to know if the network is stuck in a local minimum or not.
+
+\section{Regularization}
+    In order combat some of the challenged posed in the previous section we use regularization. Regularization is a technique used to prevent overfitting, which is when the network learns the training data too well, and thus does not generalize well to unseen data. This is done by adding a penalty term to the loss function, which penalizes large weights and biases. This is done by adding a regularization term to the loss function:
+
+    \subsection{Parameter norm penalties}
+
+    \subsection{Data augmentation}
+
+    \subsection{Early stopping}
+
+    \subsection{Parameter sharing}
+
+    \subsection{Ensemble methods}
+
+    \subsection{Dropout}
 
     
 

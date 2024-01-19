@@ -11,12 +11,12 @@
 \contentsline {figure}{\numberline {7.2}{\ignorespaces Computational graph of a hidden layer of a neural network.\relax }}{22}{figure.caption.42}%
 \contentsline {figure}{\numberline {7.3}{\ignorespaces Computational graph of a fully connected feed forward neural network.\relax }}{23}{figure.caption.44}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {8.1}{\ignorespaces Example of a convolution operation. The input image is given by the matrix $\mathbf I$ and the kernel is given by the matrix $\mathbf K$. The output is given by the matrix $\mathbf {I * K}$. The dashed lines indicate which elements of the input and kernel are multiplied together to produce the output.\relax }}{30}{figure.caption.119}%
+\contentsline {figure}{\numberline {8.1}{\ignorespaces \leavevmode {\color {blue}TODO: }\leavevmode {\color {blue}fix this figure to be correct w.r.t. cross-correlation/convolution} Example of a cross-correlation operation, which we will also call a convolution. The input image is given by the matrix $\mathbf I$ and the kernel is given by the matrix $\mathbf K$. The output is given by the matrix $\mathbf {K \star I}$. The dashed lines indicate which elements of the input and kernel are multiplied together to produce the output. The figure is taken from TikZ.net \leavevmode {\color {blue}TODO: }\leavevmode {\color {blue}fix this citation}\relax }}{30}{figure.caption.125}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces Slice 0\relax }}{32}{figure.caption.30}%
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Average matter power spectra at different redshifts.\relax }}{33}{figure.caption.32}%
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Average potential power spectra at different redshifts.\relax }}{34}{figure.caption.33}%
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Slice 0\relax }}{38}{figure.caption.210}%
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Average matter power spectra at different redshifts.\relax }}{39}{figure.caption.212}%
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Average potential power spectra at different redshifts.\relax }}{40}{figure.caption.213}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {11.1}{\ignorespaces Outline of data structure.\relax }}{40}{figure.caption.59}%
+\contentsline {figure}{\numberline {11.1}{\ignorespaces Outline of data structure.\relax }}{46}{figure.caption.239}%
 \contentsfinish 
