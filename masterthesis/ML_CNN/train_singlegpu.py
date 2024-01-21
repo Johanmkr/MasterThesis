@@ -92,12 +92,12 @@ def where_stuff_happens(
         # train_sampler.set_epoch(epoch)
         epoch_train_start_time = time.time()
         train_loss, train_predictions, train_samples = tutils.train_one_epoch(
-            device,
-            model,
-            train_loader,
-            optimizer,
-            loss_fn,
-            epoch,
+            device=device,
+            model=model,
+            train_loader=train_loader,
+            optimizer=optimizer,
+            loss_fn=loss_fn,
+            epoch_nr=epoch,
             success_tol=training_params["tol"],
         )
         epoch_train_end_time = time.time()
@@ -116,12 +116,11 @@ def where_stuff_happens(
         if epoch % training_params["test_every"] == 0:
             # ---- TESTING ----
             epoch_test_start_time = time.time()
-            test_loss, test_predictions, test_samples = tutils.test(
-                device,
-                model,
-                test_loader,
-                loss_fn,
-                epoch,
+            test_loss, test_predictions, test_samples = tutils.evaluate(
+                device=device,
+                model=model,
+                test_loader=test_loader,
+                loss_fn=loss_fn,
                 success_tol=training_params["tol"],
             )
             epoch_test_end_time = time.time()
