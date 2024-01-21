@@ -19,7 +19,7 @@ data_params = {
     "redshift": 1.0,
     "random_seed": 42,
     "transforms": False,
-    "newton_augmentation": -1.0,  # must be 1.0 for serious training, change for testing pipeline.
+    "newton_augmentation": 0.99,  # must be 1.0 for serious training, change for testing pipeline.
     "lazy_load": False,
 }
 
@@ -31,7 +31,7 @@ architecture_params = {
     "bias": False,
     "dropout": 0.5,
 }
-model_name = f"RACOON_test_negative_newton_z{data_params['redshift']:.0f}_lp{architecture_params['layer_param']}"
+model_name = f"RACOON_test_95newton_z{data_params['redshift']:.0f}_lp{architecture_params['layer_param']}"
 model_params = {
     "architecture": arch.RACOON,
     "model_name": model_name,

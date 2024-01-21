@@ -1,5 +1,5 @@
 VERBOSE = True
-MULTIPLE_GPUS = True
+MULTIPLE_GPUS = False
 
 import numpy as np
 import torch.nn as nn
@@ -14,11 +14,11 @@ else:
 # Params
 data_params = {
     "train_test_split": [0.8, 0.2],
-    "train_test_seeds": np.arange(0, 175, 1),
+    "train_test_seeds": np.arange(0, 1000, 1),
     "stride": 1,
     "redshift": 1.0,
     "random_seed": 42,
-    "transforms": True,
+    "transforms": False,
     "newton_augmentation": 0.95,  # must be 1.0 for serious training, change for testing pipeline.
     "lazy_load": False,
 }
@@ -26,7 +26,7 @@ data_params = {
 architecture_params = {
     "input_size": (data_params["stride"], 256, 256),
     "layer_param": 64,
-    "activation": nn.ReLU(),
+    "activation": nn.LeakyReLU(inplace=True),
     "output_activation": nn.Identity(),
     "bias": False,
     "dropout": 0.5,
@@ -42,7 +42,7 @@ model_params = {
 cube_frac_in_batch_size = 3.5
 loader_params = {
     "batch_size": int((256 * 3) * cube_frac_in_batch_size),
-    "num_workers": 24,
+    "num_workers": 20,
     "prefetch_factor": 2,
     "pin_memory": True,
     "shuffle": True,
@@ -50,13 +50,13 @@ loader_params = {
 }
 
 optimizer_params = {
-    "lr": 1e-2,
-    "betas": (0.9, 0.999),
-    "weight_decay": 1e-8,
+    "lr": 1e-3,
+    "betas": (0.5, 0.999),
+    "weight_decay": 1e-11,
 }
 
 training_params = {
-    "epochs": 1,
+    "epochs": 20,
     "breakout_loss": 1e-2,
     "tol": 0.25,
     "writer_log_path": f"testruns/{model_params['model_name']}_{optimizer_params['lr']:.5f}",
