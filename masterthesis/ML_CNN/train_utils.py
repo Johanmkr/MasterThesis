@@ -46,7 +46,7 @@ def train_one_epoch(
     train_loader,
     optimizer,
     loss_fn,
-    epoch_nr,
+    epoch_nr, 
     success_tol=0.5,
 ):
     print(f"---------- Epoch {epoch_nr} ----------\n") if (
@@ -101,7 +101,7 @@ def evaluate(
     loss_fn,
     test_loader,
     success_tol=0.5,
-):
+): 
     model.eval()
     test_loss = 0
     evaluation_predictions = 0
