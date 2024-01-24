@@ -11,20 +11,15 @@ if MULTIPLE_GPUS:
 else:
     import train_singlegpu as train
 
-########################## MODEL NAME and DATA PATH ##########################
-# model_name = f"TEST_PENGUIN_n0_z{data_params['redshift']:.0f}_lp{architecture_params['layer_param']}_na{data_params['newton_augmentation']:.1f}_tn{data_params['target_noise']:.3f}"
-model_name = "code_test"
-datapath = "/mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5"
-
-
 # Params
-train_test_division = 3
-total_seeds = 5
+train_test_division = 1500
+total_seeds = 1700
 data_params = {
     "train_seeds": np.arange(0, train_test_division, 1),
     "test_seeds": np.arange(train_test_division, total_seeds, 1),
-    "newton_augmentation": 0.0,  # must be one for serious training, change for testing pipeline.
-    "datapath": datapath,
+    "redshift": 1.0,
+    "newton_augmentation": 1.0,  # must be one for serious training, change for testing pipeline.
+    "target_noise": 0.0,
 }
 
 architecture_params = {
@@ -35,6 +30,7 @@ architecture_params = {
     "bias": False,
     "dropout": 0.5,
 }
+model_name = f"PENGUIN_n1_z{data_params['redshift']:.0f}_lp{architecture_params['layer_param']}_na{data_params['newton_augmentation']:.1f}"
 
 model_params = {
     "architecture": arch.PENGUIN,
@@ -47,6 +43,9 @@ loader_params = {
     "batch_size": 1,
     "num_workers": 16,
     "prefetch_factor": 1,
+    # "pin_memory": True,
+    # "shuffle": True,
+    # "drop_last": True,
 }
 
 optimizer_params = {
@@ -56,10 +55,11 @@ optimizer_params = {
 }
 
 training_params = {
-    "epochs": 5,
-    "breakout_loss": 1e-4,
+    "epochs": 50,
+    "breakout_loss": 1e-2,
+    "tol": 0.25,
     "writer_log_path": f"testruns/{model_params['model_name']}_lr{optimizer_params['lr']:.5f}",
-    "test_every": 1,
+    "test_every": 2,
 }
 
 

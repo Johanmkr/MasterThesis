@@ -8,6 +8,7 @@ import time
 from torch.utils.tensorboard import SummaryWriter
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
+from IPython import embed
 
 import data
 
@@ -62,7 +63,7 @@ def create_data_loaders(
     prefetch_factor=2,
     pin_memory=False,
     shuffle=True,
-    drop_last=True,
+    drop_last=False,
 ):
     # Create distributed samplers
     train_sampler = DistributedSampler(
@@ -150,44 +151,57 @@ def worker(
         epoch_train_start_time = time.time() if rank == 0 else None
         (
             local_train_loss,
-            local_train_predictions,
-            local_train_samples,
-        ) = tutils.train_one_epoch(
+            local_train_TP,
+            local_train_TN,
+            local_train_FP,
+            local_train_FN,
+        ) = tutils.train_one_epoch_cube_version(
             rank,
             ddp_model,
             train_loader,
             optimizer,
             loss_fn,
             epoch,
-            success_tol=training_params["tol"],
         )
         epoch_train_end_time = time.time() if rank == 0 else None
 
         # Gather statistics and send to rank 0
         train_metrics = torch.tensor(
-            [local_train_loss, local_train_predictions, local_train_samples],
-            dtype=torch.float,
+            [
+                local_train_loss,
+                local_train_TP,
+                local_train_TN,
+                local_train_FP,
+                local_train_FN,
+            ],
+            dtype=torch.float32,
         ).to(rank)
         reduced_train_metrics = [
             torch.zeros_like(train_metrics) for _ in range(world_size)
         ]
+
         dist.all_gather(reduced_train_metrics, train_metrics)
 
         # Calculate and log statistics on master rank
         if rank == 0:
             # Train data
-            total_mean_train_loss, total_train_predictions, total_train_samples = (
-                torch.stack(reduced_train_metrics).sum(dim=0)
-            ).tolist()
+            # print(len(reduced_train_metrics))
+            (
+                total_mean_train_loss,
+                total_train_TP,
+                total_train_TN,
+                total_train_FP,
+                total_train_FN,
+            ) = (torch.stack(reduced_train_metrics).sum(dim=0)).tolist()
             mean_train_loss = total_mean_train_loss / world_size
-            mean_train_accuracy = total_train_predictions / total_train_samples
-
             tutils.print_and_write_statistics(
                 writer=writer,
                 epoch_nr=epoch,
                 loss=mean_train_loss,
-                predictions=total_train_predictions,
-                samples=total_train_samples,
+                TP=total_train_TP,
+                TN=total_train_TN,
+                FP=total_train_FP,
+                FN=total_train_FN,
                 suffix="train",
                 time=epoch_train_end_time - epoch_train_start_time,
             )
@@ -210,42 +224,55 @@ def worker(
             epoch_test_start_time = time.time() if rank == 0 else None
             (
                 local_test_loss,
-                local_test_predictions,
-                local_test_samples,
-            ) = tutils.evaluate(
+                local_test_TP,
+                local_test_TN,
+                local_test_FP,
+                local_test_FN,
+            ) = tutils.evaluate_cube_version(
                 rank,
                 ddp_model,
                 loss_fn,
                 test_loader,
-                success_tol=training_params["tol"],
             )
             epoch_test_end_time = time.time() if rank == 0 else None
 
             # Gather statistics and send to rank 0
             test_metrics = torch.tensor(
-                [local_test_loss, local_test_predictions, local_test_samples],
-                dtype=torch.float,
+                [
+                    local_test_loss,
+                    local_test_TP,
+                    local_test_TN,
+                    local_test_FP,
+                    local_test_FN,
+                ],
+                dtype=torch.float32,
             ).to(rank)
             reduced_test_metrics = [
                 torch.zeros_like(test_metrics) for _ in range(world_size)
             ]
+
             dist.all_gather(reduced_test_metrics, test_metrics)
 
             # Calculate and log statistics on master rank
             if rank == 0:
                 # Test data
-                total_mean_test_loss, total_test_predictions, total_test_samples = (
-                    torch.stack(reduced_test_metrics).sum(dim=0)
-                ).tolist()
+                (
+                    total_mean_test_loss,
+                    total_test_TP,
+                    total_test_TN,
+                    total_test_FP,
+                    total_test_FN,
+                ) = (torch.stack(reduced_test_metrics).sum(dim=0)).tolist()
                 mean_test_loss = total_mean_test_loss / world_size
-                mean_test_accuracy = total_test_predictions / total_test_samples
 
                 tutils.print_and_write_statistics(
                     writer=writer,
                     epoch_nr=epoch,
                     loss=mean_test_loss,
-                    predictions=total_test_predictions,
-                    samples=total_test_samples,
+                    TP=total_test_TP,
+                    TN=total_test_TN,
+                    FP=total_test_FP,
+                    FN=total_test_FN,
                     suffix="test",
                     time=epoch_test_end_time - epoch_test_start_time,
                 )
@@ -321,7 +348,9 @@ def train(
     optimizer_params,
     training_params,
 ):
-    train_dataset, test_dataset = data.make_training_and_testing_data(**data_params)
+    train_dataset, test_dataset = data.CUBE_make_training_and_testing_data(
+        **data_params
+    )
 
     model = model_params["architecture"](**architecture_params)
     state = tutils.get_state(model_params)

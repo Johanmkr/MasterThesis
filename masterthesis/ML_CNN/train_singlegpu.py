@@ -91,7 +91,11 @@ def where_stuff_happens(
         # ---- TRAINING ----
         # train_sampler.set_epoch(epoch)
         epoch_train_start_time = time.time()
-        train_loss, train_predictions, train_samples = tutils.train_one_epoch(
+        (
+            train_loss,
+            train_predictions,
+            train_samples,
+        ) = tutils.train_one_epoch_cube_version(
             device=device,
             model=model,
             train_loader=train_loader,
@@ -116,7 +120,7 @@ def where_stuff_happens(
         if epoch % training_params["test_every"] == 0:
             # ---- TESTING ----
             epoch_test_start_time = time.time()
-            test_loss, test_predictions, test_samples = tutils.evaluate(
+            test_loss, test_predictions, test_samples = tutils.evaluate_cube_version(
                 device=device,
                 model=model,
                 test_loader=test_loader,
@@ -176,7 +180,9 @@ def train(
     optimizer_params,
     training_params,
 ):
-    train_dataset, test_dataset = data.make_training_and_testing_data(**data_params)
+    train_dataset, test_dataset = data.CUBE_make_training_and_testing_data(
+        **data_params
+    )
 
     model = model_params["architecture"](**architecture_params)
     state = tutils.get_state(model_params)
