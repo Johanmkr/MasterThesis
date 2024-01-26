@@ -5,7 +5,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Convolution}
-    \subsection{Basic definitions}
+    \subsection{\bcol{Basic definitions}}
         Mathematically, convolution is given as:
         \begin{equation}\label{eq:ML:CNN:convolution:basic_defintion}
             s(t) = (x * w)(t) = \int x(a)w(t-a)\d a.
@@ -32,7 +32,7 @@
         \end{figure}
         Whether the kernel is flipped does not play a huge role in a convolutional neural networks, because the kernel is learned by the network. However, it is important to be aware of the difference between the two definitions, because it can lead to confusion when interpreting both the output of the network and the convolutional layers themselves. 
 
-    \subsection{Properties}
+    \subsection{\ycol{Properties}}
         \paragraph{Feature detection}
             Different kernel has the ability to detect different features in the input. For example, different kernels can detect vertical edges, horizontal edges, corners or even more complex features. These kernels may be manually defined, however this defies the basic concepts of machine learning. These kernels are instead learned by the network, analogous to the weight matrices $\vec{W}$ in a fully connected network. Hence, the output of a convolutional operation is a feature map. 
 
@@ -46,7 +46,7 @@
             Convolutional layers are equivariant to translation. This means that if the input is translated, the output is translated by the same amount. This is a very useful property when dealing with images, because the location of a feature is not important. For example, if we want to detect an edge in an image, it does not matter where in the image the edge is located.
         All of the above properties are related to each other, but their combinations makes convolutional layers in a network very powerful.
 \section{New Layers}
-    \subsection{Convolutional layers}
+    \subsection{\ycol{Convolutional layers}}
         A convolutional layer is just a layer in the neural network that uses the convolution (or rather the cross-correlation) operation rather than just plain matrix multiplication. Both the input and output may consist of several planes or channels. For example, an input image may have three channels, one for each color (RGB). The output of a convolutional layer may also have several channels. This is useful because it allows the network to learn different features in parallel. For example, one channel may learn to detect vertical edges, while another channel may learn to detect horizontal edges. The output of the convolutional layer is then a stack of feature maps, one for each channel. Let's consider convolutions in 2 dimensions, where we have $C_\mathrm{in}$ input channels and $C_\mathrm{out}$ output channels. The convolutional layer is then defined as:
         \begin{equation}
             \vec{S}(N_i, C_{\mathrm{out}_j}) = \mathrm{bias}(C_{\mathrm{out}_j}) + \sum_{k=1}^{C_\mathrm{in}} \vec{K}(C_{\mathrm{out}_j}, k) \star \vec{I}(N_i, k),
@@ -75,5 +75,5 @@
         \begin{equation}
             D_\mathrm{out} = \left\lfloor {\frac{D_\mathrm{in} + 2P-D(K-1)-1}{S}+1} \right\rfloor
         \end{equation}
-    \subsection{Pooling layers}
+    \subsection{\ycol{Pooling layers}}
         Pooling is a form of dimensional reduction. It is used to reduce the size of the feature maps. This is useful because it reduces the number of parameters stored and the number of computations needed. Pooling is usually done in the spatial dimensions, but it can also be done in the channel dimension. Pooling often consists of replacing the output of a small region of the feature map with some summary statistics for that region. Examples of summary statistics used may be max pooling, average pooling or $L^2$ pooling. Max pooling is the most common choice. A consequence of pooling is invariance to local translation. Also note that pooling may not have to bee a separate operation. Similar effects of dimension reduction and translation invariance may equally be obtained by choosing kernel size, padding, stride and dilation such that the dimension of the feature map is reduced. 

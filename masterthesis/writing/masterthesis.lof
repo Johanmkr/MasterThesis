@@ -7,16 +7,18 @@
 \addvspace {10\p@ }
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {7.1}{\ignorespaces Computational graph of a function $\mathbf {z} = f(g(\mathbf {x}))$.\relax }}{21}{figure.caption.36}%
-\contentsline {figure}{\numberline {7.2}{\ignorespaces Computational graph of a hidden layer of a neural network.\relax }}{22}{figure.caption.42}%
-\contentsline {figure}{\numberline {7.3}{\ignorespaces Computational graph of a fully connected feed forward neural network.\relax }}{23}{figure.caption.44}%
+\contentsline {figure}{\numberline {7.1}{\ignorespaces Computational graph of a function $\mathbf {z} = f(g(\mathbf {x}))$.\relax }}{21}{figure.caption.34}%
+\contentsline {figure}{\numberline {7.2}{\ignorespaces Computational graph of a hidden layer of a neural network.\relax }}{22}{figure.caption.40}%
+\contentsline {figure}{\numberline {7.3}{\ignorespaces Computational graph of a fully connected feed forward neural network.\relax }}{23}{figure.caption.42}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {8.1}{\ignorespaces \leavevmode {\color {blue}TODO: }\leavevmode {\color {blue}fix this figure to be correct w.r.t. cross-correlation/convolution} Example of a cross-correlation operation, which we will also call a convolution. The input image is given by the matrix $\mathbf I$ and the kernel is given by the matrix $\mathbf K$. The output is given by the matrix $\mathbf {K \star I}$. The dashed lines indicate which elements of the input and kernel are multiplied together to produce the output. The figure is taken from TikZ.net \leavevmode {\color {blue}TODO: }\leavevmode {\color {blue}fix this citation}\relax }}{30}{figure.caption.125}%
+\contentsline {figure}{\numberline {8.1}{\ignorespaces \leavevmode {\color {blue}TODO: }\leavevmode {\color {blue}fix this figure to be correct w.r.t. cross-correlation/convolution} Example of a cross-correlation operation, which we will also call a convolution. The input image is given by the matrix $\mathbf I$ and the kernel is given by the matrix $\mathbf K$. The output is given by the matrix $\mathbf {K \star I}$. The dashed lines indicate which elements of the input and kernel are multiplied together to produce the output. The figure is taken from TikZ.net \leavevmode {\color {blue}TODO: }\leavevmode {\color {blue}fix this citation}\relax }}{30}{figure.caption.122}%
 \addvspace {10\p@ }
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {10.1}{\ignorespaces Slice 0\relax }}{38}{figure.caption.210}%
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Average matter power spectra at different redshifts.\relax }}{39}{figure.caption.212}%
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Average potential power spectra at different redshifts.\relax }}{40}{figure.caption.213}%
 \addvspace {10\p@ }
-\contentsline {figure}{\numberline {11.1}{\ignorespaces Outline of data structure.\relax }}{46}{figure.caption.239}%
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Slice 0\relax }}{40}{figure.caption.30}%
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Average matter power spectra at different redshifts.\relax }}{41}{figure.caption.32}%
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Average potential power spectra at different redshifts.\relax }}{42}{figure.caption.33}%
+\addvspace {10\p@ }
+\contentsline {figure}{\numberline {11.1}{\ignorespaces Outline of data structure.\relax }}{48}{figure.caption.59}%
+\addvspace {10\p@ }
 \contentsfinish 

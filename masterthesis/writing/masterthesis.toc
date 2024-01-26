@@ -40,104 +40,118 @@
 \contentsline {part}{II\hspace {1em}Machine Learning}{15}{part.5}%
 \contentsline {chapter}{\numberline {6}Fundamental Elements of Machine Learning}{17}{chapter.6}%
 \contentsline {section}{\numberline {6.1}Introduction}{17}{section.7}%
-\contentsline {section}{\numberline {6.2}Linear Algebra}{17}{section.8}%
-\contentsline {section}{\numberline {6.3}Probability and Information Theory}{17}{section.9}%
-\contentsline {section}{\numberline {6.4}Basic Machine Learning}{17}{section.10}%
-\contentsline {subsection}{\numberline {6.4.1}Optimisation and Generalisation}{17}{subsection.11}%
-\contentsline {paragraph}{Optimisation}{17}{paragraph*.12}%
-\contentsline {paragraph}{Generalisation}{17}{paragraph*.13}%
-\contentsline {subsection}{\numberline {6.4.2}Data and Fitting}{18}{subsection.14}%
-\contentsline {paragraph}{Data}{18}{paragraph*.15}%
-\contentsline {paragraph}{Training and testing}{18}{paragraph*.16}%
-\contentsline {paragraph}{Overfitting}{18}{paragraph*.17}%
-\contentsline {paragraph}{Underfitting}{18}{paragraph*.18}%
-\contentsline {subsection}{\numberline {6.4.3}Estimators, Bias, Variance and Error}{18}{subsection.19}%
-\contentsline {paragraph}{Estimators}{18}{paragraph*.20}%
-\contentsline {paragraph}{Function estimators}{18}{paragraph*.22}%
-\contentsline {paragraph}{Bias}{19}{paragraph*.23}%
-\contentsline {paragraph}{Variance}{19}{paragraph*.24}%
-\contentsline {paragraph}{Standard Error}{19}{paragraph*.25}%
-\contentsline {paragraph}{Mean Squared Error}{19}{paragraph*.27}%
-\contentsline {subsection}{\numberline {6.4.4}Maximum Likelihood Estimation}{19}{subsection.29}%
-\contentsline {subsection}{\numberline {6.4.5}Bayesian Statistics}{19}{subsection.30}%
-\contentsline {subsection}{\numberline {6.4.6}Supervised Learning}{19}{subsection.31}%
-\contentsline {subsection}{\numberline {6.4.7}Unsupervised Learning}{19}{subsection.32}%
-\contentsline {chapter}{\numberline {7}Neural Networks}{21}{chapter.33}%
-\contentsline {section}{\numberline {7.1}Forward pass - Prediction}{21}{section.34}%
-\contentsline {subsection}{\numberline {7.1.1}Computational Graphs}{21}{subsection.35}%
-\contentsline {subsection}{\numberline {7.1.2}Architecture}{21}{subsection.37}%
-\contentsline {subsection}{\numberline {7.1.3}Activation}{22}{subsection.39}%
-\contentsline {subsection}{\numberline {7.1.4}Full graph and its output}{22}{subsection.43}%
-\contentsline {subsection}{\numberline {7.1.5}Activation functions}{23}{subsection.45}%
-\contentsline {paragraph}{Linear}{23}{paragraph*.46}%
-\contentsline {paragraph}{Sigmoid}{23}{paragraph*.48}%
-\contentsline {paragraph}{Hyperbolic tangent}{23}{paragraph*.50}%
-\contentsline {paragraph}{Rectified linear unit}{23}{paragraph*.52}%
-\contentsline {paragraph}{(Scaled) Exponential linear unit}{23}{paragraph*.54}%
-\contentsline {paragraph}{Parametric rectified linear unit}{24}{paragraph*.56}%
-\contentsline {paragraph}{Softmax}{24}{paragraph*.58}%
-\contentsline {subsection}{\numberline {7.1.6}Loss functions}{24}{subsection.60}%
-\contentsline {paragraph}{MSE}{24}{paragraph*.61}%
-\contentsline {paragraph}{Cross entropy}{24}{paragraph*.63}%
-\contentsline {subsection}{\numberline {7.1.7}Regularization}{24}{subsection.66}%
-\contentsline {section}{\numberline {7.2}Backpropagation - Training}{24}{section.67}%
-\contentsline {subsection}{\numberline {7.2.1}Chain rule}{24}{subsection.68}%
-\contentsline {paragraph}{Basics}{24}{paragraph*.69}%
-\contentsline {subsection}{\numberline {7.2.2}Backpropagation algorithm}{25}{subsection.71}%
-\contentsline {subsection}{\numberline {7.2.3}Optimization of parameters}{25}{subsection.85}%
-\contentsline {paragraph}{Gradient descent}{25}{paragraph*.86}%
-\contentsline {paragraph}{Stochastic gradient descent}{26}{paragraph*.89}%
-\contentsline {paragraph}{Adding momentum}{26}{paragraph*.91}%
-\contentsline {paragraph}{Adaptive momentum}{26}{paragraph*.93}%
-\contentsline {paragraph}{Learning rate schedules?}{27}{paragraph*.105}%
-\contentsline {paragraph}{Batch normalization}{27}{paragraph*.106}%
-\contentsline {section}{\numberline {7.3}Challenges in optimization}{27}{section.107}%
-\contentsline {paragraph}{Vanishing gradient}{27}{paragraph*.108}%
-\contentsline {paragraph}{Exploding gradient}{27}{paragraph*.109}%
-\contentsline {paragraph}{Local minima}{27}{paragraph*.110}%
-\contentsline {section}{\numberline {7.4}Regularization}{28}{section.111}%
-\contentsline {subsection}{\numberline {7.4.1}Parameter norm penalties}{28}{subsection.112}%
-\contentsline {subsection}{\numberline {7.4.2}Data augmentation}{28}{subsection.113}%
-\contentsline {subsection}{\numberline {7.4.3}Early stopping}{28}{subsection.114}%
-\contentsline {subsection}{\numberline {7.4.4}Parameter sharing}{28}{subsection.115}%
-\contentsline {subsection}{\numberline {7.4.5}Ensemble methods}{28}{subsection.116}%
-\contentsline {subsection}{\numberline {7.4.6}Dropout}{28}{subsection.117}%
-\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{29}{chapter.118}%
-\contentsline {section}{\numberline {8.1}Convolution}{29}{section.119}%
-\contentsline {subsection}{\numberline {8.1.1}Basic definitions}{29}{subsection.120}%
-\contentsline {subsection}{\numberline {8.1.2}Properties}{30}{subsection.126}%
-\contentsline {paragraph}{Feature detection}{30}{paragraph*.127}%
-\contentsline {paragraph}{Sparse interactions}{30}{paragraph*.128}%
-\contentsline {paragraph}{Parameter sharing}{30}{paragraph*.129}%
-\contentsline {paragraph}{Equivariance}{30}{paragraph*.130}%
-\contentsline {section}{\numberline {8.2}New Layers}{30}{section.131}%
-\contentsline {subsection}{\numberline {8.2.1}Convolutional layers}{30}{subsection.132}%
-\contentsline {paragraph}{Kernel size}{31}{paragraph*.135}%
-\contentsline {paragraph}{Padding}{31}{paragraph*.136}%
-\contentsline {paragraph}{Stride}{31}{paragraph*.137}%
-\contentsline {paragraph}{Dilation}{31}{paragraph*.138}%
-\contentsline {subsection}{\numberline {8.2.2}Pooling layers}{32}{subsection.140}%
-\contentsline {part}{III\hspace {1em}Acquiring Data}{31}{part.185}%
-\contentsline {chapter}{\numberline {9}Simulations}{33}{chapter.186}%
-\contentsline {section}{\numberline {9.1}Parameters}{33}{section.187}%
-\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{33}{subsection.188}%
-\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{33}{subsection.190}%
-\contentsline {subsection}{\numberline {9.1.3}Box parameters}{34}{subsection.192}%
-\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{34}{subsection.194}%
-\contentsline {section}{\numberline {9.2}Output}{34}{section.197}%
-\contentsline {subsection}{\numberline {9.2.1}Datacubes}{34}{subsection.198}%
-\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{35}{subsection.200}%
-\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{35}{subsection.201}%
-\contentsline {subsection}{\numberline {9.2.4}Normalisation}{35}{subsection.206}%
-\contentsline {chapter}{\numberline {10}Data Verification}{37}{chapter.208}%
-\contentsline {section}{\numberline {10.1}Slices of Datacubes}{37}{section.209}%
-\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{37}{section.211}%
-\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{37}{section.214}%
-\contentsline {section}{\numberline {10.4}Analytical Bispectra}{37}{section.215}%
-\contentsline {section}{\numberline {10.5}Bispectra from Cube}{37}{section.217}%
-\contentsline {subsection}{\numberline {10.5.1}Binning}{37}{subsection.218}%
-\contentsline {subsection}{\numberline {10.5.2}Bispectra}{37}{subsection.220}%
-\contentsline {chapter}{\numberline {11}Trainable Dataset}{45}{chapter.222}%
-\contentsline {section}{\numberline {11.1}Gathering the cubes}{45}{section.223}%
-\contentsline {section}{\numberline {11.2}Find image from index}{45}{section.224}%
+\contentsline {section}{\numberline {6.2}Basic Machine Learning}{17}{section.8}%
+\contentsline {subsection}{\numberline {6.2.1}\leavevmode {\color {orange}Optimisation and Generalisation}}{17}{subsection.9}%
+\contentsline {paragraph}{Optimisation}{17}{paragraph*.10}%
+\contentsline {paragraph}{Generalisation}{17}{paragraph*.11}%
+\contentsline {subsection}{\numberline {6.2.2}\leavevmode {\color {orange}Data and Fitting}}{17}{subsection.12}%
+\contentsline {paragraph}{Data}{17}{paragraph*.13}%
+\contentsline {paragraph}{Training and testing}{18}{paragraph*.14}%
+\contentsline {paragraph}{Overfitting}{18}{paragraph*.15}%
+\contentsline {paragraph}{Underfitting}{18}{paragraph*.16}%
+\contentsline {subsection}{\numberline {6.2.3}\leavevmode {\color {orange}Estimators, Bias, Variance and Error}}{18}{subsection.17}%
+\contentsline {paragraph}{Estimators}{18}{paragraph*.18}%
+\contentsline {paragraph}{Function estimators}{18}{paragraph*.20}%
+\contentsline {paragraph}{Bias}{18}{paragraph*.21}%
+\contentsline {paragraph}{Variance}{19}{paragraph*.22}%
+\contentsline {paragraph}{Standard Error}{19}{paragraph*.23}%
+\contentsline {paragraph}{Mean Squared Error}{19}{paragraph*.25}%
+\contentsline {subsection}{\numberline {6.2.4}\leavevmode {\color {red}Maximum Likelihood Estimation}}{19}{subsection.27}%
+\contentsline {subsection}{\numberline {6.2.5}\leavevmode {\color {red}Bayesian Statistics}}{19}{subsection.28}%
+\contentsline {subsection}{\numberline {6.2.6}\leavevmode {\color {red}Supervised Learning}}{19}{subsection.29}%
+\contentsline {subsection}{\numberline {6.2.7}\leavevmode {\color {red}Unsupervised Learning}}{19}{subsection.30}%
+\contentsline {chapter}{\numberline {7}Neural Networks}{21}{chapter.31}%
+\contentsline {section}{\numberline {7.1}Forward pass - Prediction}{21}{section.32}%
+\contentsline {subsection}{\numberline {7.1.1}\leavevmode {\color {orange}Computational Graphs}}{21}{subsection.33}%
+\contentsline {subsection}{\numberline {7.1.2}\leavevmode {\color {orange}Architecture}}{21}{subsection.35}%
+\contentsline {subsection}{\numberline {7.1.3}\leavevmode {\color {orange}Activation}}{22}{subsection.37}%
+\contentsline {subsection}{\numberline {7.1.4}\leavevmode {\color {orange}Full graph and its output}}{22}{subsection.41}%
+\contentsline {subsection}{\numberline {7.1.5}\leavevmode {\color {orange}Activation functions}}{23}{subsection.43}%
+\contentsline {paragraph}{Linear}{23}{paragraph*.44}%
+\contentsline {paragraph}{Sigmoid}{23}{paragraph*.46}%
+\contentsline {paragraph}{Hyperbolic tangent}{23}{paragraph*.48}%
+\contentsline {paragraph}{Rectified linear unit}{23}{paragraph*.50}%
+\contentsline {paragraph}{(Scaled) Exponential linear unit}{23}{paragraph*.52}%
+\contentsline {paragraph}{Parametric rectified linear unit}{24}{paragraph*.54}%
+\contentsline {paragraph}{Softmax}{24}{paragraph*.56}%
+\contentsline {subsection}{\numberline {7.1.6}\leavevmode {\color {orange}Loss functions}}{24}{subsection.58}%
+\contentsline {paragraph}{MSE}{24}{paragraph*.59}%
+\contentsline {paragraph}{Cross entropy}{24}{paragraph*.61}%
+\contentsline {section}{\numberline {7.2}Backpropagation - Training}{24}{section.64}%
+\contentsline {subsection}{\numberline {7.2.1}\leavevmode {\color {red}Chain rule}}{24}{subsection.65}%
+\contentsline {paragraph}{Basics}{24}{paragraph*.66}%
+\contentsline {subsection}{\numberline {7.2.2}\leavevmode {\color {orange}Backpropagation algorithm}}{25}{subsection.68}%
+\contentsline {subsection}{\numberline {7.2.3}\leavevmode {\color {orange}Optimization of parameters}}{25}{subsection.82}%
+\contentsline {paragraph}{Gradient descent}{25}{paragraph*.83}%
+\contentsline {paragraph}{Stochastic gradient descent}{26}{paragraph*.86}%
+\contentsline {paragraph}{Adding momentum}{26}{paragraph*.88}%
+\contentsline {paragraph}{Adaptive momentum}{26}{paragraph*.90}%
+\contentsline {paragraph}{Learning rate schedules?}{27}{paragraph*.102}%
+\contentsline {paragraph}{Batch normalization}{27}{paragraph*.103}%
+\contentsline {section}{\numberline {7.3}\leavevmode {\color {orange}Challenges in optimization}}{27}{section.104}%
+\contentsline {paragraph}{Vanishing gradient}{27}{paragraph*.105}%
+\contentsline {paragraph}{Exploding gradient}{27}{paragraph*.106}%
+\contentsline {paragraph}{Local minima}{27}{paragraph*.107}%
+\contentsline {section}{\numberline {7.4}Regularization}{28}{section.108}%
+\contentsline {subsection}{\numberline {7.4.1}\leavevmode {\color {red}Parameter norm penalties}}{28}{subsection.109}%
+\contentsline {subsection}{\numberline {7.4.2}\leavevmode {\color {red}Data augmentation}}{28}{subsection.110}%
+\contentsline {subsection}{\numberline {7.4.3}\leavevmode {\color {red}Early stopping}}{28}{subsection.111}%
+\contentsline {subsection}{\numberline {7.4.4}\leavevmode {\color {red}Parameter sharing}}{28}{subsection.112}%
+\contentsline {subsection}{\numberline {7.4.5}\leavevmode {\color {red}Ensemble methods}}{28}{subsection.113}%
+\contentsline {subsection}{\numberline {7.4.6}\leavevmode {\color {red}Dropout}}{28}{subsection.114}%
+\contentsline {chapter}{\numberline {8}Convolutional Neural Networks}{29}{chapter.115}%
+\contentsline {section}{\numberline {8.1}Convolution}{29}{section.116}%
+\contentsline {subsection}{\numberline {8.1.1}\leavevmode {\color {blue}Basic definitions}}{29}{subsection.117}%
+\contentsline {subsection}{\numberline {8.1.2}\leavevmode {\color {orange}Properties}}{30}{subsection.123}%
+\contentsline {paragraph}{Feature detection}{30}{paragraph*.124}%
+\contentsline {paragraph}{Sparse interactions}{30}{paragraph*.125}%
+\contentsline {paragraph}{Parameter sharing}{30}{paragraph*.126}%
+\contentsline {paragraph}{Equivariance}{30}{paragraph*.127}%
+\contentsline {section}{\numberline {8.2}New Layers}{30}{section.128}%
+\contentsline {subsection}{\numberline {8.2.1}\leavevmode {\color {orange}Convolutional layers}}{30}{subsection.129}%
+\contentsline {paragraph}{Kernel size}{31}{paragraph*.132}%
+\contentsline {paragraph}{Padding}{31}{paragraph*.133}%
+\contentsline {paragraph}{Stride}{31}{paragraph*.134}%
+\contentsline {paragraph}{Dilation}{31}{paragraph*.135}%
+\contentsline {subsection}{\numberline {8.2.2}\leavevmode {\color {orange}Pooling layers}}{32}{subsection.137}%
+\contentsline {chapter}{\numberline {9}Binary Classifier}{33}{chapter.138}%
+\contentsline {section}{\numberline {9.1}\leavevmode {\color {blue}Primer on Information Theory}}{33}{section.139}%
+\contentsline {subsection}{\numberline {9.1.1}\leavevmode {\color {blue}Elements of Surprise}}{33}{subsection.140}%
+\contentsline {subsection}{\numberline {9.1.2}\leavevmode {\color {blue}Cross-Entropy}}{33}{subsection.144}%
+\contentsline {subsection}{\numberline {9.1.3}\leavevmode {\color {blue}Kullback-Leibler Divergence}}{34}{subsection.146}%
+\contentsline {section}{\numberline {9.2}\leavevmode {\color {blue}Input-Output}}{34}{section.149}%
+\contentsline {subsection}{\numberline {9.2.1}\leavevmode {\color {blue}Input Distribution}}{34}{subsection.150}%
+\contentsline {subsection}{\numberline {9.2.2}\leavevmode {\color {blue}Output Distribution}}{35}{subsection.151}%
+\contentsline {subsection}{\numberline {9.2.3}\leavevmode {\color {blue}Comparison of Distributions}}{35}{subsection.152}%
+\contentsline {section}{\numberline {9.3}\leavevmode {\color {red}Assessing a Binary Classifier}}{35}{section.155}%
+\contentsline {subsection}{\numberline {9.3.1}\leavevmode {\color {red}Loss}}{35}{subsection.156}%
+\contentsline {subsection}{\numberline {9.3.2}\leavevmode {\color {orange}Confusion Matrix}}{35}{subsection.158}%
+\contentsline {subsection}{\numberline {9.3.3}\leavevmode {\color {orange}Performance Metrics}}{36}{subsection.160}%
+\contentsline {part}{III\hspace {1em}Acquiring Data and Training Model}{33}{part.5}%
+\contentsline {chapter}{\numberline {9}Simulations}{35}{chapter.6}%
+\contentsline {section}{\numberline {9.1}Parameters}{35}{section.7}%
+\contentsline {subsection}{\numberline {9.1.1}Cosmological parameters}{35}{subsection.8}%
+\contentsline {subsection}{\numberline {9.1.2}Primordial power spectrum}{35}{subsection.10}%
+\contentsline {subsection}{\numberline {9.1.3}Box parameters}{36}{subsection.12}%
+\contentsline {subsection}{\numberline {9.1.4}Seeds and gravity theories}{36}{subsection.14}%
+\contentsline {section}{\numberline {9.2}Output}{36}{section.17}%
+\contentsline {subsection}{\numberline {9.2.1}Datacubes}{36}{subsection.18}%
+\contentsline {subsection}{\numberline {9.2.2}Redshift problem}{37}{subsection.20}%
+\contentsline {subsection}{\numberline {9.2.3}Statistics of dataset}{37}{subsection.21}%
+\contentsline {subsection}{\numberline {9.2.4}Normalisation}{37}{subsection.26}%
+\contentsline {chapter}{\numberline {10}Data Verification}{39}{chapter.28}%
+\contentsline {section}{\numberline {10.1}Slices of Datacubes}{39}{section.29}%
+\contentsline {section}{\numberline {10.2}Powerspectra from Simulations}{39}{section.31}%
+\contentsline {section}{\numberline {10.3}Powerspectra from Datacubes}{39}{section.34}%
+\contentsline {section}{\numberline {10.4}Analytical Bispectra}{39}{section.35}%
+\contentsline {section}{\numberline {10.5}Bispectra from Cube}{39}{section.37}%
+\contentsline {subsection}{\numberline {10.5.1}Binning}{39}{subsection.38}%
+\contentsline {subsection}{\numberline {10.5.2}Bispectra}{39}{subsection.40}%
+\contentsline {chapter}{\numberline {11}Trainable Dataset}{47}{chapter.42}%
+\contentsline {section}{\numberline {11.1}Gathering the cubes}{47}{section.43}%
+\contentsline {section}{\numberline {11.2}Find image from index}{47}{section.44}%
+\contentsline {chapter}{\numberline {12}Machine Learning Model}{51}{chapter.60}%
+\contentsline {section}{\numberline {12.1}Framwork}{51}{section.61}%
+\contentsline {section}{\numberline {12.2}Model Architecture}{51}{section.62}%
+\contentsline {section}{\numberline {12.3}Training}{51}{section.63}%
 \contentsfinish 

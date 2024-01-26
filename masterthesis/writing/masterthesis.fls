@@ -1664,6 +1664,14 @@ INPUT ./TikZ/ML/convolution_operation_map_example.tex
 INPUT TikZ/ML/convolution_operation_map_example.tex
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmtt10.tfm
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/rm-lmtt8.tfm
+INPUT ./chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT ./chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT ./chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT ./chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT ./chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT chapters/machine_learning/subchapters/binary_classifier.tex
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/tfm/public/lm/ec-lmri9.tfm
 INPUT ./chapters/generation_of_data/data_generation.tex
 INPUT ./chapters/generation_of_data/data_generation.tex
 INPUT ./chapters/generation_of_data/data_generation.tex
@@ -1708,6 +1716,7 @@ INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/t
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr8.pfb
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmr9.pfb
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmri10.pfb
+INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmri9.pfb
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy10.pfb
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy6.pfb
 INPUT /net/alruba2.uio.no/mn/alruba2/astro/local/texlive/2021/texmf-dist/fonts/type1/public/lm/lmsy8.pfb
