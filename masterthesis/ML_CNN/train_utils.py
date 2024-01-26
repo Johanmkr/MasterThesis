@@ -213,12 +213,13 @@ def print_and_write_statistics(
     writer, epoch_nr, loss, TP, TN, FP, FN, suffix, time=None
 ):
     # Calculate metrics
-    accuracy = (TP + TN) / (TP + TN + FP + FN)
-    precision = TP / (TP + FP)
-    recall = TP / (TP + FN)
-    F1_score = 2 * (precision * recall) / (precision + recall)
-    TPR = TP / (TP + FN)
-    FPR = FP / (FP + TN)
+    divtol = 1e-9
+    accuracy = (TP + TN) / (TP + TN + FP + FN + divtol)
+    precision = TP / (TP + FP + divtol)
+    recall = TP / (TP + FN + divtol)
+    F1_score = 2 * (precision * recall) / (precision + recall + divtol)
+    TPR = TP / (TP + FN + divtol)
+    FPR = FP / (FP + TN + divtol)
 
     # Print statistics
     string = f"\n---{suffix.capitalize()}---\nEpoch {epoch_nr}\nLoss:       {loss:.5f}\nAccuracy:   {accuracy:.4f} = {accuracy*100:.2f} %\nPrecision:  {precision:.4f}\nRecall:     {recall:.4f}\nF1 score:   {F1_score:.4f}\nTPR:        {TPR:.4f}\nFPR:        {FPR:.4f}\n"
@@ -264,7 +265,7 @@ def evaluate_cube_version(
         while not end_of_data:
             try:
                 batch = next(iterator)
-                if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and (
+                if ((i + 1) % 10 == 0 or (i + 1) == max_batches) and (
                     device == 0 or type(device) == torch.device
                 ):
                     print(f"EVAL - Batch: {i+1}/{max_batches}")
@@ -347,7 +348,7 @@ def train_one_epoch_cube_version(
     while not end_of_data:
         try:
             batch = next(iterator)
-            if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and (
+            if ((i + 1) % 10 == 0 or (i + 1) == max_batches) and (
                 device == 0 or type(device) == torch.device
             ):
                 print(f"TRAIN - Batch: {i+1}/{max_batches}")

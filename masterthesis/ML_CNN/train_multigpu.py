@@ -206,16 +206,6 @@ def worker(
                 time=epoch_train_end_time - epoch_train_start_time,
             )
 
-            # # Print statistics
-            # print(
-            #     f"\nTraining:\nTrain loss: {mean_train_loss:.4f}\nTrain predictions: {total_train_predictions}/{total_train_samples}\nTrain accuracy: {mean_train_accuracy*100:.4f} %\nTime elapsed for training: {epoch_train_end_time - epoch_train_start_time:.2f} s\n"
-            # )
-            # # Write to tensorboard
-            # writer.add_scalar("Loss/train", mean_train_loss, epoch)
-            # writer.add_scalar("Accuracy/train", mean_train_accuracy, epoch)
-            # writer.add_scalar("Correct/train", total_train_predictions, epoch)
-            # writer.flush()
-
         # Placeholder for early stopping across all ranks
         should_stop = torch.tensor(False, dtype=torch.bool).to(rank)
 
@@ -276,17 +266,6 @@ def worker(
                     suffix="test",
                     time=epoch_test_end_time - epoch_test_start_time,
                 )
-
-                # # Print statistics
-                # print(
-                #     f"Testing:\nTest loss: {mean_test_loss:.4f}\nTest predictions: {total_test_predictions}/{total_test_samples}\nTest accuracy: {mean_test_accuracy*100:.4f} %\nTime elapsed for testing: {epoch_test_end_time - epoch_test_start_time:.2f} s\n"
-                # )
-
-                # # Write to tensorboard
-                # writer.add_scalar("Loss/test", mean_test_loss, epoch)
-                # writer.add_scalar("Accuracy/test", mean_test_accuracy, epoch)
-                # writer.add_scalar("Correct/test", total_test_predictions, epoch)
-                # writer.flush()
 
                 # Early stopping condition
                 if mean_test_loss < training_params["breakout_loss"]:
@@ -374,67 +353,6 @@ def train(
         nprocs=world_size,
         join=True,
     )
-
-
-# class MultipleGPUTrainer:
-#     def __init__(
-#         self,
-#         model: nn.Module,
-#         train_dataset,
-#         test_dataset,
-#         batch_size,
-#         num_workers,
-#         prefetch_factor,
-#         test_name: str = "test",
-#     ):
-#         self.model = model
-#         self.train_dataset = train_dataset
-#         self.test_dataset = test_dataset
-#         self.batch_size = batch_size
-#         self.num_workers = num_workers
-#         self.prefetch_factor = prefetch_factor
-#         self.model_save_path = f"models/{test_name}.pt"
-#         self.writer_log_path = f"runs/{test_name}"
-#         self.epochs_trained = 0
-
-#         # Tensorboard
-#         # self.writer = SummaryWriter(self.writer_log_path)
-#         # self.writer.add_graph(self.model, torch.zeros(model.input_size).unsqueeze(0))
-
-#     def run(
-#         self,
-#         epochs,
-#         breakout_loss,
-#         tol,
-#         optimizer_params,
-#     ):
-#         worker_args = {
-#             "world_size": world_size,
-#             "model": self.model,
-#             "train_dataset": self.train_dataset,
-#             "test_dataset": self.test_dataset,
-#             "batch_size": self.batch_size,
-#             "num_workers": self.num_workers,
-#             "prefetch_factor": self.prefetch_factor,
-#             "pin_memory": True,
-#             "shuffle": True,
-#             "drop_last": True,
-#             "optimizer_params": optimizer_params,
-#             "epochs": epochs,
-#             "tol": tol,
-#             "writer_log_path": self.writer_log_path,
-#             "breakout_loss": breakout_loss,
-#             "model_save_path": self.model_save_path,
-#         }
-
-#         mp.spawn(
-#             worker,
-#             args=(tuple(worker_args.values())),
-#             # args=(world_size, self.train_dataset, self.test_dataset, self.model),
-#             nprocs=world_size,
-#             join=True,
-#         )
-#         self.epochs_trained += epochs
 
 
 if __name__ == "__main__":

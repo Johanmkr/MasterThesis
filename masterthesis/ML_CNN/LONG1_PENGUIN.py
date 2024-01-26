@@ -12,10 +12,10 @@ else:
     import train_singlegpu as train
 
 ########################## MOST IMPORTANT PARAMS ############################
-train_test_division_at_seed = 100
-total_seeds = 120
+train_test_division_at_seed = 1500
+total_seeds = 1700
 newton_augmentation = (
-    0.0  # must be one for serious training, change for testing pipeline.
+    1.0  # must be one for serious training, change for testing pipeline.
 )
 
 architecture = "PENGUIN"
@@ -25,21 +25,21 @@ lr = 1e-4
 betas = (0.5, 0.999)
 weight_decay = 1e-11
 
-epochs = 5
+epochs = 50
 
 
 ########################## MODEL NAME and DATA PATH ##########################
 datapath = "/mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5"
 dataname = datapath.split("/")[-1].split(".")[0]
-model_name = "code_test"
-# model_name = f"TEST_{dataname}_{architecture}_lp{layer_param}_na{newton_augmentation}"
+# model_name = "code_test"
+model_name = f"ACT_{dataname}_{architecture}_lp{layer_param}_na{newton_augmentation}"
 
 
 # Params
 data_params = {
     "train_seeds": np.arange(0, train_test_division_at_seed, 1),
     "test_seeds": np.arange(train_test_division_at_seed, total_seeds, 1),
-    "newton_augmentation": 0.0,  # must be one for serious training, change for testing pipeline.
+    "newton_augmentation": newton_augmentation,
     "datapath": datapath,
 }
 
@@ -76,7 +76,7 @@ optimizer_params = {
 training_params = {
     "epochs": epochs,
     "breakout_loss": 1e-4,
-    "writer_log_path": f"testruns/{model_name}_lr{lr:.5f}",
+    "writer_log_path": f"runs/{model_name}_lr{lr:.5f}",
     "test_every": 2,
 }
 
