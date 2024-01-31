@@ -9,11 +9,11 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torchvision import transforms as tf
+import matplotlib.pyplot as plt
 
 import data
 
 output_func = nn.Sigmoid()
-
 
 transforms = [lambda x: x]
 
@@ -45,6 +45,7 @@ def get_state(model_params: dict):
         "test_loss": 0,
         "best_loss": 1e10,
         "model_save_path": model_params["model_save_path"],
+        "model_information_written": False,
     }
     if model_params["load_model"]:
         # Load model
@@ -58,18 +59,11 @@ def get_state(model_params: dict):
     return state
 
 
-def confusion_metrics(predictions, targets, success_tol=0.5, target_noise=0.0):
-    target_noise += 1e-6  # Add a small number to avoid rounding errors
-
+def confusion_metrics(predictions, targets, success_tol=0.5):
     if predictions.size(0) != targets.size(0):
         raise ValueError("The length of predictions and targets must be the same.")
 
     # Normalize target values to be either 0 or 1 with the given tolerance
-    targets = (
-        targets.clone()
-    )  # Clone to prevent in-place operations affecting the original tensor
-    targets[targets < (0 + target_noise)] = 0
-    targets[targets > (1 - target_noise)] = 1
 
     # Apply threshold to predictions
     predictions = (predictions >= success_tol).bool()
@@ -92,6 +86,34 @@ def confusion_metrics(predictions, targets, success_tol=0.5, target_noise=0.0):
     return TP, TN, FP, FN
 
 
+def create_confusion_matrix(TP, TN, FP, FN, normalize=False):
+    # Matplotlib figure of confusion matrix
+    fig, ax = plt.subplots()
+    ax.set_title("Confusion matrix")
+    ax.set_xlabel("Predicted Labels")
+    ax.set_ylabel("True Labels")
+    ax.set_xticks([0, 1])
+    ax.set_yticks([0, 1])
+    ax.set_xticklabels(["0 (NG)", "1 (GR)"])
+    ax.set_yticklabels(["0 (NG)", "1 (GR)"])
+    total_positive = TP + FN
+    total_negative = TN + FP
+    if normalize:
+        cf = [[TN / (TN + FP), FP / (TN + FP)], [FN / (FN + TP), TP / (FN + TP)]]
+
+    else:
+        cf = [[TN, FP], [FN, TP]]
+    # Add text to each cell
+    for i in range(2):
+        for j in range(2):
+            f = "{:.2f}" if normalize else "{:d}"
+            ax.text(i, j, f"{cf[i][j]:.2f}", ha="center", va="center")
+    img = ax.imshow(cf, cmap="Blues")
+    return_image = fig.get_figure()
+    fig.close()
+    return return_image
+
+
 def one_pass(model, optimizer, loss_fn, image, labels):
     optimizer.zero_grad()
     output = model(image)
@@ -107,106 +129,47 @@ def one_eval(model, loss_fn, image, labels):
     return loss, output_func(output)
 
 
-# def train_one_epoch(
-#     device,
-#     model,
-#     train_loader,
-#     optimizer,
-#     loss_fn,
-#     epoch_nr,
-#     success_tol=0.5,
-# ):
-#     print(f"---------- Epoch {epoch_nr} ----------\n") if (
-#         device == 0 or type(device) == torch.device
-#     ) else None
-#     model.train()
-#     train_loss = 0
-#     train_predictions = 0
-#     train_samples = 0
-#     max_batches = len(train_loader)
+def slice_and_rearrange_cube(cubes, labels, device):
+    # Stack together the cubes and labels in the batch
+    N, D, H, W = cubes.shape
 
-#     i = 0
-#     iterator = iter(train_loader)
-#     end_of_data = False
-#     while not end_of_data:
-#         try:
-#             batch = next(iterator)
-#             if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and (
-#                 device == 0 or type(device) == torch.device
-#             ):
-#                 print(f"TRAIN - Batch: {i+1}/{max_batches}")
-#             # Get the inputs
-#             images, labels = batch["image"], batch["label"]
-#             images = images.to(device, non_blocking=True)
-#             labels = labels.to(device, non_blocking=True)
+    slices = []
+    targets = []
+    for i in range(N):
+        slice_d = (
+            cubes[i, :, :, :].unsqueeze(0).permute(0, 2, 3, 1).reshape(-1, 1, H, W)
+        )  # (256, 1, 256, 256)
+        slice_h = (
+            cubes[i, :, :, :].unsqueeze(0).permute(0, 1, 3, 2).reshape(-1, 1, D, W)
+        )  # (256, 1, 256, 256)
+        slice_w = (
+            cubes[i, :, :, :].unsqueeze(0).reshape(-1, 1, D, H)
+        )  # (256, 1, 256, 256)
+        slices.append(slice_d)
+        slices.append(slice_h)
+        slices.append(slice_w)
 
-#             # Zero the parameter gradients
-#             optimizer.zero_grad()
+        target = torch.ones(256, 1).to(device) * labels[i]
+        targets.append(target)
+        targets.append(target)
+        targets.append(target)
 
-#             # Forward + backward + optimize
-#             outputs = model(images)
-#             loss = loss_fn(outputs, labels)
-#             loss.backward()
-#             optimizer.step()
+    all_slices = torch.cat(slices, dim=0)
+    all_targets = torch.cat(targets, dim=0)
 
-#             # Print statistics
-#             train_loss += loss.item()
-#             train_predictions += success(outputs, labels, tol=success_tol)
-#             train_samples += len(labels)
-#             i += 1
-#         except StopIteration:
-#             end_of_data = True
+    # Old version
 
-#     train_loss /= max_batches  # avg loss per batch
+    # slices_d = cubes.permute(0, 2, 3, 1).reshape(-1, 1, H, W)  # (N*256, 1, 256, 256)
+    # slices_h = cubes.permute(0, 1, 3, 2).reshape(-1, 1, D, W)  # (N*256, 1, 256, 256)
+    # slices_w = cubes.reshape(-1, 1, D, H)  # (N*256, 1, 256, 256)
 
-#     return train_loss, train_predictions, train_samples
+    # all_slices = torch.cat(
+    #     [slices_d, slices_h, slices_w], dim=0
+    # )  # (3*N*256, 1, 256, 256)
 
+    # all_targets = labels.repeat(1, 256 * 3).reshape(-1, 1)  # (3*N*256, 1)
 
-# def evaluate(
-#     device,
-#     model,
-#     loss_fn,
-#     test_loader,
-#     success_tol=0.5,
-# ):
-#     model.eval()
-#     test_loss = 0
-#     evaluation_predictions = 0
-#     evaluation_samples = 0
-#     max_batches = len(test_loader)
-
-#     i = 0
-#     iterator = iter(test_loader)
-#     end_of_data = False
-
-#     with torch.no_grad():
-#         while not end_of_data:
-#             try:
-#                 batch = next(iterator)
-#                 if ((i + 1) % 25 == 0 or (i + 1) == max_batches) and (
-#                     device == 0 or type(device) == torch.device
-#                 ):
-#                     print(f"EVAL - Batch: {i+1}/{max_batches}")
-#                 images, labels = batch["image"], batch["label"]
-#                 images = images.to(device, non_blocking=True)
-#                 labels = labels.to(device, non_blocking=True)
-
-#                 loss, outputs = one_eval(model, loss_fn, images, labels)
-
-#                 # Print statistics
-#                 test_loss += loss.item()
-#                 evaluation_predictions += success(outputs, labels, tol=success_tol)
-#                 evaluation_samples += len(labels)
-#                 i += 1
-#             except StopIteration:
-#                 end_of_data = True
-#     test_loss /= max_batches  # avg loss per batch
-
-#     return (
-#         test_loss,
-#         evaluation_predictions,
-#         evaluation_samples,
-#     )
+    return all_slices, all_targets
 
 
 def print_and_write_statistics(
@@ -277,27 +240,19 @@ def evaluate_cube_version(
 
                 transforms_idices = list(np.random.permutation(nr_transformations))
 
-                # Stack together the cubes and labels in the batch
-                N, D, H, W = cubes.shape
-
-                slices_d = cubes.permute(0, 2, 3, 1).reshape(
-                    -1, 1, H, W
-                )  # (N*256, 1, 256, 256)
-                slices_h = cubes.permute(0, 1, 3, 2).reshape(
-                    -1, 1, D, W
-                )  # (N*256, 1, 256, 256)
-                slices_w = cubes.reshape(-1, 1, D, H)  # (N*256, 1, 256, 256)
-
-                all_slices = torch.cat(
-                    [slices_d, slices_h, slices_w], dim=0
-                )  # (3*N*256, 1, 256, 256)
-
-                targets = labels.repeat(1, 256 * 3).reshape(-1, 1)  # (3*N*256, 1)
+                all_slices, targets = slice_and_rearrange_cube(cubes, labels, device)
 
                 # Loop over transformations
                 for transform_idx in transforms_idices:
-                    transformed_slices = transforms[transform_idx](all_slices)
-                    loss, pred = one_eval(model, loss_fn, transformed_slices, targets)
+                    # Create a permutation index that will be used to shuffle both the slices and the labels.
+                    permutation_index = torch.randperm(all_slices.size(0))
+
+                    loss, pred = one_eval(
+                        model,
+                        loss_fn,
+                        transforms[transform_idx](all_slices[permutation_index]),
+                        targets[permutation_index],
+                    )
                     test_loss += loss.item()
                     TP_, TN_, FP_, FN_ = confusion_metrics(
                         pred,
@@ -363,28 +318,19 @@ def train_one_epoch_cube_version(
 
             transforms_idices = list(np.random.permutation(nr_transformations))
 
-            # Stack together the cubes and labels in the batch
-            N, D, H, W = cubes.shape
-
-            slices_d = cubes.permute(0, 2, 3, 1).reshape(
-                -1, 1, H, W
-            )  # (N*256, 1, 256, 256)
-            slices_h = cubes.permute(0, 1, 3, 2).reshape(
-                -1, 1, D, W
-            )  # (N*256, 1, 256, 256)
-            slices_w = cubes.reshape(-1, 1, D, H)  # (N*256, 1, 256, 256)
-
-            all_slices = torch.cat(
-                [slices_d, slices_h, slices_w], dim=0
-            )  # (3*N*256, 1, 256, 256)
-
-            targets = labels.repeat(1, 256 * 3).reshape(-1, 1)  # (3*N*256, 1)
+            all_slices, targets = slice_and_rearrange_cube(cubes, labels, device)
 
             # Loop over transformations
             for transform_idx in transforms_idices:
-                transformed_slices = transforms[transform_idx](all_slices)
+                # Create a permutation index that will be used to shuffle both the slices and the labels.
+                permutation_index = torch.randperm(all_slices.size(0))
+
                 loss, pred = one_pass(
-                    model, optimizer, loss_fn, transformed_slices, targets
+                    model,
+                    optimizer,
+                    loss_fn,
+                    transforms[transform_idx](all_slices[permutation_index]),
+                    targets[permutation_index],
                 )
                 train_loss += loss.item()
                 TP_, TN_, FP_, FN_ = confusion_metrics(

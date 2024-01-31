@@ -20,8 +20,6 @@ def create_data_loaders(
     num_workers=0,
     prefetch_factor=2,
     pin_memory=False,
-    shuffle=True,
-    drop_last=True,
 ):
     # Create distributed samplers
     train_sampler = RandomSampler(
@@ -93,8 +91,10 @@ def where_stuff_happens(
         epoch_train_start_time = time.time()
         (
             train_loss,
-            train_predictions,
-            train_samples,
+            train_TP,
+            train_TN,
+            train_FP,
+            train_FN,
         ) = tutils.train_one_epoch_cube_version(
             device=device,
             model=model,
@@ -102,7 +102,6 @@ def where_stuff_happens(
             optimizer=optimizer,
             loss_fn=loss_fn,
             epoch_nr=epoch,
-            success_tol=training_params["tol"],
         )
         epoch_train_end_time = time.time()
 
@@ -110,8 +109,10 @@ def where_stuff_happens(
             writer=writer,
             epoch_nr=epoch,
             loss=train_loss,
-            predictions=train_predictions,
-            samples=train_samples,
+            TP=train_TP,
+            TN=train_TN,
+            FP=train_FP,
+            FN=train_FN,
             suffix="train",
             time=epoch_train_end_time - epoch_train_start_time,
         )
@@ -120,7 +121,13 @@ def where_stuff_happens(
         if epoch % training_params["test_every"] == 0:
             # ---- TESTING ----
             epoch_test_start_time = time.time()
-            test_loss, test_predictions, test_samples = tutils.evaluate_cube_version(
+            (
+                test_loss,
+                test_TP,
+                test_TN,
+                test_FP,
+                test_FN,
+            ) = tutils.evaluate_cube_version(
                 device=device,
                 model=model,
                 test_loader=test_loader,
@@ -132,8 +139,10 @@ def where_stuff_happens(
                 writer=writer,
                 epoch_nr=epoch,
                 loss=test_loss,
-                predictions=test_predictions,
-                samples=test_samples,
+                TP=test_TP,
+                TN=test_TN,
+                FP=test_FP,
+                FN=test_FN,
                 suffix="test",
                 time=epoch_test_end_time - epoch_test_start_time,
             )

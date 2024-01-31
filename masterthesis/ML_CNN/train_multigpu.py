@@ -130,20 +130,22 @@ def worker(
     loss_fn = nn.BCEWithLogitsLoss()
 
     epochs_trained = state["epoch"]
+    max_epochs = epochs_trained + training_params["epochs"]
 
     # Tensorboard
     if rank == 0:
         writer = SummaryWriter(training_params["writer_log_path"])
-        # writer.add_graph(ddp_model, torch.zeros((1, 256, 256)).unsqueeze(0))
+        if not state["model_information_written"]:
+            writer.add_graph(model, torch.ones((1, 1, 256, 256)).to(rank))
+            state["model_information_written"] = True
 
     # Train and test
     try:
         best_loss = state["best_loss"]
     except KeyError:
         best_loss = 1e10
-    for epoch in range(
-        epochs_trained + 1, epochs_trained + training_params["epochs"] + 1
-    ):
+
+    for epoch in range(epochs_trained + 1, max_epochs + 1):
         epoch_total_time_start = time.time() if rank == 0 else None
 
         # ---- TRAINING ----
@@ -209,7 +211,7 @@ def worker(
         # Placeholder for early stopping across all ranks
         should_stop = torch.tensor(False, dtype=torch.bool).to(rank)
 
-        if epoch % training_params["test_every"] == 0:
+        if epoch % training_params["test_every"] == 0 or epoch == max_epochs:
             # ---- TESTING ----
             epoch_test_start_time = time.time() if rank == 0 else None
             (
@@ -267,30 +269,38 @@ def worker(
                     time=epoch_test_end_time - epoch_test_start_time,
                 )
 
-                # Early stopping condition
-                if mean_test_loss < training_params["breakout_loss"]:
-                    print(
-                        f"Breaking out of training loop because test loss {mean_test_loss:.4f} < breakout loss {training_params['breakout_loss']:.4f}"
-                    )
-                    should_stop = torch.tensor(True, dtype=torch.bool).to(rank)
+                # # Early stopping condition
+                # if mean_test_loss < training_params["breakout_loss"]:
+                #     print(
+                #         f"Breaking out of training loop because test loss {mean_test_loss:.4f} < breakout loss {training_params['breakout_loss']:.4f}"
+                #     )
+                #     should_stop = torch.tensor(True, dtype=torch.bool).to(rank)
 
                 # Save model if mean loss is better than best loss of if early stopping condition is met
-                if should_stop or mean_test_loss < best_loss:
-                    best_loss = mean_test_loss
-                    state["epoch"] = epoch
-                    state["model_state_dict"] = model.state_dict()
-                    state["optimizer_state_dict"] = optimizer.state_dict()
-                    state["train_loss"] = mean_train_loss
-                    state["test_loss"] = mean_test_loss
-                    state["best_loss"] = best_loss
+                best_loss = mean_test_loss
+                state["epoch"] = epoch
+                state["model_state_dict"] = model.state_dict()
+                state["optimizer_state_dict"] = optimizer.state_dict()
+                state["train_loss"] = mean_train_loss
+                state["test_loss"] = mean_test_loss
+                state["best_loss"] = best_loss
+                epoch_savepath = (
+                    state[f"model_save_path"].split("/")[0]
+                    + "/"
+                    + "TMP_"
+                    + state[f"model_save_path"].split("/")[1].replace(".pt", "")
+                    + f"_epoch{state['epoch']}.pt"
+                )
 
-                    torch.save(
-                        state,
-                        state["model_save_path"],
-                    )
-                    print(
-                        f"New best loss: {best_loss:.4f}. Saved model to {state['model_save_path']}"
-                    )
+                torch.save(
+                    state,
+                    epoch_savepath,
+                )
+                torch.save(
+                    state,
+                    state["model_save_path"],
+                )
+                print(f"Saved model to {epoch_savepath}")
         if rank == 0:
             epoch_total_time_end = time.time()
 
@@ -298,12 +308,12 @@ def worker(
                 f"Time elapsed for epoch: {epoch_total_time_end - epoch_total_time_start:.2f} s\n"
             )
         # Broadcast early stopping condition to all ranks
-        dist.broadcast(should_stop, src=0)
+        # dist.broadcast(should_stop, src=0)
 
         # Break out of training loop if early stopping condition is met
-        if should_stop:
-            print(f"Rank {rank} breaking out of training loop")
-            break
+        # if should_stop:
+        #     print(f"Rank {rank} breaking out of training loop")
+        #     break
 
         # Synchronize all processes
         dist.barrier()
