@@ -13,15 +13,19 @@ import matplotlib.pyplot as plt
 
 import data
 
+# Set output function
 output_func = nn.Sigmoid()
 
+# Initialise transform list. First should be just identity transform. 
 transforms = [lambda x: x]
 
+# Create the different uniqe transformation. 
 rotate90 = tf.RandomRotation((90, 90))
 rotate180 = tf.RandomRotation((180, 180))
 rotate270 = tf.RandomRotation((270, 270))
 flipH = tf.RandomHorizontalFlip(p=1.0)
 
+# Make compositions. 
 rot90 = tf.Compose([rotate90])
 rot180 = tf.Compose([rotate180])
 rot270 = tf.Compose([rotate270])
@@ -30,13 +34,25 @@ fliprot90 = tf.Compose([flipH, rotate90])
 fliprot180 = tf.Compose([flipH, rotate180])
 fliprot270 = tf.Compose([flipH, rotate270])
 
+# Append all transformations to the list
 for transform in [rot90, rot180, rot270, flip, fliprot90, fliprot180, fliprot270]:
     transforms.append(transform)
 
+# Keep track of the number of transformations.
 nr_transformations = len(transforms)
 
 
-def get_state(model_params: dict):
+def get_state(model_params: dict) -> dict:
+    """Initalize a new state dictionary. Tries to fill it if load is allowed and the file exists, else traines from scratch with the new state. 
+
+    Args:
+        model_params (dict): Model parameters.
+
+    Returns:
+        dict: State dictionary.
+    """
+
+    # New state dict
     state = {
         "epoch": 0,
         "model_state_dict": None,
@@ -47,6 +63,8 @@ def get_state(model_params: dict):
         "model_save_path": model_params["model_save_path"],
         "model_information_written": False,
     }
+
+    # Tries to load if allowed (and it exists)
     if model_params["load_model"]:
         # Load model
         try:
@@ -59,28 +77,33 @@ def get_state(model_params: dict):
     return state
 
 
-def confusion_metrics(predictions, targets, success_tol=0.5):
+def confusion_metrics(predictions:torch.Tensor, targets:torch.Tensro, success_tol:float=0.5) -> tuple:
+    """Calculates the true positive (TN), true negative (TN), false positive (FP) and false negative (FN) values given a tensor fo predictions and targets. 
+
+    Args:
+        predictions (torch.Tensor): Predictions from the model (after sigmoid output).
+        targets (torch.Tensro): Target labels (0 or 1).
+        success_tol (float, optional): Success tolerance. Defaults to 0.5.
+
+    Raises:
+        ValueError: If the two tensors have unequal shape.
+
+    Returns:
+        tuple: Tuple with calculated values: (TP, TN, FP, FN)
+    """
     if predictions.size(0) != targets.size(0):
         raise ValueError("The length of predictions and targets must be the same.")
-
-    # Normalize target values to be either 0 or 1 with the given tolerance
 
     # Apply threshold to predictions
     predictions = (predictions >= success_tol).bool()
 
-    # Convert targets to boolean for comparison
+    # Convert targets to bool
     targets_bool = targets.bool()
 
-    # True Positives (TP): both prediction and target are True (1)
+    # Calculate metrics
     TP = torch.sum(predictions & targets_bool).item()
-
-    # True Negatives (TN): both prediction and target are False (0)
     TN = torch.sum(~predictions & ~targets_bool).item()
-
-    # False Positives (FP): prediction is True (1) but target is False (0)
     FP = torch.sum(predictions & ~targets_bool).item()
-
-    # False Negatives (FN): prediction is False (0) but target is True (1)
     FN = torch.sum(~predictions & targets_bool).item()
 
     return TP, TN, FP, FN
@@ -114,7 +137,7 @@ def create_confusion_matrix(TP, TN, FP, FN, normalize=False):
     return return_image
 
 
-def one_pass(model, optimizer, loss_fn, image, labels):
+def one_pass(model:torch.nn.Module, optimizer:torch.optim.Object, loss_fn:torch.nn.Object, image:torch.Tensor, labels:torch.Tensor) -> tuple:
     optimizer.zero_grad()
     output = model(image)
     loss = loss_fn(output, labels)
