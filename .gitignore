@@ -14,6 +14,9 @@ __pycache__/
 *.pt
 *.pth
 
+# Everything from OLD folder
+OLD/
+
 # Distribution / packaging
 .Python
 build/
