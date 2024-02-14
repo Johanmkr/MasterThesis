@@ -16,16 +16,16 @@ import data
 # Set output function
 output_func = nn.Sigmoid()
 
-# Initialise transform list. First should be just identity transform. 
+# Initialise transform list. First should be just identity transform.
 transforms = [lambda x: x]
 
-# Create the different uniqe transformation. 
+# Create the different uniqe transformation.
 rotate90 = tf.RandomRotation((90, 90))
 rotate180 = tf.RandomRotation((180, 180))
 rotate270 = tf.RandomRotation((270, 270))
 flipH = tf.RandomHorizontalFlip(p=1.0)
 
-# Make compositions. 
+# Make compositions.
 rot90 = tf.Compose([rotate90])
 rot180 = tf.Compose([rotate180])
 rot270 = tf.Compose([rotate270])
@@ -43,7 +43,7 @@ nr_transformations = len(transforms)
 
 
 def get_state(model_params: dict) -> dict:
-    """Initalize a new state dictionary. Tries to fill it if load is allowed and the file exists, else traines from scratch with the new state. 
+    """Initalize a new state dictionary. Tries to fill it if load is allowed and the file exists, else traines from scratch with the new state.
 
     Args:
         model_params (dict): Model parameters.
@@ -77,8 +77,10 @@ def get_state(model_params: dict) -> dict:
     return state
 
 
-def confusion_metrics(predictions:torch.Tensor, targets:torch.Tensro, success_tol:float=0.5) -> tuple:
-    """Calculates the true positive (TN), true negative (TN), false positive (FP) and false negative (FN) values given a tensor fo predictions and targets. 
+def confusion_metrics(
+    predictions: torch.Tensor, targets: torch.Tensor, success_tol: float = 0.5
+) -> tuple:
+    """Calculates the true positive (TN), true negative (TN), false positive (FP) and false negative (FN) values given a tensor fo predictions and targets.
 
     Args:
         predictions (torch.Tensor): Predictions from the model (after sigmoid output).
@@ -137,7 +139,13 @@ def create_confusion_matrix(TP, TN, FP, FN, normalize=False):
     return return_image
 
 
-def one_pass(model:torch.nn.Module, optimizer:torch.optim.Object, loss_fn:torch.nn.Object, image:torch.Tensor, labels:torch.Tensor) -> tuple:
+def one_pass(
+    model: torch.nn.Module,
+    optimizer: any,
+    loss_fn: any,
+    image: torch.Tensor,
+    labels: torch.Tensor,
+) -> tuple:
     optimizer.zero_grad()
     output = model(image)
     loss = loss_fn(output, labels)
@@ -195,9 +203,7 @@ def slice_and_rearrange_cube(cubes, labels, device):
     return all_slices, all_targets
 
 
-def print_and_write_statistics(
-    writer, epoch_nr, loss, TP, TN, FP, FN, suffix, time=None
-):
+def calculate_metrics(TP, TN, FP, FN):
     # Calculate metrics
     divtol = 1e-9
     accuracy = (TP + TN) / (TP + TN + FP + FN + divtol)
@@ -206,6 +212,13 @@ def print_and_write_statistics(
     F1_score = 2 * (precision * recall) / (precision + recall + divtol)
     TPR = TP / (TP + FN + divtol)
     FPR = FP / (FP + TN + divtol)
+    return accuracy, precision, recall, F1_score, TPR, FPR
+
+
+def print_and_write_statistics(
+    writer, epoch_nr, loss, TP, TN, FP, FN, suffix, time=None
+):
+    accuracy, precision, recall, F1_score, TPR, FPR = calculate_metrics(TP, TN, FP, FN)
 
     # Print statistics
     string = f"\n---{suffix.capitalize()}---\nEpoch {epoch_nr}\nLoss:       {loss:.5f}\nAccuracy:   {accuracy:.4f} = {accuracy*100:.2f} %\nPrecision:  {precision:.4f}\nRecall:     {recall:.4f}\nF1 score:   {F1_score:.4f}\nTPR:        {TPR:.4f}\nFPR:        {FPR:.4f}\n"
@@ -279,7 +292,7 @@ def evaluate_cube_version(
                     test_loss += loss.item()
                     TP_, TN_, FP_, FN_ = confusion_metrics(
                         pred,
-                        targets,
+                        targets[permutation_index],
                     )
                     TP += TP_
                     TN += TN_
@@ -358,7 +371,7 @@ def train_one_epoch_cube_version(
                 train_loss += loss.item()
                 TP_, TN_, FP_, FN_ = confusion_metrics(
                     pred,
-                    targets,
+                    targets[permutation_index],
                 )
                 TP += TP_
                 TN += TN_

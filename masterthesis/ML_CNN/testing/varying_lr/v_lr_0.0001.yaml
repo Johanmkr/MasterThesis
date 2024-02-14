@@ -1,0 +1,16 @@
+model_params:
+  architecture: "RACCOON"         # "RACCOON" or "PENGUIN"
+  layer_param: 16                 # any integer 
+  dropout: 0.5                    # any float between 0 and 1
+  name: "varying_lr"                # any string
+
+data_params:
+  datafile: "/mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5"
+  train_seeds: 80
+  test_seeds: 20
+  newton_augmentation: 1.0
+
+train_params:
+  epochs: 30
+  lr: 0.0001
+  log_dir: "testruns/varying_lr"

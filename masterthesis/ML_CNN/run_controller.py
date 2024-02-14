@@ -4,7 +4,7 @@ MULTIPLE_GPUS = True
 import numpy as np
 import torch
 import torch.nn as nn
-import sys
+import sys, os
 import yaml
 from datetime import datetime
 
@@ -16,8 +16,14 @@ else:
     import train_singlegpu as train
 
 ########################## MOST IMPORTANT PARAMS ############################
-
-configuration_file = f"configurations/{str(sys.argv[1])}.yaml"
+try:
+    configuration_file = f"configurations/{str(sys.argv[1])}"
+    configuration_file = configuration_file.replace(".yaml", "") + ".yaml"
+    if not os.path.exists(configuration_file):
+        raise FileNotFoundError
+except FileNotFoundError:
+    configuration_file = f"{str(sys.argv[1])}"
+    configuration_file = configuration_file.replace(".yaml", "") + ".yaml"
 
 with open(configuration_file, "r") as f:
     conf = yaml.safe_load(f)
@@ -34,8 +40,9 @@ newton_augmentation = float(conf["data_params"]["newton_augmentation"])
 
 epochs = int(conf["train_params"]["epochs"])
 lr = float(conf["train_params"]["lr"])
-
-
+log_dir = str(conf["train_params"]["log_dir"])
+if not os.path.exists(log_dir):
+    raise FileNotFoundError
 ########################## MODEL NAME and DATA PATH ##########################
 dataname = datafile.split("/")[-1].split(".")[0]
 # model_name = "code_test"
@@ -55,22 +62,29 @@ architecture_params = {
     "layer_param": layer_param,
     "activation": nn.LeakyReLU(negative_slope=0.2),
     "output_activation": nn.Identity(),
-    "bias": False,
     "dropout": dropout,
 }
 
 model_params = {
-    "architecture": arch.PENGUIN
-    if architecture.lower() in ["penguin", "p"]
-    else arch.RACOON,
+    "architecture": (
+        arch.PENGUIN if architecture.lower() in ["penguin", "p"] else arch.RACOON
+    ),
     "model_name": model_name,
     "load_model": True,
     "model_save_path": f"models/{model_name}.pt",
 }
-
+if layer_param <= 16:
+    racoon_bs = 4
+elif 16 < layer_param <= 32:
+    racoon_bs = 5
+else:
+    racoon_bs = 2
+penguin_bs = 2 if layer_param <= 16 else 1
 loader_params = {
-    "batch_size": 5 if layer_param <= 32 else 2,
-    "num_workers": 4 * torch.cuda.device_count(),
+    "batch_size": (
+        racoon_bs if architecture.lower() not in ["penguin", "p"] else penguin_bs
+    ),
+    "num_workers": torch.cuda.device_count(),
     "prefetch_factor": 2,
 }
 
@@ -82,7 +96,7 @@ optimizer_params = {
 
 training_params = {
     "epochs": epochs,
-    "writer_log_path": f"longruns/{model_name}_lr{lr}",
+    "writer_log_path": f"{log_dir}/{model_name}_lr{lr}",
     "test_every": 2,
 }
 

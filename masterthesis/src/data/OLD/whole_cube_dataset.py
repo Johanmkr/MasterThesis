@@ -11,7 +11,7 @@ from tqdm import trange
 
 # Local imports
 from ..utils import paths
-from . import transforms
+from .. import transforms
 
 
 class WholeCubeDataset(Dataset):

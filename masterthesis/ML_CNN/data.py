@@ -73,6 +73,83 @@ class WholeCubeDataset(Dataset):
         return cube
 
 
+class WholeCubeDataset2(Dataset):
+    def __init__(
+        self,
+        redshift: int | float = 1.0,
+        seeds: np.ndarray = np.arange(0, 200, 1),
+        newton_augmentation: float = 1.0,
+        target_noise: float = 0.0,
+        datapath: str = None,
+    ):
+        super().__init__()
+
+        ### self variables ###
+        self.redshift = redshift
+        self.seeds = seeds
+        self.newton_augmentation = newton_augmentation
+        self.target_noise = target_noise
+
+        if datapath is None:
+            raise ValueError("No data path given.")
+        self.datapath = datapath
+
+        ### length variables ###
+        nr_gravity_theories = 2
+        nr_seeds = len(self.seeds)
+        self.length = nr_gravity_theories * nr_seeds
+
+        self.cubes = []
+
+        cube_idx = 0
+        self.mean = 0.0
+        # Loading cubes, finding mean
+        print(f"Loading cubes and finding mean for {self.length} cubes")
+        for seed in tqdm(self.seeds):
+            # GR cube
+            with h5py.File(
+                paths.get_cube_path_amp(seed, "gr", self.redshift), "r"
+            ) as f:
+                cube = torch.tensor(f["data"][:], dtype=torch.float32)
+                self.mean += cube.mean()
+            label = torch.tensor([1.0 - target_noise], dtype=torch.float32)
+            self.cubes.append({"cube": cube, "label": label})
+            cube_idx += 1
+
+            # Newton cube
+            with h5py.File(
+                paths.get_cube_path_amp(seed, "newton", self.redshift), "r"
+            ) as f:
+                cube = torch.tensor(f["data"][:], dtype=torch.float32)
+                self.mean += cube.mean()
+            label = torch.tensor([target_noise], dtype=torch.float32)
+            self.cubes.append({"cube": cube, "label": label})
+            cube_idx += 1
+
+        assert cube_idx == self.length, "Cube index does not match number of cubes."
+        self.mean /= self.length
+
+        # Finding variance and standard deviation
+        print(f"Finding variance and standard deviation for {self.length} cubes")
+        self.variance = 0.0
+        for cube in tqdm(self.cubes):
+            self.variance += ((cube["cube"] - self.mean) ** 2).mean()
+        self.variance /= self.length
+        self.std = self.variance**0.5
+
+    def __len__(self) -> int:
+        return self.length
+
+    def __getitem__(self, idx) -> dict:
+        cube = self.cubes[idx]
+
+        cube["cube"] = (cube["cube"] - self.mean) / self.std
+
+        if abs(cube["label"]) < abs(1e-9 + self.target_noise):
+            cube["cube"] *= self.newton_augmentation
+        return cube
+
+
 def CUBE_make_training_and_testing_data(
     train_seeds,
     test_seeds,
@@ -83,14 +160,14 @@ def CUBE_make_training_and_testing_data(
     # Make datasets
     print("Making datasets...")
     print(f"Training set: {len(train_seeds)} seeds")
-    train_dataset = WholeCubeDataset(
+    train_dataset = WholeCubeDataset2(
         seeds=train_seeds,
         newton_augmentation=newton_augmentation,
         target_noise=target_noise,
         datapath=datapath,
     )
     print(f"Test set: {len(test_seeds)} seeds")
-    test_dataset = WholeCubeDataset(
+    test_dataset = WholeCubeDataset2(
         seeds=test_seeds,
         newton_augmentation=newton_augmentation,
         target_noise=target_noise,

@@ -1,0 +1,46 @@
+
+------------------------------------------------------------
+06/02/2024 14:05:13
+
+MULTIPLE_GPUS: True
+Configuration file: testing/varying_na/v_na_P_0.0.yaml
+
+CONFIGURATION:
+train_seeds: [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+ 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47
+ 48 49 50 51 52 53 54 55 56 57 58 59 60 61 62 63 64 65 66 67 68 69 70 71
+ 72 73 74 75 76 77 78 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95
+ 96 97 98 99]
+test_seeds: [100 101 102 103 104 105 106 107 108 109 110 111 112 113 114 115 116 117
+ 118 119 120 121 122 123 124]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+input_size: (1, 256, 256)
+layer_param: 64
+activation: LeakyReLU(negative_slope=0.2)
+output_activation: Identity()
+bias: False
+dropout: 0.5
+
+architecture: <class 'architectures.PENGUIN'>
+model_name: testing_na_P_data_z1_PENGUIN_lp64_do0.5_na0.0_ts100
+load_model: True
+model_save_path: models/testing_na_P_data_z1_PENGUIN_lp64_do0.5_na0.0_ts100.pt
+
+batch_size: 2
+num_workers: 8
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-11
+
+epochs: 10
+writer_log_path: testruns/varying_na/testing_na_P_data_z1_PENGUIN_lp64_do0.5_na0.0_ts100_lr0.001
+test_every: 2
+
+------------------------------------------------------------
+
+
+

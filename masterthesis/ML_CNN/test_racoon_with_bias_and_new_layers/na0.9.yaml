@@ -1,0 +1,16 @@
+model_params:
+  architecture: "RACCOON"         # "RACCOON" or "PENGUIN"
+  layer_param: 16                 # any integer 
+  dropout: 0.5                    # any float between 0 and 1
+  name: "FurtherNA_R2"                # any string
+
+data_params:
+  datafile: "/mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5"
+  train_seeds: 100
+  test_seeds: 50
+  newton_augmentation: 0.9
+
+train_params:
+  epochs: 20
+  lr: 0.0001
+  log_dir: "test_racoon_with_bias_and_new_layers/runs"

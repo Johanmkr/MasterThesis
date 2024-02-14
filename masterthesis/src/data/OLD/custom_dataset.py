@@ -11,7 +11,7 @@ import time
 
 # Local imports
 from . import cube
-from . import transforms
+from .. import transforms
 from ..utils import paths
 
 from IPython import embed

@@ -1,6 +1,7 @@
 """
     This module contains the paths to the data files.
 """
+
 import pathlib as pl
 import os
 
@@ -51,6 +52,22 @@ pre_computed_bispectra_path: pl.PosixPath = (
 def get_cube_path(seed: int, gravity: str, redshift: int) -> pl.Path:
     return (
         simulation_path
+        / f"seed{seed:04d}/{gravity.lower()}/{gravity.lower()}_{cube.redshift_to_snap[int(redshift)]}_phi.h5"
+    )
+
+
+def get_cube_path_amp(seed: int, gravity: str, redshift: int) -> pl.Path:
+    return (
+        datapath
+        / "gevolution_amplified_runs"
+        / f"seed{seed:04d}/{gravity.lower()}/{gravity.lower()}_{cube.redshift_to_snap[int(redshift)]}_phi.h5"
+    )
+
+
+def get_cube_path_even_amp(seed: int, gravity: str, redshift: int) -> pl.Path:
+    return (
+        datapath
+        / "gevolution_even_amplified_runs"
         / f"seed{seed:04d}/{gravity.lower()}/{gravity.lower()}_{cube.redshift_to_snap[int(redshift)]}_phi.h5"
     )
 

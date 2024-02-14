@@ -18,7 +18,7 @@ PENGUIN:
     - 2D convolutional layer (4*layer_param, 32, 32) -> (6*layer_param, 16, 16)
     - 2D convolutional layer (6*layer_param, 16, 16) -> (8*layer_param, 8, 8)
     - 2D convolutional layer (8*layer_param, 8, 8) -> (10*layer_param, 4, 4)
-    - Fully connected layer (10*layer_param, 4, 4) -> (10*layer_param)
+    - Fully connected layer (10*layer_param * 4 * 4) -> (10*layer_param)
     - Fully connected layer (10*layer_param) -> (layer_param)
     - Output layer (layer_param) -> (1)
 """
@@ -31,28 +31,27 @@ class RACOON(nn.Module):
         layer_param: float = 64,
         activation=nn.ReLU(),
         output_activation=nn.Identity(),
-        bias=False,
         dropout=0.5,
     ):
         super().__init__()
         self.input_size = input_size
         self.activation = activation
         self.output_activation = output_activation
-        self.bias = bias
         self.dropout = dropout
         self.num_channels = self.input_size[0]
         self.conv_layers = []
         self.fc_layers = []
+        self.convBias = True
 
         # LAYER - 2D convolutional layer (num_channels, 256, 256) -> (layer_param, 64, 64)
         self.conv2d1 = nn.Sequential(
             nn.Conv2d(
                 self.num_channels,
                 layer_param,
-                kernel_size=4,
+                kernel_size=7,
                 stride=4,
-                padding=0,
-                bias=self.bias,
+                padding=2,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param),
             self.activation,
@@ -64,10 +63,10 @@ class RACOON(nn.Module):
             nn.Conv2d(
                 layer_param,
                 layer_param * 4,
-                kernel_size=4,
+                kernel_size=7,
                 stride=4,
-                padding=0,
-                bias=self.bias,
+                padding=2,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 4),
             self.activation,
@@ -79,10 +78,10 @@ class RACOON(nn.Module):
             nn.Conv2d(
                 layer_param * 4,
                 layer_param * 8,
-                kernel_size=4,
+                kernel_size=7,
                 stride=4,
-                padding=0,
-                bias=self.bias,
+                padding=2,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 8),
             self.activation,
@@ -92,7 +91,7 @@ class RACOON(nn.Module):
         # LAYER - Fully connected layer (8*layer_param * 4 * 4) -> (layer_param)
         self.fc1 = nn.Sequential(
             nn.Flatten(),
-            nn.Linear(layer_param * 8 * 4 * 4, layer_param, bias=self.bias),
+            nn.Linear(layer_param * 8 * 4 * 4, layer_param),
             self.activation,
             nn.Dropout(self.dropout),
         )
@@ -100,7 +99,7 @@ class RACOON(nn.Module):
 
         # LAYER - Output layer (layer_param) -> (1)
         self.output = nn.Sequential(
-            nn.Linear(layer_param, 1, bias=self.bias),
+            nn.Linear(layer_param, 1),
             self.output_activation,
         )
         self.fc_layers.append(self.output)
@@ -120,18 +119,17 @@ class PENGUIN(nn.Module):
         layer_param: float = 64,
         activation=nn.ReLU(),
         output_activation=nn.Identity(),
-        bias=False,
         dropout=0.5,
     ):
         super().__init__()
         self.input_size = input_size
         self.activation = activation
         self.output_activation = output_activation
-        self.bias = bias
         self.dropout = dropout
         self.num_channels = self.input_size[0]
         self.conv_layers = []
         self.fc_layers = []
+        self.convBias = True
 
         # LAYER - 2D convolutional layer (num_channels, 256, 256) -> (layer_param, 128, 128)
         self.conv2d1 = nn.Sequential(
@@ -141,7 +139,7 @@ class PENGUIN(nn.Module):
                 kernel_size=4,
                 stride=2,
                 padding=1,
-                bias=self.bias,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param),
             self.activation,
@@ -156,7 +154,7 @@ class PENGUIN(nn.Module):
                 kernel_size=4,
                 stride=2,
                 padding=1,
-                bias=self.bias,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 2),
             self.activation,
@@ -171,7 +169,7 @@ class PENGUIN(nn.Module):
                 kernel_size=4,
                 stride=2,
                 padding=1,
-                bias=self.bias,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 4),
             self.activation,
@@ -186,7 +184,7 @@ class PENGUIN(nn.Module):
                 kernel_size=4,
                 stride=2,
                 padding=1,
-                bias=self.bias,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 6),
             self.activation,
@@ -201,7 +199,7 @@ class PENGUIN(nn.Module):
                 kernel_size=4,
                 stride=2,
                 padding=1,
-                bias=self.bias,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 8),
             self.activation,
@@ -216,7 +214,7 @@ class PENGUIN(nn.Module):
                 kernel_size=4,
                 stride=2,
                 padding=1,
-                bias=self.bias,
+                bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 10),
             self.activation,
