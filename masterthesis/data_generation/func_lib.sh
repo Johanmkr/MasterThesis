@@ -2,7 +2,9 @@
 
 # Paths
 DataGENERATIONdir="$(dirname "$(readlink -f "$0")")"
-DataSTORAGEdir="/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs"
+# DataSTORAGEdir="/mn/stornext/d10/data/johanmkr/simulations/gevolution_first_runs"
+DataSTORAGEdir="/mn/stornext/d10/data/johanmkr/simulations/gevolution_amplified_runs"
+DataSTORAGEdir="/mn/stornext/d10/data/johanmkr/simulations/gevolution_even_amplified_runs"
 SIMULATIONdir="/uio/hume/student-u00/johanmkr/Documents/NbodySimulation/gevolution-1.2"
 
 # Generate newton and gr directories to store data for given seed. 
@@ -56,6 +58,52 @@ generate_initialisation(){
     cd "$DataGENERATIONdir"
 }
 
+make_new_with_large_A_s(){
+    local seed="$1"
+    local A_s="2.215e-6"
+    local localdir="${DataGENERATIONdir}/initialisations/seed${seed}"
+    
+    # Go to correct directory
+    cd $localdir
+    cp "seed${seed}newton.ini" "seed${seed}newton_large_A_s.ini"
+    cp "seed${seed}gr.ini" "seed${seed}gr_large_A_s.ini"
+
+    # Change A_s
+    sed -i "s/^\(A_s\s*=\s*\).*/\1$A_s/" "seed${seed}newton_large_A_s.ini"
+    sed -i "s/^\(A_s\s*=\s*\).*/\1$A_s/" "seed${seed}gr_large_A_s.ini"
+
+    # Change output path
+    local newtonpath="$DataSTORAGEdir/seed${seed}/newton/"
+    local grpath="$DataSTORAGEdir/seed${seed}/gr/"
+    sed -i "s|^\(output path\s*=\s*\).*|\1$newtonpath|" "seed${seed}newton_large_A_s.ini"
+    sed -i "s|^\(output path\s*=\s*\).*|\1$grpath|" "seed${seed}gr_large_A_s.ini"
+
+    cd "$DataGENERATIONdir"
+}
+
+make_new_with_even_larger_A_s(){
+    local seed="$1"
+    local A_s="2.215e-7"
+    local localdir="${DataGENERATIONdir}/initialisations/seed${seed}"
+    
+    # Go to correct directory
+    cd $localdir
+    cp "seed${seed}newton.ini" "seed${seed}newton_even_large_A_s.ini"
+    cp "seed${seed}gr.ini" "seed${seed}gr_even_large_A_s.ini"
+
+    # Change A_s
+    sed -i "s/^\(A_s\s*=\s*\).*/\1$A_s/" "seed${seed}newton_even_large_A_s.ini"
+    sed -i "s/^\(A_s\s*=\s*\).*/\1$A_s/" "seed${seed}gr_even_large_A_s.ini"
+
+    # Change output path
+    local newtonpath="$DataSTORAGEdir/seed${seed}/newton/"
+    local grpath="$DataSTORAGEdir/seed${seed}/gr/"
+    sed -i "s|^\(output path\s*=\s*\).*|\1$newtonpath|" "seed${seed}newton_even_large_A_s.ini"
+    sed -i "s|^\(output path\s*=\s*\).*|\1$grpath|" "seed${seed}gr_even_large_A_s.ini"
+
+    cd "$DataGENERATIONdir"
+}
+
 # Executes the simulation for a given seed
 # Args:
 #   seed:int
@@ -72,6 +120,7 @@ execute_simulation(){
         if ! grep -q "\<$seed\>" "$DataGENERATIONdir/initialisations/log_ini.txt"; then
             echo "Seed ($seed) not yet initialised, initialising now..."
             generate_initialisation "$seed"
+            echo "$seed" >> $DataGENERATIONdir/initialisations/log_ini.txt
         fi 
 
         # Check if output directories exists
@@ -106,8 +155,106 @@ execute_simulation(){
 
         cd "$DataGENERATIONdir"
         formatted_date=$(date +"%d-%m-%Y at %H:%M")
-       	echo "|$seed|$formatted_date|$elapsed_time|" >> README.md
-       	# echo "$seed" >> simulations_run.txt
+       	echo "$seed" >> simulations_run.txt
+        echo ""
+    fi
+
+
+    # Amplified simulation
+    # Check if simulation is already run
+    if grep -q "\<$seed\>" "$DataGENERATIONdir/simulations_run_amplified.txt"; then
+        echo "Amplified simulation with seed: $seed is already run"
+        echo ""
+    else
+        # Check if initialised 
+        if ! grep -q "\<$seed\>" "$DataGENERATIONdir/initialisations/log_ini_amp.txt"; then
+            echo "Seed ($seed) not yet initialised (AMP), initialising now..."
+            make_new_with_large_A_s "$seed"
+            echo "$seed" >> $DataGENERATIONdir/initialisations/log_ini_amp.txt
+        fi 
+
+        # Check if output directories exists
+        if [ ! -d "$DataSTORAGEdir/seed${seed}" ]; then
+            echo "Seed ($seed): Output directores do not exist. Creating them now..."
+            generate_storage_directories "$seed"
+        fi
+
+        cd "$SIMULATIONdir"
+
+        # Check if executable
+        if [ ! -x "gevolution" ]; then
+            make
+        fi 
+
+        local newton_ini="$DataGENERATIONdir/initialisations/seed${seed}/seed${seed}newton_large_A_s.ini"
+        local gr_ini="$DataGENERATIONdir/initialisations/seed${seed}/seed${seed}gr_large_A_s.ini"
+
+        start_time=$(date +%s)
+        # Testing
+        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+
+        # Execution
+        mpirun -np 64 ./gevolution -n 8 -m 8 -s $newton_ini
+        mpirun -np 64 ./gevolution -n 8 -m 8 -s $gr_ini
+        end_time=$(date +%s)
+        elapsed_time=$(echo "$end_time - $start_time" | bc)
+
+        cd "$DataSTORAGEdir"
+        echo "Successfully ran seed${seed} on $(date)" >> log.txt
+
+        cd "$DataGENERATIONdir"
+        formatted_date=$(date +"%d-%m-%Y at %H:%M")
+       	echo "$seed" >> simulations_run_amplified.txt
+        echo ""
+    fi
+
+    # Even more amplified simulation
+    # Check if simulation is already run
+    if grep -q "\<$seed\>" "$DataGENERATIONdir/simulations_run_even_amplified.txt"; then
+        echo "Amplified simulation with seed: $seed is already run"
+        echo ""
+    else
+        # Check if initialised 
+        if ! grep -q "\<$seed\>" "$DataGENERATIONdir/initialisations/log_ini_even_amp.txt"; then
+            echo "Seed ($seed) not yet initialised (E-AMP), initialising now..."
+            make_new_with_even_larger_A_s "$seed"
+            echo "$seed" >> $DataGENERATIONdir/initialisations/log_ini_even_amp.txt
+        fi 
+
+        # Check if output directories exists
+        if [ ! -d "$DataSTORAGEdir/seed${seed}" ]; then
+            echo "Seed ($seed): Output directores do not exist. Creating them now..."
+            generate_storage_directories "$seed"
+        fi
+
+        cd "$SIMULATIONdir"
+
+        # Check if executable
+        if [ ! -x "gevolution" ]; then
+            make
+        fi 
+
+        local newton_ini="$DataGENERATIONdir/initialisations/seed${seed}/seed${seed}newton_even_large_A_s.ini"
+        local gr_ini="$DataGENERATIONdir/initialisations/seed${seed}/seed${seed}gr_even_large_A_s.ini"
+
+        start_time=$(date +%s)
+        # Testing
+        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+        # echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+
+        # Execution
+        mpirun -np 64 ./gevolution -n 8 -m 8 -s $newton_ini
+        mpirun -np 64 ./gevolution -n 8 -m 8 -s $gr_ini
+        end_time=$(date +%s)
+        elapsed_time=$(echo "$end_time - $start_time" | bc)
+
+        cd "$DataSTORAGEdir"
+        echo "Successfully ran seed${seed} on $(date)" >> log.txt
+
+        cd "$DataGENERATIONdir"
+        formatted_date=$(date +"%d-%m-%Y at %H:%M")
+       	echo "$seed" >> simulations_run_even_amplified.txt
         echo ""
     fi
 }
