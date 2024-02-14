@@ -1,9 +1,0 @@
-\babel@toc {UKenglish}{}\relax 
-\contentsline {part}{I\hspace {1em}Introduction}{1}{part.5}%
-\contentsline {chapter}{\numberline {1}Background}{3}{chapter.6}%
-\contentsline {section}{\numberline {1.1}Xxx's work}{3}{section.7}%
-\contentsline {part}{II\hspace {1em}The project}{5}{part.8}%
-\contentsline {chapter}{\numberline {2}Planning the project}{7}{chapter.9}%
-\contentsline {part}{III\hspace {1em}Conclusion}{9}{part.10}%
-\contentsline {chapter}{\numberline {3}Results}{11}{chapter.11}%
-\contentsfinish 
