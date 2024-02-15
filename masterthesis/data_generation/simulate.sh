@@ -19,12 +19,12 @@ gr_ini="$DataGENERATIONdir/gr_temp.ini"
 
 start_time=$(date +%s)
 #Testing
-echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
-echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+# echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+# echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
 
 # # Execution
-# mpirun -np 64 ./gevolution -n 8 -m 8 -s $newton_ini
-# mpirun -np 64 ./gevolution -n 8 -m 8 -s $gr_ini
+mpirun -np 64 ./gevolution -n 8 -m 8 -s $newton_ini
+mpirun -np 64 ./gevolution -n 8 -m 8 -s $gr_ini
 end_time=$(date +%s)
 elapsed_time=$(echo "$end_time - $start_time" | bc)
 
