@@ -6,7 +6,7 @@ Most of the numerical work is contained within this folder
 
 ## [data_generation](data_generation)
 
-## [datalink](datlink)
+## [datalink](datlink) (HL)
 
 ## [log](log) (OLD)
 
@@ -14,4 +14,13 @@ Most of the numerical work is contained within this folder
 
 ## [notebooks](notebooks)
 
-## 
+## [runscripts](runscripts) (OLD)
+
+## [simulationlink](simulationlink) (HL)
+
+## [src](src) (OLD)
+
+## [writing](writing) (HL)
+
+## [OLD](OLD)
+
