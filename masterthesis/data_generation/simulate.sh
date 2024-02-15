@@ -1,18 +1,32 @@
 #!/bin/bash
 
-# Input file with seeds
-seeds="$1"
+# Locate simulation directory
+SIMULATIONdir="/uio/hume/student-u00/johanmkr/Documents/NbodySimulation/gevolution-1.2"
+# Locate data generation directory
+DataGENERATIONdir="$(dirname "$(readlink -f "$0")")"
 
-# Source the functions needed
-source func_lib.sh
+# Move to simulation directory
+cd "$SIMULATIONdir"
 
-#while IFS= read -r seed; do 
-#   echo "Executing simulation for seed: $seed"
-#   execute_simulation "$seed"
-#   echo "Execution completed for seed: $seed"
-#done < "$seeds"
+# Check if executable
+if [ ! -x "gevolution" ]; then
+	make
+fi 
 
-# Command to execute the simulation for each seed
-for line in $(cat "$seeds"); do
-	execute_simulation $line
-done    
+# Execute gr simulation
+newton_ini="$DataGENERATIONdir/newton_temp.ini"
+gr_ini="$DataGENERATIONdir/gr_temp.ini"
+
+start_time=$(date +%s)
+#Testing
+echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $newton_ini"
+echo "mpirun -np 16 ./gevolution -n 4 -m 4 -s $gr_ini"
+
+# # Execution
+# mpirun -np 64 ./gevolution -n 8 -m 8 -s $newton_ini
+# mpirun -np 64 ./gevolution -n 8 -m 8 -s $gr_ini
+end_time=$(date +%s)
+elapsed_time=$(echo "$end_time - $start_time" | bc)
+
+# go back to data generation directory
+cd "$DataGENERATIONdir"
