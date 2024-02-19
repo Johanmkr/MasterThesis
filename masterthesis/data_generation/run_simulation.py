@@ -83,6 +83,6 @@ def execute_simulation(
 
 
 if __name__ == "__main__":
-    for seed in np.arange(0,20,1):
-        for A_s in [2.215e-8, 2.215e-7, 2.215e-6, 2.215e-5, 2.215e-4]:
+    for seed in np.arange(0, 20, 1):
+        for A_s in [2.215e-9, 2.215e-8, 2.215e-7, 2.215e-6, 2.215e-5, 2.215e-4]:
             execute_simulation(int(seed), A_s)

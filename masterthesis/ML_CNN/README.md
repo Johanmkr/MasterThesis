@@ -66,11 +66,3 @@ More parameters can be changed in the file [`run_controller.py`](run_controller.
     python3 run_controller.py temp.yaml
 
 This automatically trains on multiple GPUs if they are available, and also searches for a model with the same name as the one in the initialization in order to continue training. 
-
-## Trainers
-
-### Single-GPU
-
-### Multi-GPU
-
-## Testing
