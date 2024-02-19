@@ -40,6 +40,33 @@ There is also a routing that creates testing and training datasets. Which of the
 
 ## Making a run for it
 
+### Initialisation
+Actually running a session/training required an initiation file. This is a template of such file, let's call it `temp.yaml`:
+ 
+ ```yaml
+ model_params:
+  architecture: "RACCOON"         # "RACCOON" or "PENGUIN": Network architecture.
+  layer_param: 16                 # (int) Parameter to control the number of feature maps/complexity of the network. 
+  dropout: 0.5                    # (float) Dropout rate of fully connected layers. Must be a probability between 0 and 1.
+  name: "Somename"                # (str) Name of model/ NB: In order to continue a run, the name (and other setting must be identical).
+
+data_params:
+  datafile: "/mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5"
+  train_seeds: 150                # (int) Number of seeds used for training [0, train_seeds).
+  test_seeds: 100                 # (int) Number of seeds used for testing: [train_seeds, train_seeds+test_seeds).
+  newton_augmentation: 1.0        # (float) Factor to change the newtonian images. Should be != 1 for test purposes only. 
+
+train_params:
+  epochs: 10                      # (int) Nr. epoch to train for (can be trained before as well, will just continue).
+  lr: 0.001                       # (float) Learning rate for optimizer.
+  log_dir: "testruns"             # (str) Directory to log the training. This can be read by tensorboard later.
+```
+More parameters can be changed in the file [`run_controller.py`](run_controller.py) (for instance multi- or single-gpu training). This file is also used to run the training scripts, with the initialization file as a command line argument:
+
+    python3 run_controller.py temp.yaml
+
+This automatically trains on multiple GPUs if they are available, and also searches for a model with the same name as the one in the initialization in order to continue training. 
+
 ## Trainers
 
 ### Single-GPU
