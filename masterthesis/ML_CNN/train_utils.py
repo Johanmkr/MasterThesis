@@ -113,6 +113,7 @@ def confusion_metrics(
 
 def create_confusion_matrix(TP, TN, FP, FN, normalize=False):
     # Matplotlib figure of confusion matrix
+    ###FIXME this does not work as intended
     fig, ax = plt.subplots()
     ax.set_title("Confusion matrix")
     ax.set_xlabel("Predicted Labels")
@@ -321,9 +322,11 @@ def train_one_epoch_cube_version(
     loss_fn,
     epoch_nr,
 ):
-    print(f"---------- Epoch {epoch_nr} ----------\n") if (
-        device == 0 or type(device) == torch.device
-    ) else None
+    (
+        print(f"---------- Epoch {epoch_nr} ----------\n")
+        if (device == 0 or type(device) == torch.device)
+        else None
+    )
     model.train()
     train_loss = 0
     TP = 0

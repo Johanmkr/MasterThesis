@@ -160,14 +160,14 @@ def CUBE_make_training_and_testing_data(
     # Make datasets
     print("Making datasets...")
     print(f"Training set: {len(train_seeds)} seeds")
-    train_dataset = WholeCubeDataset2(
+    train_dataset = WholeCubeDataset(
         seeds=train_seeds,
         newton_augmentation=newton_augmentation,
         target_noise=target_noise,
         datapath=datapath,
     )
     print(f"Test set: {len(test_seeds)} seeds")
-    test_dataset = WholeCubeDataset2(
+    test_dataset = WholeCubeDataset(
         seeds=test_seeds,
         newton_augmentation=newton_augmentation,
         target_noise=target_noise,

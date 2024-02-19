@@ -41,16 +41,16 @@ class RACOON(nn.Module):
         self.num_channels = self.input_size[0]
         self.conv_layers = []
         self.fc_layers = []
-        self.convBias = True
+        self.convBias = False
 
         # LAYER - 2D convolutional layer (num_channels, 256, 256) -> (layer_param, 64, 64)
         self.conv2d1 = nn.Sequential(
             nn.Conv2d(
                 self.num_channels,
                 layer_param,
-                kernel_size=7,
+                kernel_size=4,
                 stride=4,
-                padding=2,
+                padding=0,
                 bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param),
@@ -63,9 +63,9 @@ class RACOON(nn.Module):
             nn.Conv2d(
                 layer_param,
                 layer_param * 4,
-                kernel_size=7,
+                kernel_size=4,
                 stride=4,
-                padding=2,
+                padding=0,
                 bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 4),
@@ -78,9 +78,9 @@ class RACOON(nn.Module):
             nn.Conv2d(
                 layer_param * 4,
                 layer_param * 8,
-                kernel_size=7,
+                kernel_size=4,
                 stride=4,
-                padding=2,
+                padding=0,
                 bias=self.convBias,
             ),
             nn.BatchNorm2d(layer_param * 8),
@@ -129,7 +129,7 @@ class PENGUIN(nn.Module):
         self.num_channels = self.input_size[0]
         self.conv_layers = []
         self.fc_layers = []
-        self.convBias = True
+        self.convBias = False
 
         # LAYER - 2D convolutional layer (num_channels, 256, 256) -> (layer_param, 128, 128)
         self.conv2d1 = nn.Sequential(
