@@ -9,7 +9,7 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 
-import data
+import data_image as data
 import train_utils as tutils
 
 
@@ -95,7 +95,7 @@ def where_stuff_happens(
             train_TN,
             train_FP,
             train_FN,
-        ) = tutils.train_one_epoch_cube_version(
+        ) = tutils.train_one_epoch(
             device=device,
             model=model,
             train_loader=train_loader,
@@ -127,12 +127,11 @@ def where_stuff_happens(
                 test_TN,
                 test_FP,
                 test_FN,
-            ) = tutils.evaluate_cube_version(
+            ) = tutils.evaluate(
                 device=device,
                 model=model,
                 test_loader=test_loader,
                 loss_fn=loss_fn,
-                success_tol=training_params["tol"],
             )
             epoch_test_end_time = time.time()
             tutils.print_and_write_statistics(
@@ -147,35 +146,46 @@ def where_stuff_happens(
                 time=epoch_test_end_time - epoch_test_start_time,
             )
 
-            if test_loss < training_params["breakout_loss"]:
-                print(
-                    f"Breaking out of training loop because test loss {test_loss:.4f} < breakout loss {training_params['breakout_loss']:.4f}"
+            # Save one model with the current epoch (copy) and overwrite the master save
+            best_loss = test_loss if test_loss < best_loss else best_loss
+            state["epoch"] = epoch
+            state["model_state_dict"] = model.state_dict()
+            state["optimizer_state_dict"] = optimizer.state_dict()
+            state["train_loss"] = train_loss
+            state["test_loss"] = test_loss
+            state["best_loss"] = best_loss
+            # from IPython import embed
+
+            # embed()
+            epoch_savepath = (
+                "/".join(state[f"model_save_path"].split("/")[:-1])
+                + "/"
+                + "TMP_"
+                + state[f"model_save_path"].split("/")[-1].replace(".pt", "")
+                + f"_epoch{state['epoch']}.pt"
+            )
+
+            # Save a new copy of the model for the current epoch
+            (
+                torch.save(
+                    state,
+                    epoch_savepath,
                 )
-                should_stop = torch.tensor(True, dtype=torch.bool).to(device)
+                if training_params["save_tmp_every"] % epoch == 0
+                else None
+            )
 
-            if should_stop or test_loss < best_loss:
-                best_loss = test_loss
-                state["epoch"] = epoch
-                state["model_state_dict"] = model.state_dict()
-                state["optimizer_state_dict"] = optimizer.state_dict()
-                state["train_loss"] = train_loss
-                state["test_loss"] = test_loss
-                state["best_loss"] = best_loss
-
-                torch.save(state, state["model_save_path"])
-
-                print(
-                    f"New best loss: {best_loss:.4f}. Saved model to {state['model_save_path']}"
-                )
+            # Save/overwrite the current master model
+            torch.save(
+                state,
+                state["model_save_path"],
+            )
+            print(f"Saved model to {epoch_savepath}")
 
         epoch_total_time_end = time.time()
         print(
             f"Time elapsed for epoch: {epoch_total_time_end - epoch_total_time_start:.2f} s\n"
         )
-
-        if should_stop:
-            print("Breaking out of training loop because of breakout loss.")
-            break
 
         writer.flush()
         writer.close()
@@ -189,9 +199,7 @@ def train(
     optimizer_params,
     training_params,
 ):
-    train_dataset, test_dataset = data.CUBE_make_training_and_testing_data(
-        **data_params
-    )
+    train_dataset, test_dataset = data.make_training_and_testing_data(**data_params)
 
     model = model_params["architecture"](**architecture_params)
     state = tutils.get_state(model_params)

@@ -10,11 +10,11 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from IPython import embed
 
-import data
+import data_image as data
 
 import train_utils as tutils
 
-mp.set_sharing_strategy("file_descriptor")
+# mp.set_sharing_strategy("file_descriptor")
 
 GPU = torch.cuda.is_available()
 world_size = torch.cuda.device_count()
@@ -23,7 +23,7 @@ output_func = nn.Sigmoid()
 
 
 ######################### DDP functions #########################
-def setup(rank:int, world_size:int):
+def setup(rank: int, world_size: int):
     # Setup
     os.environ["MASTER_ADDR"] = "localhost"
     os.environ["MASTER_PORT"] = "12355"
@@ -32,8 +32,8 @@ def setup(rank:int, world_size:int):
     dist.init_process_group("nccl", rank=rank, world_size=world_size)
 
 
-def model_init(rank: int, world_size:int, model:torch.nn.Module) -> torch.nn.Module:
-    """Initialized the sub-models created in each sub-process. 
+def model_init(rank: int, world_size: int, model: torch.nn.Module) -> torch.nn.Module:
+    """Initialized the sub-models created in each sub-process.
 
     Args:
         rank (int): Process ID
@@ -51,7 +51,7 @@ def model_init(rank: int, world_size:int, model:torch.nn.Module) -> torch.nn.Mod
 
     # create model and move it to GPU with id rank
     model = model.to(rank)
-    ddp_model = DDP(model, device_ids=[rank])
+    ddp_model = DDP(model, device_ids=[rank], find_unused_parameters=True)
 
     return ddp_model
 
@@ -70,13 +70,13 @@ def create_data_loaders(
     train_dataset: torch.utils.data.dataset.Dataset,
     test_dataset: torch.utils.data.dataset.Dataset,
     batch_size: int,
-    num_workers:int=0,
-    prefetch_factor:int=2,
-    pin_memory:bool=False,
-    shuffle:bool=True,
-    drop_last:bool=False,
+    num_workers: int = 0,
+    prefetch_factor: int = 2,
+    pin_memory: bool = True,
+    shuffle: bool = True,
+    drop_last: bool = False,
 ):
-    """Create dataloader, via samplers, from the original dataset objects. Each process needs their own dataloader. Each process initialize a sampler, given a rank, which samples its share of indices that make up the dataset. A dataloader object is then created from the sampler. This ensures that different processes train/test on different parts of the main dataset. 
+    """Create dataloader, via samplers, from the original dataset objects. Each process needs their own dataloader. Each process initialize a sampler, given a rank, which samples its share of indices that make up the dataset. A dataloader object is then created from the sampler. This ensures that different processes train/test on different parts of the main dataset.
 
     Args:
         rank (int): Process ID
@@ -140,26 +140,26 @@ def worker(
     state: dict,
 ) -> None:
     """
-    Main worker proccess used for training and testing the neural network. Each subprocess must initialize its own worker. 
+    Main worker proccess used for training and testing the neural network. Each subprocess must initialize its own worker.
 
-    Logic: #TODO Check whether the optimizer and loss function need to be initialized for each sub-process. 
+    Logic: #TODO Check whether the optimizer and loss function need to be initialized for each sub-process.
         (1) Copy/initialize:        - Model on the specific device/sub-process
                                     - Train and test loaders for each sub-process to manage local training.
                                     - Optimizer instances for each sub-process.
                                     - Loss-function instance.
                                     - If the model is laoded, the above need to be initalized from the loaded state dictionary.
-                                    - Tensorboard instance for logging progress. 
-        (2) Loop over the number of epochs specified in training params. 
+                                    - Tensorboard instance for logging progress.
+        (2) Loop over the number of epochs specified in training params.
             (2a) Training:
                     - Train one epoch.
                     - Gather statistics and send to master rank.
                     - Calculate and log relevant statistics (master rank only).
             (2b) Testing:
-                    - Evaluate on the testing data. 
-                    - Gather statistics and send to master rank. 
+                    - Evaluate on the testing data.
+                    - Gather statistics and send to master rank.
                     - Calculate and log relevant statistics (master rank only)
                     - Save model(s) (master rank only).
-            (2c) Synchronize processes. 
+            (2c) Synchronize processes.
         (3) Ending training and cleaning up.
 
 
@@ -171,9 +171,9 @@ def worker(
         train_dataset (torch.utils.data.dataset.Dataset): Dataset object with the training data.
         test_dataset (torch.utils.data.dataset.Dataset): Dataset object with the testing data.
         loader_params (dict): Parameters to initialise the dataloaders for each sub-proccess.
-        optimizer_params (dict): Parameters to initialize the optimizers for each sub-proccess. 
-        training_params (dict): Parameters to control the training proccess. 
-        state (dict): Dictionary to hold the state parameter of the module for easy saving and loading. 
+        optimizer_params (dict): Parameters to initialize the optimizers for each sub-proccess.
+        training_params (dict): Parameters to control the training proccess.
+        state (dict): Dictionary to hold the state parameter of the module for easy saving and loading.
     """
 
     ########################
@@ -194,13 +194,15 @@ def worker(
 
     # Initialise optimizer
     optimizer = torch.optim.Adam(ddp_model.parameters(), **optimizer_params)
-    if state["optimizer_state_dict"] is not None: # Initial new optimizer of not load
+    if state["optimizer_state_dict"] is not None:  # Initial new optimizer of not load
         optimizer.load_state_dict(state["optimizer_state_dict"])
     loss_fn = nn.BCEWithLogitsLoss()
 
     # Set epochs
-    epochs_trained = state["epoch"] # Starting to train from this
-    max_epochs = epochs_trained + training_params["epochs"] # Last epoch to be trained on current session
+    epochs_trained = state["epoch"]  # Starting to train from this
+    max_epochs = (
+        epochs_trained + training_params["epochs"]
+    )  # Last epoch to be trained on current session
 
     # Tensorboard
     if rank == 0:
@@ -216,20 +218,20 @@ def worker(
         best_loss = 1e10
 
     ####################################################################
-    #   (2) Loop over the number of epochs specified in training params. 
+    #   (2) Loop over the number of epochs specified in training params.
     ####################################################################
 
     for epoch in range(epochs_trained + 1, max_epochs + 1):
         epoch_total_time_start = time.time() if rank == 0 else None
 
-        #-----------------
-        #   (2a) Training. 
-        #-----------------
+        # -----------------
+        #   (2a) Training.
+        # -----------------
 
         # Timing
         train_sampler.set_epoch(epoch)
         epoch_train_start_time = time.time() if rank == 0 else None
-        
+
         # Train for one epoch
         (
             local_train_loss,
@@ -237,7 +239,7 @@ def worker(
             local_train_TN,
             local_train_FP,
             local_train_FN,
-        ) = tutils.train_one_epoch_cube_version(
+        ) = tutils.train_one_epoch(
             rank,
             ddp_model,
             train_loader,
@@ -292,16 +294,16 @@ def worker(
                 time=epoch_train_end_time - epoch_train_start_time,
             )
 
-        #----------------
-        #   (2b) Testing. 
-        #----------------
-        
+        # ----------------
+        #   (2b) Testing.
+        # ----------------
+
         # Test only for every few epochs as set in training params
         if epoch % training_params["test_every"] == 0 or epoch == max_epochs:
 
             # Time
             epoch_test_start_time = time.time() if rank == 0 else None
-            
+
             # Evaluate
             (
                 local_test_loss,
@@ -309,7 +311,7 @@ def worker(
                 local_test_TN,
                 local_test_FP,
                 local_test_FN,
-            ) = tutils.evaluate_cube_version(
+            ) = tutils.evaluate(
                 rank,
                 ddp_model,
                 loss_fn,
@@ -368,36 +370,40 @@ def worker(
                 state["test_loss"] = mean_test_loss
                 state["best_loss"] = best_loss
                 epoch_savepath = (
-                    state[f"model_save_path"].split("/")[0]
+                    "/".join(state[f"model_save_path"].split("/")[:-1])
                     + "/"
                     + "TMP_"
-                    + state[f"model_save_path"].split("/")[1].replace(".pt", "")
+                    + state[f"model_save_path"].split("/")[-1].replace(".pt", "")
                     + f"_epoch{state['epoch']}.pt"
                 )
 
                 # Save a new copy of the model for the current epoch
-                torch.save(
-                    state,
-                    epoch_savepath,
+                (
+                    torch.save(
+                        state,
+                        epoch_savepath,
+                    )
+                    if training_params["save_tmp_every"] // epoch == 0
+                    else None
                 )
 
-                # Save/overwrite the current master model 
+                # Save/overwrite the current master model
                 torch.save(
                     state,
                     state["model_save_path"],
                 )
                 print(f"Saved model to {epoch_savepath}")
 
-        #--------------------
-        #   (2b) Synchronize. 
-        #--------------------
+        # --------------------
+        #   (2b) Synchronize.
+        # --------------------
         if rank == 0:
             epoch_total_time_end = time.time()
 
             print(
                 f"Time elapsed for epoch: {epoch_total_time_end - epoch_total_time_start:.2f} s\n"
             )
-        
+
         # Synchronize all processes
         dist.barrier()
 
@@ -428,24 +434,22 @@ def train(
     Args:
         data_params (dict): Prameters to initialize the datasets.
         architecture_params (dict): Architecture parameters.
-        model_params (dict): Model parameters. 
+        model_params (dict): Model parameters.
         loader_params (dict): Dataloader parameters.
         optimizer_params (dict): Optimizer parameters.
-        training_params (dict): Training parameters. 
+        training_params (dict): Training parameters.
     """
 
     # Make training and testing datasets
-    train_dataset, test_dataset = data.CUBE_make_training_and_testing_data(
-        **data_params
-    )
+    train_dataset, test_dataset = data.make_training_and_testing_data(**data_params)
 
     # Make model object
     model = model_params["architecture"](**architecture_params)
-    
+
     # Load the state
     state = tutils.get_state(model_params)
 
-    # If not new state, load the current state dict. 
+    # If not new state, load the current state dict.
     if state["model_state_dict"] is not None:
         model.load_state_dict(state["model_state_dict"])
 
@@ -460,8 +464,13 @@ def train(
         "training_params": training_params,
         "state": state,
     }
+    # embed()
 
-    # Spawn the different processes. 
+    # Spawn the different processes.
+    # import pdb
+
+    # pdb.set_trace()
+
     mp.spawn(
         worker,
         args=(tuple(worker_args.values())),

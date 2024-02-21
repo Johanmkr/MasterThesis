@@ -1,0 +1,819 @@
+
+------------------------------------------------------------
+20/02/2024 10:39:15
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:40:58
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:42:04
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:43:42
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:45:15
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:46:49
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:47:51
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:58:21
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 768
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 10:59:10
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 100
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:00:54
+
+MULTIPLE_GPUS: False
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:04:02
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:05:13
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:06:39
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:10:44
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:12:07
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:12:30
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:14:17
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:16:03
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:18:49
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:19:51
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+20/02/2024 11:24:46
+
+MULTIPLE_GPUS: True
+Configuration file: TEST_PACO_ARCH/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11 12 13]
+newton_augmentation: 0.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 6
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10
+load_model: True
+model_save_path: cnn_storage/models/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10.pt
+
+batch_size: 256
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: cnn_storage/testruns/TestPacoImage_data_z1_PACO_lp6_do0.5_na0.0_ts10_lr0.001
+save_tmp_every: 50
+test_every: 2
+
+------------------------------------------------------------
+
+
+

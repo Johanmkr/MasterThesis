@@ -472,6 +472,8 @@ class model_o3_err(nn.Module):
         self.ReLU = nn.ReLU()
         self.LeakyReLU = nn.LeakyReLU(0.2)
         self.tanh = nn.Tanh()
+        self.output_activation = nn.Identity()
+        self.flatten = nn.Flatten()
 
         for m in self.modules():
             if isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.BatchNorm1d):
@@ -512,13 +514,13 @@ class model_o3_err(nn.Module):
 
         x = self.LeakyReLU(self.B61(self.C61(x)))
 
-        x = x.view(image.shape[0], -1)
-        x = self.dropout(x)
+        # x = x.view(image.shape[0], -1)
+        x = self.dropout(self.flatten(x))
         x = self.dropout(self.LeakyReLU(self.FC1(x)))
         x = self.FC2(x)
 
         # enforce the errors to be positive
-        y = torch.clone(x)
+        # y = torch.clone(x)
         # y[:,6:12] = torch.square(x[:,6:12])
 
-        return y
+        return self.output_activation(x)

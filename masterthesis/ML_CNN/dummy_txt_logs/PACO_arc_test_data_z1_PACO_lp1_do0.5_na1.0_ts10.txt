@@ -1,0 +1,76 @@
+
+------------------------------------------------------------
+19/02/2024 19:05:54
+
+MULTIPLE_GPUS: True
+Configuration file: PACO_arc_test/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11]
+newton_augmentation: 1.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 1
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: PACO_arc_test_data_z1_PACO_lp1_do0.5_na1.0_ts10
+load_model: True
+model_save_path: models/PACO_arc_test_data_z1_PACO_lp1_do0.5_na1.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: PACO_arc_test/runs/PACO_arc_test_data_z1_PACO_lp1_do0.5_na1.0_ts10_lr0.001
+test_every: 2
+
+------------------------------------------------------------
+
+
+
+
+------------------------------------------------------------
+19/02/2024 19:08:28
+
+MULTIPLE_GPUS: True
+Configuration file: PACO_arc_test/init.yaml
+
+CONFIGURATION:
+train_seeds: [0 1 2 3 4 5 6 7 8 9]
+test_seeds: [10 11]
+newton_augmentation: 1.0
+datapath: /mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5
+
+hidden: 1
+dr: 0.5
+channels: 1
+
+architecture: <class 'architectures.model_o3_err'>
+model_name: PACO_arc_test_data_z1_PACO_lp1_do0.5_na1.0_ts10
+load_model: True
+model_save_path: models/PACO_arc_test_data_z1_PACO_lp1_do0.5_na1.0_ts10.pt
+
+batch_size: 1
+num_workers: 2
+prefetch_factor: 2
+
+lr: 0.001
+betas: (0.5, 0.999)
+weight_decay: 1e-08
+
+epochs: 1
+writer_log_path: PACO_arc_test/runs/PACO_arc_test_data_z1_PACO_lp1_do0.5_na1.0_ts10_lr0.001
+test_every: 2
+
+------------------------------------------------------------
+
+
+

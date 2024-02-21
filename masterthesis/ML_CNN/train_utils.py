@@ -1,3 +1,5 @@
+TRANSFORMS = False
+
 import numpy as np
 import os
 import torch
@@ -34,9 +36,10 @@ fliprot90 = tf.Compose([flipH, rotate90])
 fliprot180 = tf.Compose([flipH, rotate180])
 fliprot270 = tf.Compose([flipH, rotate270])
 
-# Append all transformations to the list
-for transform in [rot90, rot180, rot270, flip, fliprot90, fliprot180, fliprot270]:
-    transforms.append(transform)
+if TRANSFORMS:
+    # Append all transformations to the list
+    for transform in [rot90, rot180, rot270, flip, fliprot90, fliprot180, fliprot270]:
+        transforms.append(transform)
 
 # Keep track of the number of transformations.
 nr_transformations = len(transforms)
@@ -389,6 +392,138 @@ def train_one_epoch_cube_version(
 
     return (
         train_loss,
+        TP,
+        TN,
+        FP,
+        FN,
+    )
+
+
+def train_one_epoch(
+    device,
+    model,
+    train_loader,
+    optimizer,
+    loss_fn,
+    epoch_nr,
+):
+    (
+        print(f"---------- Epoch {epoch_nr} ----------\n")
+        if (device == 0 or type(device) == torch.device)
+        else None
+    )
+    model.train()
+    train_loss = 0
+    TP = 0
+    TN = 0
+    FP = 0
+    FN = 0
+    max_batches = len(train_loader)
+
+    i = 0
+    added_loss = 0
+    iterator = iter(train_loader)
+    end_of_data = False
+    while not end_of_data:
+        try:
+            batch = next(iterator)
+            if ((i + 1) % 10 == 0 or (i + 1) == max_batches) and (
+                device == 0 or type(device) == torch.device
+            ):
+                print(f"TRAIN - Batch: {i+1}/{max_batches}")
+
+            images, labels = batch["image"], batch["label"]
+
+            # Send to device
+            images = images.to(device, non_blocking=False)
+            labels = labels.to(device, non_blocking=False)
+
+            loss, pred = one_pass(
+                model,
+                optimizer,
+                loss_fn,
+                images,
+                labels,
+            )
+            train_loss += loss.item()
+            TP_, TN_, FP_, FN_ = confusion_metrics(
+                pred,
+                labels,
+            )
+            TP += TP_
+            TN += TN_
+            FP += FP_
+            FN += FN_
+
+            i += 1
+        except StopIteration:
+            end_of_data = True
+
+    train_loss /= max_batches  # avg loss per batch
+
+    return (
+        train_loss,
+        TP,
+        TN,
+        FP,
+        FN,
+    )
+
+
+def evaluate(
+    device,
+    model,
+    loss_fn,
+    test_loader,
+):
+    model.eval()
+    test_loss = 0
+    TP = 0
+    TN = 0
+    FP = 0
+    FN = 0
+    max_batches = len(test_loader)
+
+    i = 0
+    iterator = iter(test_loader)
+    end_of_data = False
+
+    with torch.no_grad():
+        while not end_of_data:
+            try:
+                batch = next(iterator)
+                if ((i + 1) % 10 == 0 or (i + 1) == max_batches) and (
+                    device == 0 or type(device) == torch.device
+                ):
+                    print(f"EVAL - Batch: {i+1}/{max_batches}")
+                images, labels = batch["image"], batch["label"]
+
+                # Send to device
+                images = images.to(device, non_blocking=False)
+                labels = labels.to(device, non_blocking=False)
+
+                loss, pred = one_eval(
+                    model,
+                    loss_fn,
+                    images,
+                    labels,
+                )
+                test_loss += loss.item()
+                TP_, TN_, FP_, FN_ = confusion_metrics(
+                    pred,
+                    labels,
+                )
+                TP += TP_
+                TN += TN_
+                FP += FP_
+                FN += FN_
+                i += 1
+            except StopIteration:
+                end_of_data = True
+    test_loss /= max_batches  # avg loss per batch
+
+    return (
+        test_loss,
         TP,
         TN,
         FP,
