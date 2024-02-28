@@ -116,7 +116,6 @@ def where_stuff_happens(
             suffix="train",
             time=epoch_train_end_time - epoch_train_start_time,
         )
-        should_stop = torch.tensor(False, dtype=torch.bool).to(device)
 
         if epoch % training_params["test_every"] == 0:
             # ---- TESTING ----

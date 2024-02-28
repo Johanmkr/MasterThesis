@@ -71,7 +71,7 @@ model_params = {
 }
 
 loader_params = {
-    "batch_size": 256,
+    "batch_size": 150,
     "num_workers": torch.cuda.device_count(),
     "prefetch_factor": 2,
 }

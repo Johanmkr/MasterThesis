@@ -1,16 +1,16 @@
 model_params:
   architecture: "PACO"         # "RACCOON" or "PENGUIN"
-  layer_param: 6                 # any integer 
+  layer_param: 12                 # any integer 
   dropout: 0.5                    # any float between 0 and 1
-  name: "TestPacoImage"                # any string
+  name: "TestPacoImageTESTMULTI"                # any string
 
 data_params:
   datafile: "/mn/stornext/d10/data/johanmkr/simulations/data_z1/data_z1.h5"
-  train_seeds: 100
-  test_seeds: 25
+  train_seeds: 10
+  test_seeds: 2
   newton_augmentation: 1.0
 
 train_params:
-  epochs: 150
+  epochs: 1
   lr: 0.0001
   log_dir: "cnn_storage/testruns"

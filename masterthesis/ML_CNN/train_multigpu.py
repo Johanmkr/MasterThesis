@@ -14,7 +14,7 @@ import data_image as data
 
 import train_utils as tutils
 
-# mp.set_sharing_strategy("file_descriptor")
+mp.set_sharing_strategy("file_descriptor")
 
 GPU = torch.cuda.is_available()
 world_size = torch.cuda.device_count()
