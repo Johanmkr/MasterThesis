@@ -154,8 +154,8 @@ def locate_cube_and_calculate(seed, gravity, redshift, A_s):
 
 if __name__ == "__main__":
     # locate_cube_and_calculate(0, "gr", 20, 2.215e-9)
-    seeds = np.arange(0,20,1)
-    A_s = [2.215e-9, 2.215e-8, 2.215e-7, 2.215e-6, 2.215e-5, 2.215e-4]
+    seeds = np.arange(0,250,1)
+    A_s = [2.215e-8]
     redshifts = [20, 15, 10, 5, 1, 0]
     gravities = ["gr", "newton"]
     for seed in seeds:
