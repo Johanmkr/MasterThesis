@@ -23,8 +23,8 @@ def generate_temp_init(seed, A_s, gravity):
     # Check seed
     if not isinstance(seed, int):
         raise ValueError("seed must be an integer")
-    if seed < 0 or seed >= 300:
-        raise ValueError("seed must be between 0 and 300")
+    if seed < 0 or seed >= 250:
+        raise ValueError("seed must be between 0 and 250")
 
     # Correct format
     seed = str(seed).zfill(4)
@@ -89,7 +89,7 @@ def execute_simulation(
 
 
 if __name__ == "__main__":
-    for seed in np.arange(250, 300, 1):
-        for A_s in [2.215e-9]:
+    for seed in np.arange(0, 250, 1):
+        for A_s in [2.215e-5]:
             execute_simulation(int(seed), A_s)
     # execute_simulation(0, 2.215e-9)
