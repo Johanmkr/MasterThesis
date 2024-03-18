@@ -39,38 +39,40 @@ class ClassSpectra:
         self.tkData = np.loadtxt(self.tkPath)
         self.tk_frame = pd.DataFrame(
             data=self.tkData,
-            columns=[
-                "k",
-                "d_g",
-                "d_b",
-                "d_cdm",
-                "d_ur",
-                "d_m",
-                "d_tot",
-                "phi",
-                "psi",
-                "t_g",
-                "t_b",
-                "t_ur",
-                "t_tot",
-            ]
-            if gauge == "synchronous"
-            else [
-                "k",
-                "d_g",
-                "d_b",
-                "d_cdm",
-                "d_ur",
-                "d_m",
-                "d_tot",
-                "phi",
-                "psi",
-                "t_g",
-                "t_b",
-                "t_cdm",
-                "t_ur",
-                "t_tot",
-            ],
+            columns=(
+                [
+                    "k",
+                    "d_g",
+                    "d_b",
+                    "d_cdm",
+                    "d_ur",
+                    "d_m",
+                    "d_tot",
+                    "phi",
+                    "psi",
+                    "t_g",
+                    "t_b",
+                    "t_ur",
+                    "t_tot",
+                ]
+                if gauge == "synchronous"
+                else [
+                    "k",
+                    "d_g",
+                    "d_b",
+                    "d_cdm",
+                    "d_ur",
+                    "d_m",
+                    "d_tot",
+                    "phi",
+                    "psi",
+                    "t_g",
+                    "t_b",
+                    "t_cdm",
+                    "t_ur",
+                    "t_tot",
+                ]
+            ),
         )
 
         self.d_tot_pk = self._calc_power_spectra_from_tk(type="d_tot")

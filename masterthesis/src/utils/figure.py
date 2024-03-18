@@ -8,12 +8,17 @@
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 import numpy as np
-
-# Local imports
-from . import paths
+import pathlib as pl
 
 # Temporary imports
 from IPython import embed
+
+figure_path: pl.Path = pl.Path(
+    "/uio/hume/student-u00/johanmkr/Documents/thesiswriting/figures"
+)
+
+main_figure_path: pl.PosixPath = figure_path / "main"
+temp_figure_path: pl.PosixPath = figure_path / "temp"
 
 
 # Set global plotting parameter
@@ -126,13 +131,13 @@ def SaveShow(
 
         # Save high-resolutoin pdf
         pdf_save_name = save_name.replace(".pdf", "").replace(".png", "") + ".pdf"
-        with PdfPages(paths.main_figure_path / pdf_save_name) as pdf:
+        with PdfPages(main_figure_path / pdf_save_name) as pdf:
             pdf.savefig(fig, dpi=dpi, *args, **kwargs)
         # fig.savefig (paths.main_figure_path / pdf_save_name, dpi=dpi, *args, **kwargs)
 
         # Save low-resolution png
         png_save_name = save_name.replace(".png", "").replace(".pdf", "") + ".png"
-        fig.savefig(paths.temp_figure_path / png_save_name, dpi=72, *args, **kwargs)
+        fig.savefig(temp_figure_path / png_save_name, dpi=72, *args, **kwargs)
     if show:
         plt.show()
 

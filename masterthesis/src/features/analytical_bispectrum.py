@@ -16,6 +16,8 @@ from . import powerspectra as ps
 from . import classPK
 
 
+
+
 class AnalyticalBispectrum:
     """
     Class for calculating the analytical bispectrum. The class takes a range of wavenumbers and a redshift as input. The class then calculates the equilateral and squeezed bispectrum analytically and stores the results in the instance variables:
@@ -45,6 +47,7 @@ class AnalyticalBispectrum:
             5.0 / 7
             + 1.0 / 2 * (k1 / k2 + k2 / k1) * np.cos(angle)
             + 2.0 / 7 * (np.cos(angle)) ** 2
+            
         )
 
     def _F2_tilde_kernel(self, k1: float, k2: float, angle: float) -> float:
