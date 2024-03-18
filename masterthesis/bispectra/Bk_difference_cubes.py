@@ -8,6 +8,10 @@ import os, sys
 import h5py
 from IPython import embed
 
+# Add parent directory to path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from scaling_task import scaling
+
 # Global variables
 boxsize = 5120  # Mpc/h
 Ngrid = 256
@@ -75,13 +79,10 @@ def _get_bispectra(phi, k1, mu, t):
 
 
 def calculate_statistics_for_cube(
-    file_path: str,
+    phi: np.ndarray,
     nr_ksteps: int = KSTEPS,
     save_path: str = None,
 ):
-    # Load cube data
-    with h5py.File(file_path, "r") as file:
-        data = np.array(file["data"][:], dtype=np.float32)
 
     # Generate k_range
     k_range = np.geomspace(kF, kN, nr_ksteps)  # TODO CHECK THIS RANGE
@@ -94,11 +95,11 @@ def calculate_statistics_for_cube(
     for i, k in enumerate(k_range):
         print(f"Calculating bispectra for k={k:.2e} ({i+1}/{len(k_range)})")
         # Stretched:
-        B_stretched[i], _ = _get_bispectra(data, k, mu=0.99, t=0.51)
+        B_stretched[i], _ = _get_bispectra(phi, k, mu=0.99, t=0.51)
         # Squeezed:
-        B_squeezed[i], _ = _get_bispectra(data, k, mu=0.99, t=0.99)
+        B_squeezed[i], _ = _get_bispectra(phi, k, mu=0.99, t=0.99)
         # Equilateral:
-        B_equilateral[i], Pk[i] = _get_bispectra(data, k, mu=0.5, t=1)
+        B_equilateral[i], Pk[i] = _get_bispectra(phi, k, mu=0.5, t=1)
 
     # Create empty dataframe
     df = pd.DataFrame()
@@ -116,34 +117,47 @@ def calculate_statistics_for_cube(
     return df
 
 
-def locate_cube_and_calculate(seed, gravity, redshift, A_s):
+def locate_cube_and_calculate(seed, gravity, A_s, scaler):
     A_s = f"{A_s:.3e}"
     if gravity not in ["gr", "newton"]:
         raise ValueError("Gravity must be either 'gr' or 'newton'")
     assert isinstance(seed, int)
-    assert isinstance(redshift, int)
     seed = str(seed).zfill(4)
 
-    # Locate cube
-    cube_path = (
+    # Locate cubes
+    z10_cube_path = (
         datapath
-        + f"{A_s}/seed{seed}/{gravity}/{gravity}_{redshift_to_snap[int(redshift)]}_phi.h5"
+        + f"{A_s}/seed{seed}/{gravity}/{gravity}_{redshift_to_snap[int(10)]}_phi.h5"
+    )
+    z1_cube_path = (
+        datapath
+        + f"{A_s}/seed{seed}/{gravity}/{gravity}_{redshift_to_snap[int(1)]}_phi.h5"
     )
 
     # Check if cube exists
-    if not pl.Path(cube_path).exists():
-        print(f"\n\n\n\nCube not found: {cube_path}")
-        return
-    else:
-        print(f"\n\n\n\nCube found: {cube_path}")
+    for cube_path in [z10_cube_path, z1_cube_path]:
+        if not pl.Path(cube_path).exists():
+            print(f"\n\n\n\nCube not found: {cube_path}")
+            return
+        else:
+            print(f"\n\n\n\nCube found: {cube_path}")
 
-    output_savepath = datapath + f"bispectra_analysis/z_{redshift}/seed{seed}/"
+    # Load cubes
+    print(f"\nLoading cubes...\n")
+    with h5py.File(z10_cube_path, "r") as file:
+        z10_data = np.array(file["data"][:], dtype=np.float32)
+    with h5py.File(z1_cube_path, "r") as file:
+        z1_data = np.array(file["data"][:], dtype=np.float32)
+
+    scaled_phi = scaler.scale_10_1(z10_data, z1_data)
+
+    output_savepath = datapath + f"bispectra_analysis/scaled/seed{seed}/"
 
     # Check if output path exists
     if not pl.Path(output_savepath).exists():
         os.makedirs(output_savepath)
 
-    savename = f"{A_s}_{gravity}.pkl"
+    savename = f"SCALED_{A_s}_{gravity}.pkl"
     savepath = output_savepath + savename
 
     # Check if file already exists
@@ -152,19 +166,21 @@ def locate_cube_and_calculate(seed, gravity, redshift, A_s):
         return
     else:
         print(
-            f"\n\nCalculating for\nSeed: {seed}\nA_s: {A_s}\nz: {redshift}\nGravity: {gravity}\nSaving to {savepath}\n\n"
+            f"\n\nCalculating for\nSeed: {seed}\nA_s: {A_s}\nGravity: {gravity}\nSaving to {savepath}\n\n"
         )
-        calculate_statistics_for_cube(cube_path, save_path=savepath)
+        calculate_statistics_for_cube(scaled_phi, save_path=savepath)
 
 
 if __name__ == "__main__":
     # locate_cube_and_calculate(0, "gr", 20, 2.215e-9)
-    seeds = np.arange(0, 50, 1)
-    A_s = [2.215e-9]
-    redshifts = [10, 1]
+    seeds = np.arange(0, 250, 1)
+    A_s = [2.215e-9, 2.215e-8, 2.215e-7, 2.215e-6, 2.215e-5]
     gravities = ["gr", "newton"]
+    print(
+        f"Available A_s:\n 0 {A_s[0]}\n 1 {A_s[1]}\n 2 {A_s[2]}\n 3 {A_s[3]}\n 4 {A_s[4]}"
+    )
+    A = A_s[int(input("Index of A_s: "))]
     for seed in seeds:
-        for A in A_s:
-            for redshift in redshifts:
-                for gravity in gravities:
-                    locate_cube_and_calculate(int(seed), gravity, redshift, A)
+        scaler = scaling.CubeScaler(A_s=A)
+        for gravity in gravities:
+            locate_cube_and_calculate(int(seed), gravity, A, scaler)
