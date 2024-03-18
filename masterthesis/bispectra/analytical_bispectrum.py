@@ -1,6 +1,6 @@
 import numpy as np
 
-from power_spectrum import get_Pk
+from .power_spectrum import get_Pk
 
 # Constants
 omega_m = 0.022032 + 0.12038  # omega_b + omega_c
