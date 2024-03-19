@@ -36,7 +36,8 @@ custom_params = {
     "xtick.labelsize": 23,
     "ytick.labelsize": 23,
     "legend.fontsize": 23,
-    "figure.titlesize": 23,
+    "figure.titlesize": 25,
+    "figure.titleweight": "bold",
     "axes.grid": False,
 }
 

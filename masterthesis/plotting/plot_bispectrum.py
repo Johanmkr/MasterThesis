@@ -221,7 +221,7 @@ def plot_equilateral_bispectrum(spectrum="equilateral"):
     top_ax.axvspan(kN, 1e2, alpha=0.25, color="grey")
     
     title = f"{spectrum.capitalize()} Bispectrum (bottom) and Relative Difference (top)"
-    top_ax.set_title(title)
+    fig.suptitle(title)
     
     # set text with mu and t values
     mu = r"$\mu\approx0.5$" if spectrum.lower() in {"equilateral", "eq"} else r"$\mu\approx1$"
