@@ -18,7 +18,7 @@ plt.rcParams["image.origin"] = "lower"
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 print(f"Device: {device}")
 # Model
-MODEL_NAME = "T2"
+MODEL_NAME = "T1"
 MODEL_PATH = f"models/{MODEL_NAME}.pt"
 BATCH_SIZE = 342 if MODEL_NAME == "T2" else 256
 NUM_WORKERS = 4
@@ -26,7 +26,7 @@ NUM_WORKERS = 4
 A_s = 2.215e-9
 (mean, var) = np.load(f"mean_var_A_s{A_s:.3e}.npy")
 norm = mcolors.Normalize(vmin=-5, vmax=5)
-S_val = "S2"  # S1 for data tested on, S2 for newly run data
+S_val = "S1"  # S1 for data tested on, S2 for newly run data
 
 # Load model
 if MODEL_NAME == "T1":
@@ -107,7 +107,7 @@ assert TN == tn
 assert FP == fp
 assert FN == fn
 
-# Plot confusion matrix
+# Plot confusion matrixS_name = r"$\mathtt{S}_1$" if S_val == "S1" else r"$\mathtt{S}_2$"
 disp = ConfusionMatrixDisplay(confusion_matrix=cfm, display_labels=["Newton", "GR"])
 norm_disp = ConfusionMatrixDisplay(
     confusion_matrix=cfm_norm, display_labels=["Newton", "GR"]
