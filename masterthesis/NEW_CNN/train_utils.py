@@ -12,11 +12,12 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torchvision import transforms as tf
 import matplotlib.pyplot as plt
+import data
 
-if __name__ == "__main__":
-    import data
-else:
-    from .  import data
+# if __name__ == "__main__":
+#     import data
+# else:
+#     from . import data
 # import data if __name__ == "__main__" else import .data
 
 # Set output function
