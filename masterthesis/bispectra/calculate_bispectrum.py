@@ -19,6 +19,11 @@ kN = np.pi / resolution
 THREADS = 128
 KSTEPS = 50
 
+# Convert to right units
+h = 0.67556
+kF /= h  # Convert to h/Mpc
+kN /= h  # Convert to h/Mpc
+
 # Paths
 datapath = "/mn/stornext/d10/data/johanmkr/simulations/"
 
@@ -159,7 +164,10 @@ def locate_cube_and_calculate(seed, gravity, redshift, A_s):
 
 if __name__ == "__main__":
     # locate_cube_and_calculate(0, "gr", 20, 2.215e-9)
-    seeds = np.arange(0, 50, 1)
+    seed_ranges = [np.arange(0, 100, 1), np.arange(100, 200, 1), np.arange(200, 300)]
+    seeds = seed_ranges[
+        int(input("Enter seed range (0:[0,100) - 1:[100,200) - 2:[200,300) :"))
+    ]
     A_s = [2.215e-9]
     redshifts = [10, 1]
     gravities = ["gr", "newton"]

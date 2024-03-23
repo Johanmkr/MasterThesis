@@ -49,94 +49,94 @@ loss_fn = nn.BCEWithLogitsLoss()
 model.to(device)
 
 
-try:
-    loss = np.load(f"inference_data/{MODEL_NAME}/loss_{S_val}.npy")
-    (TP, TN, FP, FN) = np.load(f"inference_data/{MODEL_NAME}/cf_metrics_{S_val}.npy")
-    predicted_scores = np.load(
-        f"inference_data/{MODEL_NAME}/predicted_scores_{S_val}.npy"
-    )
-    predictions = np.load(f"inference_data/{MODEL_NAME}/predictions_{S_val}.npy")
-    labels = np.load(f"inference_data/{MODEL_NAME}/labels_{S_val}.npy")
-except FileNotFoundError:
-    # Load some inference data
-    seed_range = np.arange(200, 250) if S_val == "S1" else np.arange(250, 300)
-    inf_data = ScaledData(seeds=seed_range, train=False, mean=mean, variance=var)
-    inf_loader = DataLoader(
-        inf_data,
-        batch_size=BATCH_SIZE,
-        shuffle=False,
-        num_workers=NUM_WORKERS,
-        pin_memory=True,
-    )
-    # Infer on whole inf-data
-    print("Infering on data: ", S_val, seed_range)
-    loss, TP, TN, FP, FN, predicted_scores, labels = tutils.infer(
-        device=device, model=model, inf_loader=inf_loader, loss_fn=loss_fn
-    )
-    # Calculate predictions
-    predictions = predicted_scores >= 0.5
+# try:
+#     loss = np.load(f"inference_data/{MODEL_NAME}/loss_{S_val}.npy")
+#     (TP, TN, FP, FN) = np.load(f"inference_data/{MODEL_NAME}/cf_metrics_{S_val}.npy")
+#     predicted_scores = np.load(
+#         f"inference_data/{MODEL_NAME}/predicted_scores_{S_val}.npy"
+#     )
+#     predictions = np.load(f"inference_data/{MODEL_NAME}/predictions_{S_val}.npy")
+#     labels = np.load(f"inference_data/{MODEL_NAME}/labels_{S_val}.npy")
+# except FileNotFoundError:
+#     # Load some inference data
+#     seed_range = np.arange(200, 250) if S_val == "S1" else np.arange(250, 300)
+#     inf_data = ScaledData(seeds=seed_range, train=False, mean=mean, variance=var)
+#     inf_loader = DataLoader(
+#         inf_data,
+#         batch_size=BATCH_SIZE,
+#         shuffle=False,
+#         num_workers=NUM_WORKERS,
+#         pin_memory=True,
+#     )
+#     # Infer on whole inf-data
+#     print("Infering on data: ", S_val, seed_range)
+#     loss, TP, TN, FP, FN, predicted_scores, labels = tutils.infer(
+#         device=device, model=model, inf_loader=inf_loader, loss_fn=loss_fn
+#     )
+#     # Calculate predictions
+#     predictions = predicted_scores >= 0.5
 
-    # Move to cpu and make numpy arrays
-    predicted_scores = predicted_scores.cpu().detach().numpy()
-    labels = labels.cpu().detach().numpy()
-    predictions = predictions.cpu().detach().numpy()
+#     # Move to cpu and make numpy arrays
+#     predicted_scores = predicted_scores.cpu().detach().numpy()
+#     labels = labels.cpu().detach().numpy()
+#     predictions = predictions.cpu().detach().numpy()
 
-    # Check if directory exists
-    if not os.path.exists(f"inference_data/{MODEL_NAME}"):
-        os.makedirs(f"inference_data/{MODEL_NAME}")
-    # Save models
-    np.save(f"inference_data/{MODEL_NAME}/loss_{S_val}.npy", loss)
-    np.save(
-        f"inference_data/{MODEL_NAME}/cf_metrics_{S_val}.npy",
-        np.array([TP, TN, FP, FN]),
-    )
-    np.save(
-        f"inference_data/{MODEL_NAME}/predicted_scores_{S_val}.npy", predicted_scores
-    )
-    np.save(f"inference_data/{MODEL_NAME}/predictions_{S_val}.npy", predictions)
-    np.save(f"inference_data/{MODEL_NAME}/labels_{S_val}.npy", labels)
+#     # Check if directory exists
+#     if not os.path.exists(f"inference_data/{MODEL_NAME}"):
+#         os.makedirs(f"inference_data/{MODEL_NAME}")
+#     # Save models
+#     np.save(f"inference_data/{MODEL_NAME}/loss_{S_val}.npy", loss)
+#     np.save(
+#         f"inference_data/{MODEL_NAME}/cf_metrics_{S_val}.npy",
+#         np.array([TP, TN, FP, FN]),
+#     )
+#     np.save(
+#         f"inference_data/{MODEL_NAME}/predicted_scores_{S_val}.npy", predicted_scores
+#     )
+#     np.save(f"inference_data/{MODEL_NAME}/predictions_{S_val}.npy", predictions)
+#     np.save(f"inference_data/{MODEL_NAME}/labels_{S_val}.npy", labels)
 
-# Find metrics using sklearn:
-cfm = confusion_matrix(labels, predictions)
-cfm_norm = confusion_matrix(labels, predictions, normalize="all")
-tn, fp, fn, tp = cfm.ravel()
+# # Find metrics using sklearn:
+# cfm = confusion_matrix(labels, predictions)
+# cfm_norm = confusion_matrix(labels, predictions, normalize="all")
+# tn, fp, fn, tp = cfm.ravel()
 
-# Assert equalitites
-assert TP == tp
-assert TN == tn
-assert FP == fp
-assert FN == fn
+# # Assert equalitites
+# assert TP == tp
+# assert TN == tn
+# assert FP == fp
+# assert FN == fn
 
-# Plot confusion matrixS_name = r"$\mathtt{S}_1$" if S_val == "S1" else r"$\mathtt{S}_2$"
-disp = ConfusionMatrixDisplay(confusion_matrix=cfm, display_labels=["Newton", "GR"])
-norm_disp = ConfusionMatrixDisplay(
-    confusion_matrix=cfm_norm, display_labels=["Newton", "GR"]
-)
-norm_disp.plot()
-disp.plot()
+# # Plot confusion matrixS_name = r"$\mathtt{S}_1$" if S_val == "S1" else r"$\mathtt{S}_2$"
+# disp = ConfusionMatrixDisplay(confusion_matrix=cfm, display_labels=["Newton", "GR"])
+# norm_disp = ConfusionMatrixDisplay(
+#     confusion_matrix=cfm_norm, display_labels=["Newton", "GR"]
+# )
+# norm_disp.plot()
+# disp.plot()
 
-accuracy, precision, recall, F1, TPR, FPR = tutils.calculate_metrics(TP, TN, FP, FN)
-print(f"Accuracy: {accuracy:.3f}")
-print(f"Precision: {precision:.3f}")
-print(f"Recall: {recall:.3f}")
-print(f"F1: {F1:.3f}")
-print(f"TPR: {TPR:.3f}")
-print(f"FPR: {FPR:.3f}")
+# accuracy, precision, recall, F1, TPR, FPR = tutils.calculate_metrics(TP, TN, FP, FN)
+# print(f"Accuracy: {accuracy:.3f}")
+# print(f"Precision: {precision:.3f}")
+# print(f"Recall: {recall:.3f}")
+# print(f"F1: {F1:.3f}")
+# print(f"TPR: {TPR:.3f}")
+# print(f"FPR: {FPR:.3f}")
 
 
-# ROC curve
-fpr, tpr, thresholds = roc_curve(labels, predicted_scores)
-roc_auc = auc(fpr, tpr)
-plt.figure()
-plt.plot(fpr, tpr, color="darkorange", lw=2, label=f"ROC curve (area = {roc_auc:.2f})")
-plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel("False Positive Rate")
-plt.ylabel("True Positive Rate")
-plt.title("Receiver Operating Characteristic")
-plt.legend(loc="lower right")
-plt.show()
+# # ROC curve
+# fpr, tpr, thresholds = roc_curve(labels, predicted_scores)
+# roc_auc = auc(fpr, tpr)
+# plt.figure()
+# plt.plot(fpr, tpr, color="darkorange", lw=2, label=f"ROC curve (area = {roc_auc:.2f})")
+# plt.plot([0, 1], [0, 1], color="navy", lw=2, linestyle="--")
+# plt.xlim([0.0, 1.0])
+# plt.ylim([0.0, 1.05])
+# plt.xlabel("False Positive Rate")
+# plt.ylabel("True Positive Rate")
+# plt.title("Receiver Operating Characteristic")
+# plt.legend(loc="lower right")
+# plt.show()
 
 
 def get_saliency_map(model, image, label):

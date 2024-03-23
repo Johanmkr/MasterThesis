@@ -23,6 +23,11 @@ kN = np.pi / resolution
 THREADS = 128
 KSTEPS = 50
 
+# Convert to right units
+h = 0.67556
+kF /= h  # Convert to h/Mpc
+kN /= h  # Convert to h/Mpc
+
 # Paths
 datapath = "/mn/stornext/d10/data/johanmkr/simulations/"
 
@@ -173,13 +178,13 @@ def locate_cube_and_calculate(seed, gravity, A_s, scaler):
 
 if __name__ == "__main__":
     # locate_cube_and_calculate(0, "gr", 20, 2.215e-9)
-    seeds = np.arange(0, 250, 1)
-    A_s = [2.215e-9, 2.215e-8, 2.215e-7, 2.215e-6, 2.215e-5]
+    seed_ranges = [np.arange(0, 100, 1), np.arange(100, 200, 1), np.arange(200, 300)]
+    seeds = seed_ranges[
+        int(input("Enter seed range (0:[0,100) - 1:[100,200) - 2:[200,300) :"))
+    ]
+    A_s = [2.215e-9]
     gravities = ["gr", "newton"]
-    print(
-        f"Available A_s:\n 0 {A_s[0]}\n 1 {A_s[1]}\n 2 {A_s[2]}\n 3 {A_s[3]}\n 4 {A_s[4]}"
-    )
-    A = A_s[int(input("Index of A_s: "))]
+    A = A_s[0]
     for seed in seeds:
         scaler = scaling.CubeScaler(A_s=A)
         for gravity in gravities:
