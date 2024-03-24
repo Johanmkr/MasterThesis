@@ -115,4 +115,4 @@ if __name__ == "__main__":
     gravities = ["GR", "Newton"]
     for kind in kinds:
         for gravity in gravities:
-            calculate_and_save_average(gravity, kind, max_seed=250)
+            calculate_and_save_average(gravity, kind, max_seed=300)
