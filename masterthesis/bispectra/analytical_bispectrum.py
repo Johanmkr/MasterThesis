@@ -11,7 +11,7 @@ def _F2_kernel(k1, k2, psi):
 
 
 def C(k, a):
-    H0k = 1 / (2997.13 * k)  # H0 in Mpc^-1
+    H0k = 1 / (2997.92458 * k)  # H0 in Mpc^-1
     return 3 * omega_m * H0k**2 / (2 * a)
 
 
