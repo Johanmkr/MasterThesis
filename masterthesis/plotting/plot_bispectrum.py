@@ -123,7 +123,7 @@ scaled_newton = scaled_newton.iloc[1:-1]
 def plot_equilateral_bispectrum(spectrum="equilateral"):
     plot_settings = dict(
         xlabel=r"$k$ [h/Mpc]",
-        ylabel=r"$B_\Phi(k, \mu, t)$ [Mpc/h]$^6$",
+        ylabel=r"$|B_\Phi(k, \mu, t)|$ [Mpc/h]$^6$",
         aspect="auto",
         xscale="log",
         yscale="log",
@@ -210,6 +210,7 @@ def plot_equilateral_bispectrum(spectrum="equilateral"):
     top_ax.semilogx(z10gr["k"], z10_diff, color="k", ls="dotted")
     top_ax.semilogx(z1gr["k"], z1_diff, color="k", ls="dashed")
     top_ax.semilogx(scaled_gr["k"], scaled_diff, color="k", ls="solid")
+    top_ax.set_ylabel(r"$\Delta B_\Phi(k,\mu,t)$")
 
     ls_legends = top_ax.legend(
         [plt.Line2D((0, 0), (0, 0), color="k", linestyle=ls) for ls in linestyles],
@@ -238,7 +239,7 @@ def plot_equilateral_bispectrum(spectrum="equilateral"):
     )
     t = r"$t\approx0.5$" if spectrum.lower() in {"stretched", "st"} else r"$t\approx1$"
     text = f"{mu}\n{t}"
-    main_ax.text(0.7, 0.85, text, color="k", transform=main_ax.transAxes, fontsize=20)
+    main_ax.text(0.6, 0.85, text, color="k", transform=main_ax.transAxes, fontsize=35)
 
     # Adjust the space between the plots to be zero.
     plt.subplots_adjust(hspace=0.0)
