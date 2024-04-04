@@ -14,6 +14,7 @@ import pathlib as pl
 from IPython import embed
 
 import os, sys
+
 # Parent forlder to path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -28,17 +29,18 @@ temp_figure_path: pl.PosixPath = figure_path / "temp"
 # Set global plotting parameter
 custom_params = {
     "figure.figsize": (10, 10),
-    "font.family": "sans-serif",
-    "font.size": 23,
-    "axes.labelsize": 23,
-    "axes.titlesize": 23,
+    "font.family": "postscript",
+    "font.size": 30,
+    "axes.labelsize": 30,
+    "axes.titlesize": 30,
     "axes.titleweight": "bold",
-    "xtick.labelsize": 23,
-    "ytick.labelsize": 23,
-    "legend.fontsize": 23,
-    "figure.titlesize": 25,
+    "xtick.labelsize": 30,
+    "ytick.labelsize": 30,
+    "legend.fontsize": 30,
+    "figure.titlesize": 35,
     "figure.titleweight": "bold",
     "axes.grid": False,
+    "text.usetex": True,
 }
 
 params = plt.rcParams
