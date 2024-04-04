@@ -12,8 +12,11 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 import torch.multiprocessing as mp
 from torchvision import transforms as tf
 import matplotlib.pyplot as plt
-import data
 
+try:
+    import data
+except ModuleNotFoundError:
+    from . import data
 # if __name__ == "__main__":
 #     import data
 # else:
