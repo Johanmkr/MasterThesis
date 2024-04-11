@@ -63,18 +63,18 @@ if __name__ == "__main__":
     # Squeezed
     # k1 = k2 >> k3
     # mu = 1, t = 1
-    B_sq_z1 = get_Bk(k, mu=0.99, t=0.99, z=1)
-    B_sq_z10 = get_Bk(k, mu=0.99, t=0.99, z=10)
-    B_sq_z1_nl = get_Bk(k, mu=0.99, t=0.99, z=1, nl=True)
-    B_sq_z10_nl = get_Bk(k, mu=0.99, t=0.99, z=10, nl=True)
+    B_sq_z1 = get_Bk(k, mu=0.99, t=1, z=1)
+    B_sq_z10 = get_Bk(k, mu=0.99, t=1, z=10)
+    B_sq_z1_nl = get_Bk(k, mu=0.99, t=1, z=1, nl=True)
+    B_sq_z10_nl = get_Bk(k, mu=0.99, t=1, z=10, nl=True)
 
     # Stretched
     # k1 >> k2 = k3
     # mu = 1, t = 0.5
-    B_st_z1 = get_Bk(k, mu=0.99, t=0.51, z=1)
-    B_st_z10 = get_Bk(k, mu=0.99, t=0.51, z=10)
-    B_st_z1_nl = get_Bk(k, mu=0.99, t=0.51, z=1, nl=True)
-    B_st_z10_nl = get_Bk(k, mu=0.99, t=0.51, z=10, nl=True)
+    B_st_z1 = get_Bk(k, mu=0.99, t=0.50, z=1)
+    B_st_z10 = get_Bk(k, mu=0.99, t=0.50, z=10)
+    B_st_z1_nl = get_Bk(k, mu=0.99, t=0.50, z=1, nl=True)
+    B_st_z10_nl = get_Bk(k, mu=0.99, t=0.50, z=10, nl=True)
 
     # Plot
 

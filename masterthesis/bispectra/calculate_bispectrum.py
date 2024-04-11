@@ -17,12 +17,12 @@ kN = np.pi / resolution
 
 # For calculating bispectra
 THREADS = 128
-KSTEPS = 50
+KSTEPS = 75
 
 # Convert to right units
-h = 0.67556
-kF /= h  # Convert to h/Mpc
-kN /= h  # Convert to h/Mpc
+# h = 0.67556
+# kF /= h  # Convert to h/Mpc
+# kN /= h  # Convert to h/Mpc
 
 # Paths
 datapath = "/mn/stornext/d10/data/johanmkr/simulations/"
@@ -101,7 +101,7 @@ def calculate_statistics_for_cube(
         # Stretched:
         B_stretched[i], _ = _get_bispectra(data, k, mu=0.99, t=0.51)
         # Squeezed:
-        B_squeezed[i], _ = _get_bispectra(data, k, mu=0.99, t=0.99)
+        B_squeezed[i], _ = _get_bispectra(data, k, mu=0.99, t=1)
         # Equilateral:
         B_equilateral[i], Pk[i] = _get_bispectra(data, k, mu=0.5, t=1)
 

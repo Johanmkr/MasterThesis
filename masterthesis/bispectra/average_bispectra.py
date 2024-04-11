@@ -34,20 +34,20 @@ pathfinder = {
 }
 
 
-def calculate_and_save_average(gravity, kind, A_s=2.215e-9, max_seed=250):
+def calculate_and_save_average(gravity, kind, A_s=2.215e-9, max_seed=250, KSTEPS=75):
     """
     Calculate and save the average bispectrum for a given gravity model and A_s
     """
     assert kind in ["z10", "z1", "scaled"], "kind must be 'z10', 'z1' or 'scaled'"
 
     # Create empty arrays
-    B_eq = np.zeros((max_seed, 50))
-    B_sq = np.zeros((max_seed, 50))
-    B_st = np.zeros((max_seed, 50))
-    Q_eq = np.zeros((max_seed, 50))
-    Q_sq = np.zeros((max_seed, 50))
-    Q_st = np.zeros((max_seed, 50))
-    Pk = np.zeros((max_seed, 50))
+    B_eq = np.zeros((max_seed, KSTEPS))
+    B_sq = np.zeros((max_seed, KSTEPS))
+    B_st = np.zeros((max_seed, KSTEPS))
+    Q_eq = np.zeros((max_seed, KSTEPS))
+    Q_sq = np.zeros((max_seed, KSTEPS))
+    Q_st = np.zeros((max_seed, KSTEPS))
+    Pk = np.zeros((max_seed, KSTEPS))
 
     # Loop over seeds
     for seed in trange(max_seed):
@@ -115,4 +115,4 @@ if __name__ == "__main__":
     gravities = ["GR", "Newton"]
     for kind in kinds:
         for gravity in gravities:
-            calculate_and_save_average(gravity, kind, max_seed=300)
+            calculate_and_save_average(gravity, kind, max_seed=300, KSTEPS=75)
