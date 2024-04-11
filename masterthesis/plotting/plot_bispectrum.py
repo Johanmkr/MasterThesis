@@ -18,9 +18,9 @@ resolution = boxsize / Ngrid
 kF = 2 * np.pi / boxsize
 kN = np.pi / resolution
 
-h = 0.67556
-kF /= h  # Convert to h/Mpc
-kN /= h  # Convert to h/Mpc
+# h = 0.67556
+# kF /= h  # Convert to h/Mpc
+# kN /= h  # Convert to h/Mpc
 
 avg_path = (
     "/mn/stornext/d10/data/johanmkr/simulations/bispectra_analysis/average_bispectra/"
@@ -148,11 +148,11 @@ def plot_equilateral_bispectrum(spectrum="equilateral"):
     elif spectrum.lower() in {"squeezed", "sq"}:
         kind = "B_sq_avg"
         mu_val = 0.99
-        t_val = 0.99
+        t_val = 1
     elif spectrum.lower() in {"stretched", "st"}:
         kind = "B_st_avg"
         mu_val = 0.99
-        t_val = 0.5
+        t_val = 0.51
 
     # Calculate the relative difference
     z10gr_data = (z10gr["k"], abs(z10gr[kind]))
