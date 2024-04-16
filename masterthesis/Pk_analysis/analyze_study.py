@@ -4,7 +4,7 @@ import optuna
 
 ################################## INPUT ########################################
 # study parameters
-study_name = 'params_2_SFRH_TPE'
+study_name = 'Pk_FCNN_BC'
 storage    = 'sqlite:///TPE.db'
 
 # whether print information of a particular trial

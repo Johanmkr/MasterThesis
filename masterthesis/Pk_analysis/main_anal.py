@@ -89,7 +89,7 @@ class Objective(object):
             loss.backward()
             optimizer.step()
             
-            train_loss /= train_length
+            # train_loss /= train_length
             
             # Testing
             test_loss = 0
@@ -98,7 +98,7 @@ class Objective(object):
                 predictions = model(test_pk_gpu)
                 loss = loss_fn(predictions, test_label_gpu)
                 test_loss += loss.item()
-            test_loss /= test_length
+            # test_loss /= test_length
             
         
         # for epoch in range(self.epochs):
@@ -179,15 +179,15 @@ max_neurons_layers = 1000
 
 # training parameters
 # batch_size = 256 * 3 * 2 * 50
-epochs     = 250
+epochs     = 150
 workers    = 24     #number of cpus to load the data 
 # g          = [0,1]  #minimize loss using parameters 0 and 1
 # h          = [2,3]  #minimize loss using errors of parameters 0 and 1
 
 # optuna parameters
-study_name       = 'Pk_2_params'
-n_trials         = 1000 #set to None for infinite
-storage          = 'Pk_analysis/params.db'
+study_name       = 'Pk_FCNN_BC'
+n_trials         = 500 #set to None for infinite
+storage          = 'sqlite:///TPE.db'
 n_jobs           = 1
 n_startup_trials = 20 #random sample the space before using the sampler
 ######################################################################################
@@ -216,5 +216,5 @@ for fout in ['models', 'losses']:
 objective = Objective(input_size, output_size, max_layers, max_neurons_layers, 
                       device, epochs, train_loader, test_loader)
 sampler = optuna.samplers.TPESampler(n_startup_trials=n_startup_trials)
-study = optuna.create_study(study_name=study_name, sampler=sampler)
+study = optuna.create_study(study_name=study_name, sampler=sampler, storage=storage, load_if_exists=True)
 study.optimize(objective, n_trials, n_jobs=n_jobs)
