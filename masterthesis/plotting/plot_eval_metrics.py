@@ -119,7 +119,7 @@ def plot_roc_curve():
     ax.set_ylim([0.0, 1.05])
     ax.set_xlabel("False Positive Rate")
     ax.set_ylabel("True Positive Rate")
-    fig.suptitle("Receiver Operating Characteristic")
+    fig.suptitle("Receiver Operating Characteristic for T2")
     ax.legend(loc="lower right")
 
     savename = f"{MODEL_NAME}_roc_curve.pdf"

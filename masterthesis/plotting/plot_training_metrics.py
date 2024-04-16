@@ -117,7 +117,7 @@ def plot_loss():
     ax2.axvline(x=44, color="k", ls="dashed")
 
     # Add figure title
-    fig.suptitle("Loss")
+    fig.suptitle("CNN loss")
 
     savename = "loss_comparison"
     fg.SaveShow(fig=fig, save_name=savename, save=True, show=True, tight_layout=True)
