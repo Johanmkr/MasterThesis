@@ -183,7 +183,7 @@ def plot_rest_of_metrics():
         bbox_to_anchor=(0.98, 0.965),
     )
 
-    fig.suptitle("Evaluation Metrics")
+    fig.suptitle("CNN Evaluation Metrics")
 
     # Save figure
     savename = "metrics_T2"

@@ -61,8 +61,8 @@ def plot_confusion_matrices():
 
     # Disable colorbars
 
-    S1_disp.plot(ax=ax[0], cmap="Greens", values_format="d")
-    S2_disp.plot(ax=ax[1], cmap="Greens", values_format="d")
+    S1_disp.plot(ax=ax[0], cmap="Blues", values_format="d")
+    S2_disp.plot(ax=ax[1], cmap="Blues", values_format="d")
 
     S1_disp.im_.colorbar.remove()
     S2_disp.im_.colorbar.remove()

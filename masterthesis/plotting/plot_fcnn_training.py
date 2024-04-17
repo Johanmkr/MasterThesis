@@ -9,12 +9,12 @@ import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import figure as fg
 
-model_nr = XXX
+model_nr = 481
 model_train_data_path = f"../Pk_analysis/Pk_analysis/losses/loss_{model_nr}.txt"
 info = np.loadtxt(model_train_data_path, delimiter=" ", skiprows=0)
-epochs = info[250:, 0]
-train_loss = info[250:, 1] * 200
-test_loss = info[250:, 2] * 50
+epochs = info[:, 0]
+train_loss = info[:, 1]
+test_loss = info[:, 2]
 
 train_color = "teal"
 test_color = "fuchsia"
