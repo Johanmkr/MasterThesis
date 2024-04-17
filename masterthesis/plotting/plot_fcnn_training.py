@@ -28,8 +28,8 @@ def plot_loss():
         aspect="auto",
     )
     fig, ax = plt.subplots(1, 1, figsize=(15, 12))
-    ax.plot(epochs, train_loss, color=train_color, label="Train", ls="solid", lw=2)
-    ax.plot(epochs, test_loss, color=test_color, label="Test", ls="solid", lw=2)
+    ax.plot(epochs, train_loss, color=train_color, label="Training", ls="solid", lw=2)
+    ax.plot(epochs, test_loss, color=test_color, label="Testing", ls="solid", lw=2)
     ax.set(**plot_settings)
     ax.legend()
 
