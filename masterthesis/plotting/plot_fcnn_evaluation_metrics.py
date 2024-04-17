@@ -12,8 +12,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import NEW_CNN.train_utils as tutils
 
 # Load data and create dataframes
-S1_data = np.loadtxt("../Pk_analysis/S1_results.txt", skiprows=1)
-S2_data = np.loadtxt("../Pk_analysis/S2_results.txt", skiprows=1)
+S1_data = np.loadtxt("../Pk_analysis/3D_S1_results.txt", skiprows=1)
+S2_data = np.loadtxt("../Pk_analysis/3D_S2_results.txt", skiprows=1)
 S1_frame = pd.DataFrame(S1_data, columns=["score", "prediction", "true_values", "loss"])
 S2_frame = pd.DataFrame(S2_data, columns=["score", "prediction", "true_values", "loss"])
 
@@ -77,7 +77,7 @@ def plot_confusion_matrices():
 
     # Save and show
     savename = "fcnn_confusion_matrices"
-    fg.SaveShow(fig=fig, save_name=savename, save=True, show=True, tight_layout=True)
+    fg.SaveShow(fig=fig, save_name=savename, save=False, show=True, tight_layout=True)
 
 
 def print_statistics():
@@ -124,7 +124,7 @@ def plot_roc_curve():
 
     # Save and show
     savename = "fcnn_roc_curve"
-    fg.SaveShow(fig=fig, save_name=savename, save=True, show=True, tight_layout=True)
+    fg.SaveShow(fig=fig, save_name=savename, save=False, show=True, tight_layout=True)
 
 
 if __name__ == "__main__":

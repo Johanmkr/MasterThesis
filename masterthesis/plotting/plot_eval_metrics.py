@@ -68,6 +68,46 @@ fpr2, tpr2, thresholds2 = roc_curve(
     FCNN_S2_frame["true_values"], FCNN_S2_frame["prediction"]
 )
 ######################################################################################
+
+################################### FCNN 3D DATA #####################################
+# FCNN_S1_data = np.loadtxt("../Pk_analysis/S1_results.txt", skiprows=1)
+# FCNN_S2_data = np.loadtxt("../Pk_analysis/S2_results.txt", skiprows=1)
+# FCNN_S1_frame = pd.DataFrame(
+#     FCNN_S1_data, columns=["score", "prediction", "true_values", "loss"]
+# )
+# FCNN_S2_frame = pd.DataFrame(
+#     FCNN_S2_data, columns=["score", "prediction", "true_values", "loss"]
+# )
+
+# # Apply tolerances to the predictions
+# TOLERANCE = 0.5
+# FCNN_S1_frame["bool_pred"] = (FCNN_S1_frame["prediction"] > TOLERANCE).astype(bool)
+# FCNN_S1_frame["int_pred"] = (FCNN_S1_frame["prediction"] > TOLERANCE).astype(int)
+# FCNN_S1_frame["bool_true"] = (FCNN_S1_frame["true_values"] > TOLERANCE).astype(bool)
+# FCNN_S2_frame["bool_pred"] = (FCNN_S2_frame["prediction"] > TOLERANCE).astype(bool)
+# FCNN_S2_frame["int_pred"] = (FCNN_S2_frame["prediction"] > TOLERANCE).astype(int)
+# FCNN_S2_frame["bool_true"] = (FCNN_S2_frame["true_values"] > TOLERANCE).astype(bool)
+
+# cfm1 = confusion_matrix(FCNN_S1_frame["int_pred"], FCNN_S1_frame["true_values"])
+# tn1, fp1, fn1, tp1 = cfm1.ravel()
+# accuracy1, precision1, recall1, F11, TPR1, FPR1 = tutils.calculate_metrics(
+#     TP=tp1, TN=tn1, FP=fp1, FN=fn1
+# )
+# fpr1, tpr1, thresholds1 = roc_curve(
+#     FCNN_S1_frame["true_values"], FCNN_S1_frame["prediction"]
+# )
+
+# # For S1
+# cfm2 = confusion_matrix(FCNN_S2_frame["int_pred"], FCNN_S2_frame["true_values"])
+# tn2, fp2, fn2, tp2 = cfm2.ravel()
+# accuracy2, precision2, recall2, F12, TPR2, FPR2 = tutils.calculate_metrics(
+#     TP=tp2, TN=tn2, FP=fp2, FN=fn2
+# )
+# fpr2, tpr2, thresholds2 = roc_curve(
+#     FCNN_S2_frame["true_values"], FCNN_S2_frame["prediction"]
+# )
+
+##############################################################################
 # Create latex names
 S1_name = r"$\mathcal{D}_\mathrm{test}$"
 S2_name = r"$\mathcal{D}_\mathrm{val}$"
