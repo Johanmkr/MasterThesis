@@ -27,7 +27,7 @@ class Objective(object):
         # name of the files that will contain the losses and model weights
         fout   = 'Pk_analysis/losses/loss_%d.txt'%(trial.number)
         fmodel = 'Pk_analysis/models/model_%d.pt'%(trial.number)
-
+ 
         # generate the architecture
         model = architectures.dynamic_model(trial, self.input_size, self.output_size, 
                             self.max_layers, self.max_neurons_layers).to(self.device)
