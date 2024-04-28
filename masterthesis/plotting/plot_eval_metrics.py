@@ -259,7 +259,7 @@ def plot_roc_curve():
     ax.set_ylim([0.0, 1.05])
     ax.set_xlabel("False Positive Rate")
     ax.set_ylabel("True Positive Rate")
-    fig.suptitle("Receiver Operating Characteristic for models: CNN-2 and FCNN")
+    fig.suptitle("Receiver operating characteristic for models: CNN-2 and FCNN")
     ax.legend(loc="lower right")
 
     savename = f"roc_curve_both_models.pdf"

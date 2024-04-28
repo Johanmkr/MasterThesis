@@ -228,7 +228,7 @@ def plot_equilateral_bispectrum(spectrum="equilateral"):
     top_ax.axvspan(0, kF, alpha=0.25, color="grey")
     top_ax.axvspan(kN, 1e2, alpha=0.25, color="grey")
 
-    title = f"{spectrum.capitalize()} Bispectrum (bottom) and Relative Difference (top)"
+    title = f"{spectrum.capitalize()} bispectrum (bottom) and relative difference (top)"
     fig.suptitle(title)
 
     # set text with mu and t values

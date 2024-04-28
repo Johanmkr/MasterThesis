@@ -104,10 +104,10 @@ def plot_loss():
 
     # Add T1 and T2 text right of y axis
     ax1.text(
-        1.01, 0.5, "T1", fontsize=23, transform=ax1.transAxes, ha="left", va="center"
+        1.01, 0.5, "CNN-1", fontsize=23, transform=ax1.transAxes, ha="left", va="center"
     )
     ax2.text(
-        1.01, 0.5, "T2", fontsize=23, transform=ax2.transAxes, ha="left", va="center"
+        1.01, 0.5, "CNN-2", fontsize=23, transform=ax2.transAxes, ha="left", va="center"
     )
 
     # Remove top tick from bottom axes
@@ -183,7 +183,7 @@ def plot_rest_of_metrics():
         bbox_to_anchor=(0.98, 0.965),
     )
 
-    fig.suptitle("CNN Evaluation Metrics")
+    fig.suptitle("CNN training metrics")
 
     # Save figure
     savename = "metrics_T2"
